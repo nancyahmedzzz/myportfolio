@@ -18,12 +18,76 @@
     ],
     projects: [
       {
+        title: "Cyber Security Company",
+        desc: "A modern Cybersecurity website built with HTML, CSS, and JavaScript, featuring smooth animations, interactive UI, and a clean professional design that reflects advanced security technology.",
+        tags: ["Cyber Security Company", "Web"],
+        category: "Site",
+        live: "https://nancyahmedzzz.github.io/Cyber-Sec-Company/",
+        github: ""
+      },
+      {
+        title: "E L I T E",
+        desc: "A modern perfume store website built with HTML, CSS, and JavaScript, featuring elegant design, smooth animations, and a responsive layout to showcase fragrances in a premium and visually appealing way.",
+        tags: ["E L I T E", "Web"],
+        category: "Site",
+        live: "https://nancyahmedzzz.github.io/E-L-I-T-E/",
+        github: ""
+      },
+      {
+        title: "Travel Company",
+        desc: "A modern travel company website built with HTML, CSS, and JavaScript, featuring engaging animations, interactive tour showcases, and a responsive design to provide a seamless and visually appealing user experience for exploring travel destinations.",
+        tags: ["Travel Company", "Web"],
+        category: "Site",
+        live: "https://nancyahmedzzz.github.io/Travel-Company/",
+        github: ""
+      },
+      {
+        title: "Accounting Company",
+        desc: "A professional accounting company website built with HTML, CSS, and JavaScript, featuring clean design, smooth animations, and a responsive layout to showcase services, expertise, and financial solutions in a modern, user-friendly way.",
+        tags: ["Accounting Company", "Web"],
+        category: "Site",
+        live: "https://nancyahmedzzz.github.io/Accounting-Company/",
+        github: ""
+      },
+      {
+        title: "Choose your Car with US",
+        desc: "A modern car dealership website built with HTML, CSS, and JavaScript, featuring sleek design, smooth animations, and a responsive layout to showcase vehicles, highlight features, and provide an engaging browsing experience for car buyers.",
+        tags: ["Choose your Car with US", "Web"],
+        category: "Site",
+        live: "https://nancyahmedzzz.github.io/Choose-your-Car-with-US/",
+        github: ""
+      },
+      {
+        title: "NeuroCore Admin Dashboard",
+        desc: "A hospital admin dashboard built with HTML, CSS, and JavaScript, designed for a neurology center. It features interactive charts, smooth animations, and a responsive layout, providing a clear and efficient interface for managing patients, appointments, and hospital data.",
+        tags: ["NeuroCore Admin Dashboard", "Dashboard"],
+        category: "Dashboard",
+        live: "https://nancyahmedzzz.github.io/NeuroCore-Admin-Dashboard/",
+        github: ""
+      },
+      {
+        title: "iStore Admin Dashboard",
+        desc: "A modern electronics store dashboard built with HTML, CSS, and JavaScript, designed to manage laptops, smartphones, and iPhones. It features interactive charts, smooth animations, and a responsive layout for efficient tracking of products, sales, and inventory.",
+        tags: ["iStore Admin Dashboard", "Dashboard"],
+        category: "Dashboard",
+        live: "https://nancyahmedzzz.github.io/iStore-Admin-Dashboard/",
+        github: ""
+      },
+      {
+        title: "Prime Estate Admin Dashboard",
+        desc: "A modern real estate company website built with HTML, CSS, and JavaScript, featuring sleek design, smooth animations, and a responsive layout to showcase properties, highlight listings, and provide an engaging experience for buyers and investors.",
+        tags: ["Prime Estate Admin Dashboard", "Dashboard"],
+        category: "Dashboard",
+        live: "https://nancyahmedzzz.github.io/Prime-Estate-Admin-Dashboard/",
+        github: ""
+      },
+      {
         title: "Buying Your Own Car",
         desc: "(Team Project) – HTML, CSS, JavaScript.",
         tags: ["Buying a Car", "Web"],
         category: "Site",
         live: "",
-        github: ""
+        github: "https://github.com/MostafaAlshennawy1/Web_Project"
       },
       {
         title: "IPC Chat System – C++",
@@ -31,7 +95,7 @@
         tags: ["chat system", "C++"],
         category: "chat system",
         live: "",
-        github: ""
+        github: "https://nancyahmedzzz.github.io/IPC-Chat-System-/"
       },
       {
         title: "Maze Solver",
@@ -39,10 +103,10 @@
         tags: ["Maze Solver", "Python"],
         category: "Maze Solver",
         live: "",
-        github: ""
+        github: "https://nancyahmedzzz.github.io/Maze-Solver-/"
       }
     ]
-      
+
   };
 
   const $ = (s, root = document) => root.querySelector(s);
@@ -379,10 +443,7 @@
       const ghBtn = p.github ? `
         <a class="btn btn--ghost btn--sm" href="${p.github}" target="_blank" rel="noreferrer">
           <i class="fa-brands fa-github"></i> GitHub
-        </a>` : `
-        <span class="project__private" aria-label="Private case study available on request">
-          <i class="fa-regular fa-folder-open"></i> Private case study
-        </span>`;
+        </a>` : "";
 
       // Support staggered reveal: set --delay based on index
       const delay = idx * 60;
