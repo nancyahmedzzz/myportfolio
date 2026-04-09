@@ -54,7 +54,7 @@
         desc: "A modern car dealership website built with HTML, CSS, and JavaScript, featuring sleek design, smooth animations, and a responsive layout to showcase vehicles, highlight features, and provide an engaging browsing experience for car buyers.",
         tags: ["Choose your Car with US", "Web"],
         category: "Site",
-        live: "https://nancyahmedzzz.github.io/Choose-your-Car-with-US/",
+        live: "https://nancyahmedzzz.github.io/Choose-your-Car-with-US-/",
         github: ""
       },
       {
