@@ -31,7 +31,7 @@ html[data-theme="light"]{
 }
 
 *{ box-sizing:border-box; }
-html,body{ height:100%; }
+html,body{ min-height:100vh; }
 html{ scroll-behavior:smooth; }
 body{
   margin:0;
