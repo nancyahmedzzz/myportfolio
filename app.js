@@ -481,7 +481,7 @@
         el.classList.add('show');
       } else {
         el.classList.add('reveal');
-        setTimeout(() => el.classList.add('show'), d + 40);
+        setTimeout(() => el.classList.add('show'), d + 150);
       }
     });
   }
@@ -496,20 +496,35 @@
     return html;
   }
 
+  function scrollToProjects() {
+    const section = document.getElementById('projects');
+    if (section) {
+      const navHeight = document.querySelector('.nav')?.offsetHeight || 70;
+      const top = section.getBoundingClientRect().top + window.scrollY - navHeight - 20;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  }
+
   function bindPaginationEvents(container, totalPages) {
     container.querySelectorAll('[data-page]').forEach((b) => {
       b.addEventListener('click', () => {
         const p = Number(b.dataset.page);
+        if (projectState.page === p) return;
         projectState.page = p;
         renderProjects(p, PAGE_SIZE, projectState.filter);
+        scrollToProjects();
       });
     });
     container.querySelectorAll('[data-action]').forEach((b) => {
       b.addEventListener('click', () => {
         const action = b.dataset.action;
-        if (action === 'prev' && projectState.page > 1) projectState.page--;
-        if (action === 'next' && projectState.page < totalPages) projectState.page++;
-        renderProjects(projectState.page, PAGE_SIZE, projectState.filter);
+        let p = projectState.page;
+        if (action === 'prev' && p > 1) p--;
+        if (action === 'next' && p < totalPages) p++;
+        if (p === projectState.page) return;
+        projectState.page = p;
+        renderProjects(p, PAGE_SIZE, projectState.filter);
+        scrollToProjects();
       });
     });
   }

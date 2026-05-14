@@ -438,7 +438,7 @@ strong{ color: color-mix(in srgb, var(--accent) 70%, var(--text)); }
 /* Experience */
 .xp{ display:grid; gap: 12px; }
 .xp__item{ padding: 16px; transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease; }
-.xp__item:hover{ transform: translateY(-2px); border-color: color-mix(in srgb, var(--accent) 40%, transparent); box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 20%, transparent); }
+.xp__item:hover{ transform: translateY(-4px) !important; border-color: color-mix(in srgb, var(--accent) 40%, transparent); box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 20%, transparent); }
 .xp__top{ display:flex; justify-content:space-between; gap: 12px; align-items:flex-start; }
 .xp__title{ margin:0 0 6px; font-weight: 950; }
 .xp__meta{ color: var(--muted); font-weight: 850; }
@@ -480,7 +480,7 @@ strong{ color: color-mix(in srgb, var(--accent) 70%, var(--text)); }
   gap: 12px;
 }
 .project{ padding: 16px; transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease; }
-.project:hover{ transform: translateY(-2px); border-color: color-mix(in srgb, var(--accent) 40%, transparent); box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 20%, transparent); }
+.project:hover{ transform: translateY(-4px) !important; border-color: color-mix(in srgb, var(--accent) 40%, transparent); box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 20%, transparent); }
 
 /* Pagination controls for projects */
 .pagination{
