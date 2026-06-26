@@ -14,11 +14,11 @@
   <title>Nancy Ahmed | .NET Backend Developer</title>
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-180.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon-512.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="data/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="data/favicon-48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="data/favicon-180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="data/favicon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="data/favicon-512.png">
 
 
   <!-- Open Graph -->
@@ -27,14 +27,14 @@
     content="Clean, scalable APIs with performance-focused SQL and modern tooling (Docker, Git)." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://nancyahmedzzz.github.io/portfolio/" />
-  <meta property="og:image" content="assets/profile.jpg" />
+  <meta property="og:image" content="data/profile.jpg" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Nancy Ahmed | .NET Backend Developer" />
   <meta name="twitter:description"
     content="Clean, scalable APIs with performance-focused SQL and modern tooling (Docker, Git)." />
-  <meta name="twitter:image" content="assets/profile.jpg" />
+  <meta name="twitter:image" content="data/profile.jpg" />
 
   <!-- JSON-LD -->
   <script type="application/ld+json">
@@ -44,7 +44,7 @@
     "name":"Nancy Ahmed",
     "jobTitle":".NET Backend Developer",
     "url":"https://nancyahmedzzz.github.io/portfolio/",
-    "image":"https://nancyahmedzzz.github.io/portfolio/assets/profile.jpg",
+    "image":"https://nancyahmedzzz.github.io/portfolio/data/profile.jpg",
     "sameAs":[
       "https://www.linkedin.com/in/nancy-ahmed-/",
       "https://github.com/nancyahmedzzz"
@@ -64,6 +64,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <link rel="stylesheet" href="./styles.css" />
+  <script src="./data.js"></script>
   <script src="./app.js" defer></script>
 </head>
 
@@ -93,7 +94,7 @@
       </nav>
 
       <div class="nav__actions">
-        <a class="btn btn--ghost btn--sm" href="./assets/CV.pdf" target="_blank" rel="noreferrer">
+        <a class="btn btn--ghost btn--sm" href="./data/CV.pdf" target="_blank" rel="noreferrer">
           <i class="fa-regular fa-file-pdf"></i> CV
         </a>
 
@@ -117,7 +118,7 @@
       <a href="#contact" class="mobile__link">Contact</a>
 
       <div class="mobile__actions">
-        <a class="btn btn--ghost" href="./assets/CV.pdf" target="_blank" rel="noreferrer">
+        <a class="btn btn--ghost" href="./data/CV.pdf" target="_blank" rel="noreferrer">
           <i class="fa-regular fa-file-pdf"></i> Download CV
         </a>
 
@@ -181,25 +182,39 @@
         </div>
       </div>
 
-      <aside class="hero__side">
-        <!-- Shorter photo area -->
-        <div class="photoCard reveal" id="profileCard">
-          <div class="photoCard__shine" aria-hidden="true"></div>
-          <img class="photoCard__img" src="./assets/profile.jpg" alt="Ahmed Eldegla photo" width="900" height="900"
-            loading="eager" />
-          <div class="photoCard__meta">
-            <div class="photoCard__name">Nancy Ahmed</div>
-            <div class="photoCard__tag">.NET Backend Developer</div>
+      <aside class="hero__side hero__side--3d">
+        <div class="hero__blob"></div>
+        
+        <!-- Floating Badges -->
+        <div class="hero__badge-pill hero__badge-pill--1 reveal" style="display:flex; flex-direction:column; gap:4px; align-items:flex-start;">
+          <span style="font-size:10px; color:var(--accent); font-family:monospace;">GET /api/skills</span>
+          <span style="font-size:14px;"><i class="fa-solid fa-check-circle" style="color: #4ade80; margin-right:4px;"></i> 200 OK <span style="opacity:0.6; font-size:11px; margin-left:4px;">12ms</span></span>
+        </div>
+        <div class="hero__badge-pill hero__badge-pill--2 reveal">
+          <i class="fa-solid fa-code"></i> .NET Developer
+        </div>
+
+        <!-- Spinning 'HIRE ME' Circle -->
+        <div class="hero__badge-spin reveal">
+          <svg viewBox="0 0 100 100" width="130" height="130" class="spin-svg">
+            <defs>
+              <path id="circlePath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" />
+            </defs>
+            <text fill="var(--text)" font-size="13" font-weight="bold" letter-spacing="2">
+              <textPath href="#circlePath">
+                HIRE ME • NANCY AHMED • 
+              </textPath>
+            </text>
+          </svg>
+          <div class="hero__badge-spin-inner">
+             <i class="fa-solid fa-arrow-down" style="transform: rotate(-45deg);"></i>
           </div>
         </div>
 
-        <div class="miniCard reveal">
-          <div class="miniCard__row">
-            <span class="badge"><i class="fa-solid fa-shield-halved"></i> Reliable</span>
-            <span class="badge"><i class="fa-solid fa-gauge-high"></i> Performant</span>
-            <span class="badge"><i class="fa-solid fa-sitemap"></i> Maintainable</span>
-          </div>
-          <p class="miniCard__text">Clean backend delivery, clear structure, and production-ready practices.</p>
+        <!-- 3D Photo -->
+        <div class="photoCard reveal" id="profileCard">
+          <div class="photoCard__shine" aria-hidden="true"></div>
+          <img class="photoCard__img" src="./data/profile.jpg" alt="Nancy Ahmed" width="900" height="900" loading="eager" />
         </div>
       </aside>
     </section>
@@ -312,7 +327,7 @@
           <div class="contact__btns">
             <a class="btn btn--primary" href="mailto:nancy.ahmed.abdelgawad@gmail.com"><i
                 class="fa-regular fa-paper-plane"></i> Send Email</a>
-            <a class="btn btn--ghost" href="./assets/CV.pdf" target="_blank" rel="noreferrer"><i
+            <a class="btn btn--ghost" href="./data/CV.pdf" target="_blank" rel="noreferrer"><i
                 class="fa-regular fa-file-pdf"></i> Download CV</a>
           </div>
         </div>
@@ -349,7 +364,7 @@
         <div>&copy; <span id="year"></span> Nancy Ahmed</div>
         <div class="footer__links">
           <a href="#home">Top</a>
-          <a href="./assets/CV.pdf" target="_blank" rel="noreferrer">CV</a>
+          <a href="./data/CV.pdf" target="_blank" rel="noreferrer">CV</a>
           <a href="https://www.linkedin.com/in/nancy-ahmed-/" target="_blank" rel="noreferrer">LinkedIn</a>
           <a href="https://github.com/nancyahmedzzz" target="_blank" rel="noreferrer">GitHub</a>
         </div>
@@ -360,6 +375,31 @@
   <div class="cursor cursor--dot" id="cursorDot" aria-hidden="true"></div>
   <div class="cursor cursor--ring" id="cursorRing" aria-hidden="true"></div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Project Modal -->
+  <div id="projectModal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" onclick="window.closeProjectModal()" aria-label="Close modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      
+      <div class="modal-body">
+        <div class="modal-info">
+          <div id="modalTags" class="modal-tags"></div>
+          <h2 id="modalTitle" class="modal-title"></h2>
+          <p id="modalDesc" class="modal-desc"></p>
+        </div>
+        <div class="modal-visual">
+          <img id="modalImage" src="" alt="" class="modal-img">
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <a id="modalBtnGithub" href="#" target="_blank" rel="noreferrer" class="btn btn--ghost"><i class="fa-brands fa-github"></i> Source Code</a>
+        <a id="modalBtnLive" href="#" target="_blank" rel="noreferrer" class="btn btn--primary"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo</a>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

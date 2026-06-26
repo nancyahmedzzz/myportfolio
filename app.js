@@ -1,119 +1,11 @@
 (() => {
-  const PROFILE = {
-    email: "ahmeddagla99@gmail.com",
-    roleTyping: [
-      ".NET Backend Developer",
-      "ASP.NET Core | Clean Architecture",
-      "SQL Server | Docker | Git"
-    ],
-    skills: [
-      { icon: "fa-brands fa-microsoft", name: ".NET", hint: "ASP.NET Core" },
-      { icon: "fa-solid fa-database", name: "SQL Server", hint: "T-SQL" },
-      { icon: "fa-brands fa-docker", name: "Docker", hint: "Containers" },
-      { icon: "fa-brands fa-git-alt", name: "Git", hint: "Version control" },
-      { icon: "fa-brands fa-github", name: "GitHub", hint: "Repos" },
-      { icon: "fa-brands fa-gitlab", name: "HTML,CSS,JS", hint: "Interfaces" },
-      { icon: "fa-brands fa-gitlab", name: " Microsoft Office", hint: "Word,Excel,PowerPoint" },
-      { icon: "fa-brands fa-github", name: "Problem Solving", hint: "C++" }
-    ],
-    projects: [
-      {
-        title: "Cyber Security Company",
-        desc: "A modern Cybersecurity website built with HTML, CSS, and JavaScript, featuring smooth animations, interactive UI, and a clean professional design that reflects advanced security technology.",
-        tags: ["Cyber Security Company", "Web"],
-        category: "Site",
-        live: "https://nancyahmedzzz.github.io/Cyber-Sec-Company/",
-        github: ""
-      },
-      {
-        title: "E L I T E",
-        desc: "A modern perfume store website built with HTML, CSS, and JavaScript, featuring elegant design, smooth animations, and a responsive layout to showcase fragrances in a premium and visually appealing way.",
-        tags: ["E L I T E", "Web"],
-        category: "Site",
-        live: "https://nancyahmedzzz.github.io/E-L-I-T-E/",
-        github: ""
-      },
-      {
-        title: "Travel Company",
-        desc: "A modern travel company website built with HTML, CSS, and JavaScript, featuring engaging animations, interactive tour showcases, and a responsive design to provide a seamless and visually appealing user experience for exploring travel destinations.",
-        tags: ["Travel Company", "Web"],
-        category: "Site",
-        live: "https://nancyahmedzzz.github.io/Travel-Company/",
-        github: ""
-      },
-      {
-        title: "Accounting Company",
-        desc: "A professional accounting company website built with HTML, CSS, and JavaScript, featuring clean design, smooth animations, and a responsive layout to showcase services, expertise, and financial solutions in a modern, user-friendly way.",
-        tags: ["Accounting Company", "Web"],
-        category: "Site",
-        live: "https://nancyahmedzzz.github.io/Accounting-Company/",
-        github: ""
-      },
-      {
-        title: "Choose your Car with US",
-        desc: "A modern car dealership website built with HTML, CSS, and JavaScript, featuring sleek design, smooth animations, and a responsive layout to showcase vehicles, highlight features, and provide an engaging browsing experience for car buyers. ",
-        tags: ["Choose your Car with US", "Web"],
-        category: "Site",
-        live: "https://nancyahmedzzz.github.io/Choose-your-Own-Car-with-US-Now-/",
-        github: ""
-      },
-      {
-        title: "NeuroCore Admin Dashboard",
-        desc: "A hospital admin dashboard built with HTML, CSS, and JavaScript, designed for a neurology center. It features interactive charts, smooth animations, and a responsive layout, providing a clear and efficient interface for managing patients, appointments, and hospital data.",
-        tags: ["NeuroCore Admin Dashboard", "Dashboard"],
-        category: "Dashboard",
-        live: "https://nancyahmedzzz.github.io/NeuroCore-Admin-Dashboard/",
-        github: ""
-      },
-      {
-        title: "iStore Admin Dashboard",
-        desc: "A modern electronics store dashboard built with HTML, CSS, and JavaScript, designed to manage laptops, smartphones, and iPhones. It features interactive charts, smooth animations, and a responsive layout for efficient tracking of products, sales, and inventory.",
-        tags: ["iStore Admin Dashboard", "Dashboard"],
-        category: "Dashboard",
-        live: "https://nancyahmedzzz.github.io/iStore-Admin-Dashboard/",
-        github: ""
-      },
-      {
-        title: "Prime Estate Admin Dashboard",
-        desc: "A modern real estate company website built with HTML, CSS, and JavaScript, featuring sleek design, smooth animations, and a responsive layout to showcase properties, highlight listings, and provide an engaging experience for buyers and investors.",
-        tags: ["Prime Estate Admin Dashboard", "Dashboard"],
-        category: "Dashboard",
-        live: "https://nancyahmedzzz.github.io/Prime-Estate-Admin-Dashboard/",
-        github: ""
-      },
-      {
-        title: "Buying Your Own Car",
-        desc: "(Team Project) – HTML, CSS, JavaScript.",
-        tags: ["Buying a Car", "Web"],
-        category: "Site",
-        live: "",
-        github: "https://github.com/MostafaAlshennawy1/Web_Project"
-      },
-      {
-        title: "IPC Chat System – C++",
-        desc: "(Team Project) Implemented a chat system using sockets and shared memory, and multithreading and synchronization techniques",
-        tags: ["chat system", "C++"],
-        category: "chat system",
-        live: "",
-        github: "https://nancyahmedzzz.github.io/IPC-Chat-System-/"
-      },
-      {
-        title: "Maze Solver",
-        desc: "Built a maze-solving with Applying algorithmic thinking to find optimal paths efficiently.",
-        tags: ["Maze Solver", "Python"],
-        category: "Maze Solver",
-        live: "",
-        github: "https://nancyahmedzzz.github.io/Maze-Solver-/"
-      }
-    ]
-
-  };
+  const PROFILE = window.PROFILE;
 
   const $ = (s, root = document) => root.querySelector(s);
   const $$ = (s, root = document) => Array.from(root.querySelectorAll(s));
 
   // Projects pagination state
-  const PAGE_SIZE = 4;
+  const PAGE_SIZE = 3;
   const projectState = { page: 1, filter: "all" };
 
   // Toast
@@ -434,32 +326,28 @@
     const slice = filtered.slice(start, start + size);
 
     grid.innerHTML = slice.map((p, idx) => {
-      const tags = (p.tags || []).map((t) => `<span class="tag">${t}</span>`).join("");
-      const liveBtn = p.live ? `
-        <a class="btn btn--primary btn--sm" href="${p.live}" target="_blank" rel="noreferrer">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> Live
-        </a>` : "";
-
-      const ghBtn = p.github ? `
-        <a class="btn btn--ghost btn--sm" href="${p.github}" target="_blank" rel="noreferrer">
-          <i class="fa-brands fa-github"></i> GitHub
-        </a>` : "";
-
       // Support staggered reveal: set --delay based on index
       const delay = idx * 60;
 
+      // Escape quotes for HTML attribute
+      const safeTitle = p.title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      const tagsString = (p.tags || []).join(" &bull; ");
+
       return `
-        <article class="card project" data-category="${p.category}" data-delay="${delay}" style="--delay:${delay}ms">
-          <div class="project__row">
-            <div>
-              <h3 class="project__title">${p.title}</h3>
-              <p class="project__desc">${p.desc}</p>
+        <article class="project" data-category="${p.category}" data-delay="${delay}" style="--delay:${delay}ms">
+          <div class="project__visual" onclick="window.openProjectModal('${safeTitle}')">
+            <img src="${p.image}" alt="${p.title}" class="project__img" loading="lazy" />
+            <div class="project__overlay">
+              <div class="project__links">
+                ${p.live ? `<a href="${p.live}" target="_blank" class="project__circle-btn" onclick="event.stopPropagation()" title="Live Demo"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>` : ''}
+                ${p.github ? `<a href="${p.github}" target="_blank" class="project__circle-btn" onclick="event.stopPropagation()" title="GitHub"><i class="fa-brands fa-github"></i></a>` : ''}
+                <button class="project__circle-btn" title="View Details" onclick="event.stopPropagation(); window.openProjectModal('${safeTitle}')"><i class="fa-solid fa-info"></i></button>
+              </div>
             </div>
-            <div class="tags">${tags}</div>
           </div>
-          <div class="project__links">
-            ${liveBtn}
-            ${ghBtn}
+          <div class="project__info">
+            <h3 class="project__title" onclick="window.openProjectModal('${safeTitle}')">${p.title}</h3>
+            <div class="project__tags">${tagsString}</div>
           </div>
         </article>
       `;
@@ -512,7 +400,6 @@
         if (projectState.page === p) return;
         projectState.page = p;
         renderProjects(p, PAGE_SIZE, projectState.filter);
-        scrollToProjects();
       });
     });
     container.querySelectorAll('[data-action]').forEach((b) => {
@@ -524,7 +411,6 @@
         if (p === projectState.page) return;
         projectState.page = p;
         renderProjects(p, PAGE_SIZE, projectState.filter);
-        scrollToProjects();
       });
     });
   }
@@ -692,6 +578,49 @@
     initCounters();
     initButtonRipples();
   }
+
+  // Modal logic exposed globally
+  window.openProjectModal = function(title) {
+    const project = PROFILE.projects.find(p => p.title === title);
+    if (!project) return;
+    
+    const modal = document.getElementById('projectModal');
+    if (!modal) return;
+    
+    document.getElementById('modalTitle').textContent = project.title;
+    document.getElementById('modalDesc').textContent = project.fullDescription || project.desc;
+    document.getElementById('modalImage').src = project.image;
+    
+    const tagsContainer = document.getElementById('modalTags');
+    tagsContainer.innerHTML = (project.tags || []).map(t => `<span class="tag" style="font-size: 10px; padding: 4px 8px;">${t}</span>`).join("");
+    
+    const btnLive = document.getElementById('modalBtnLive');
+    if (project.live) {
+      btnLive.style.display = 'inline-flex';
+      btnLive.href = project.live;
+    } else {
+      btnLive.style.display = 'none';
+    }
+    
+    const btnGithub = document.getElementById('modalBtnGithub');
+    if (project.github) {
+      btnGithub.style.display = 'inline-flex';
+      btnGithub.href = project.github;
+    } else {
+      btnGithub.style.display = 'none';
+    }
+
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden'; // prevent scrolling
+  };
+  
+  window.closeProjectModal = function() {
+    const modal = document.getElementById('projectModal');
+    if (modal) {
+      modal.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+  };
 
   document.addEventListener("DOMContentLoaded", boot);
 })();
