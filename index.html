@@ -94,7 +94,7 @@
       </nav>
 
       <div class="nav__actions">
-        <a class="btn btn--ghost btn--sm" href="./data/CV.pdf" target="_blank" rel="noreferrer">
+        <a class="btn btn--ghost btn--sm magnetic" data-magnetic href="./data/CV.pdf" target="_blank" rel="noreferrer">
           <i class="fa-regular fa-file-pdf"></i> CV
         </a>
 
@@ -139,7 +139,7 @@
           <span>Available for opportunities</span>
         </div>
 
-        <h1 class="title reveal">Nancy Ahmed</h1>
+        <h1 class="title reveal"><span class="text-reveal-mask"><span class="text-reveal-inner">Nancy Ahmed</span></span></h1>
         <p class="role reveal">
           <span id="typeTarget"></span><span class="caret" aria-hidden="true"></span>
         </p>
@@ -151,9 +151,9 @@
         </p>
 
         <div class="cta reveal">
-          <a class="btn btn--primary" href="#projects"><i class="fa-solid fa-layer-group"></i> Projects</a>
-          <a class="btn btn--ghost" href="#contact"><i class="fa-regular fa-paper-plane"></i> Contact</a>
-          <button class="btn btn--ghost" id="copyEmailBtn" type="button"><i class="fa-regular fa-copy"></i> Copy
+          <a class="btn btn--primary magnetic" data-magnetic href="#projects"><i class="fa-solid fa-layer-group"></i> Projects</a>
+          <a class="btn btn--ghost magnetic" data-magnetic href="#contact"><i class="fa-regular fa-paper-plane"></i> Contact</a>
+          <button class="btn btn--ghost magnetic" data-magnetic id="copyEmailBtn" type="button"><i class="fa-regular fa-copy"></i> Copy
             Email</button>
         </div>
 
@@ -222,7 +222,7 @@
     <!-- SKILLS -->
     <section id="skills" class="section">
       <header class="section__head reveal">
-        <h2 class="section__title">Skills</h2>
+        <h2 class="section__title"><span class="text-reveal-mask"><span class="text-reveal-inner">Skills</span></span></h2>
         <p class="section__sub">Focused, not noisy - the stack I actually use.</p>
       </header>
 
@@ -232,7 +232,7 @@
     <!-- EXPERIENCE -->
     <section id="experience" class="section">
       <header class="section__head reveal">
-        <h2 class="section__title">Experience</h2>
+        <h2 class="section__title"><span class="text-reveal-mask"><span class="text-reveal-inner">Experience</span></span></h2>
         <p class="section__sub">Short and recruiter-friendly.</p>
       </header>
 
@@ -274,7 +274,7 @@
     <!-- PROJECTS -->
     <section id="projects" class="section">
       <header class="section__head reveal">
-        <h2 class="section__title">Projects</h2>
+        <h2 class="section__title"><span class="text-reveal-mask"><span class="text-reveal-inner">Projects</span></span></h2>
         <p class="section__sub">A couple of selected work items.</p>
       </header>
 
@@ -294,7 +294,7 @@
     <!-- CONTACT -->
     <section id="contact" class="section">
       <header class="section__head reveal">
-        <h2 class="section__title">Contact</h2>
+        <h2 class="section__title"><span class="text-reveal-mask"><span class="text-reveal-inner">Contact</span></span></h2>
         <p class="section__sub">Fastest way: email.</p>
       </header>
 
@@ -325,9 +325,9 @@
           </a>
 
           <div class="contact__btns">
-            <a class="btn btn--primary" href="mailto:nancy.ahmed.abdelgawad@gmail.com"><i
+            <a class="btn btn--primary magnetic" data-magnetic href="mailto:nancy.ahmed.abdelgawad@gmail.com"><i
                 class="fa-regular fa-paper-plane"></i> Send Email</a>
-            <a class="btn btn--ghost" href="./data/CV.pdf" target="_blank" rel="noreferrer"><i
+            <a class="btn btn--ghost magnetic" data-magnetic href="./data/CV.pdf" target="_blank" rel="noreferrer"><i
                 class="fa-regular fa-file-pdf"></i> Download CV</a>
           </div>
         </div>
@@ -350,7 +350,7 @@
             <textarea id="message" name="message" rows="5" placeholder="Write your message..." required></textarea>
           </label>
 
-          <button class="btn btn--primary" type="submit">
+          <button class="btn btn--primary magnetic" data-magnetic type="submit">
             <i class="fa-regular fa-paper-plane"></i> Send Message
           </button>
 

@@ -172,7 +172,7 @@
     });
     window.addEventListener("blur", hide);
 
-    const hoverSelector = "a, button, input, textarea, .btn, .filter, .nav__link, .contactRow, .project, .skill";
+    const hoverSelector = "a, button, input, textarea, .btn, .filter, .nav__link, .contactRow, .skill";
     document.addEventListener("mouseover", (e) => {
       if (e.target.closest(hoverSelector)) ring.classList.add("is-hover");
     });
@@ -522,6 +522,46 @@
     els.forEach((el) => io.observe(el));
   }
 
+  // Magnetic Buttons
+  function initMagneticButtons() {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
+
+    const magnetics = $$('.magnetic');
+    magnetics.forEach((btn) => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = `translate(0px, 0px)`;
+      });
+    });
+  }
+
+  // Cards Glow
+  function initCardsGlow() {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
+
+    document.addEventListener("mousemove", (e) => {
+      const cards = $$('.card');
+      cards.forEach((card) => {
+        const rect = card.getBoundingClientRect();
+        // Optimization: only update if mouse is relatively close
+        if (e.clientX > rect.left - 300 && e.clientX < rect.right + 300 &&
+            e.clientY > rect.top - 300 && e.clientY < rect.bottom + 300) {
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          card.style.setProperty('--mouse-x', `${x}px`);
+          card.style.setProperty('--mouse-y', `${y}px`);
+        }
+      });
+    }, { passive: true });
+  }
+
   // Button ripple micro-interaction
   function initButtonRipples() {
     document.addEventListener('click', (e) => {
@@ -565,6 +605,32 @@
     });
   }
 
+  // Scroll Progress
+  function initScrollProgress() {
+    const progress = $("#scrollProgress");
+    if (!progress) return;
+    window.addEventListener("scroll", () => {
+      const scrollPx = document.documentElement.scrollTop || document.body.scrollTop;
+      const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = `${(scrollPx / winHeightPx) * 100}%`;
+      progress.style.width = scrolled;
+    }, { passive: true });
+  }
+
+  // Blob Follow
+  function initBlobFollow() {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
+    const bg = $(".bg");
+    if (!bg) return;
+    document.addEventListener("mousemove", (e) => {
+      const x = e.clientX / window.innerWidth - 0.5;
+      const y = e.clientY / window.innerHeight - 0.5;
+      bg.style.setProperty('--mx', x);
+      bg.style.setProperty('--my', y);
+    }, { passive: true });
+  }
+
   function boot() {
     initEntryZoom();
     initTheme();
@@ -584,6 +650,10 @@
     initPhotoTilt();
     initCounters();
     initButtonRipples();
+    initMagneticButtons();
+    initCardsGlow();
+    initScrollProgress();
+    initBlobFollow();
   }
 
   // Modal logic exposed globally
