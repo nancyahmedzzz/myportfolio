@@ -448,9 +448,11 @@
     });
   }
 
-  // Subtle 3D tilt on photo card
+  // Strong 3D tilt on photo card
   function initPhotoTilt() {
-    const card = $("#profileCard");
+    const container = document.querySelector(".hero__side--3d") || $("#profileCard");
+    if (!container) return;
+    const card = document.getElementById("profileCard");
     if (!card) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return;
@@ -459,19 +461,24 @@
     const onMove = (e) => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
-        const r = card.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width;
-        const y = (e.clientY - r.top) / r.height;
-        const rx = (0.5 - y) * 6;
-        const ry = (x - 0.5) * 7;
-        card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+        const r = container.getBoundingClientRect();
+        // x and y are between -1 and 1
+        const x = ((e.clientX - r.left) / r.width) * 2 - 1;
+        const y = ((e.clientY - r.top) / r.height) * 2 - 1;
+        
+        // Remove rotation entirely, just keep the slight scale if needed
+        card.style.transform = `scale(1.05)`;
       });
     };
-    const onLeave = () => (card.style.transform = "");
+    
+    const onLeave = () => {
+      cancelAnimationFrame(raf);
+      card.style.transform = `scale(1)`; // return to resting state
+    };
 
-    card.addEventListener("mousemove", onMove);
-    card.addEventListener("mouseleave", onLeave);
-    card.addEventListener("touchstart", onLeave, { passive: true });
+    container.addEventListener("mousemove", onMove);
+    container.addEventListener("mouseleave", onLeave);
+    container.addEventListener("touchstart", onLeave, { passive: true });
   }
 
   // Animated counters (quick KPIs)

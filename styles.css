@@ -1007,11 +1007,10 @@ html[data-theme="light"] .modal-close:hover {
   background: transparent;
   border: none;
   box-shadow: 0 30px 60px rgba(0,0,0,0.4);
-  transform: rotateY(-10deg) rotateX(5deg);
   transition: transform 0.5s ease;
 }
 .hero__side--3d:hover .photoCard {
-  transform: rotateY(0deg) rotateX(0deg) scale(1.02);
+  transform: scale(1.02);
 }
 .hero__side--3d .photoCard__img {
   height: 100%;
