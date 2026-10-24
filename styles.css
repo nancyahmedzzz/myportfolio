@@ -6,7 +6,7 @@
 .reveal-right{opacity:0;transform:translateX(130px) scale(0.88);transition:opacity 1s cubic-bezier(.22,1,.36,1),transform 1s cubic-bezier(.22,1,.36,1)}
 .reveal-right.in{opacity:1;transform:translateX(0) scale(1)}
 
-/* ── Lanyard ID Badge & Hardware ── */
+/* ── Lanyard Hardware & Realistic ID Badge ── */
 #lanyardWrapper {
   position: absolute;
   top: -70px;
@@ -15,8 +15,8 @@
   z-index: 10;
   user-select: none;
   opacity: 0;
-  transition: opacity 400ms ease;
   pointer-events: auto;
+  transition: opacity 0.4s ease;
 }
 
 #idBadge {
@@ -26,25 +26,19 @@
   transform-origin: 50% 0px;
   will-change: transform;
   cursor: grab;
-  user-select: none;
 }
 
 #idBadge:active {
   cursor: grabbing;
 }
 
-/* Flat woven fabric strap in dark charcoal/navy with cyan stitched edges and low-contrast text */
 .lanyard-strap {
   width: 24px;
   height: 200px;
-  background-color: #0b1220;
-  background-image:
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.02) 0px, rgba(255, 255, 255, 0.02) 1px, transparent 1px, transparent 3px),
-    linear-gradient(90deg, #0b1220 0%, #111a2e 50%, #0b1220 100%);
-  border-left: 1.5px dashed rgba(34, 211, 238, 0.35);
-  border-right: 1.5px dashed rgba(34, 211, 238, 0.35);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), inset 0 0 6px rgba(0, 0, 0, 0.6);
-  border-radius: 2px;
+  background: linear-gradient(90deg, #070d18 0%, #111a2e 15%, #0f172a 85%, #070d18 100%);
+  border-left: 1.5px dashed rgba(34, 211, 238, 0.45);
+  border-right: 1.5px dashed rgba(34, 211, 238, 0.45);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65), inset 0 0 10px rgba(0, 0, 0, 0.8);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -52,44 +46,29 @@
   justify-content: center;
 }
 
-/* Metal hardware container */
 .lanyard-hardware {
-  width: 56px;
-  height: 74px;
-  margin-top: -1px;
   position: relative;
+  margin-top: -1px;
   z-index: 5;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.6));
 }
 
-.lanyard-hardware svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-  overflow: visible;
-}
-
-/* ID Card with punched slot hole and realistic depth */
 .id-card-holder {
   width: 290px;
-  border-radius: 16px;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #0f172a 0%, #030712 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 30px rgba(14, 165, 233, 0.12), inset 0 1px 2px rgba(255, 255, 255, 0.2);
   overflow: hidden;
-  background: #090e1a;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 28px 65px -10px rgba(0, 0, 0, 0.75), 0 10px 24px -5px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.12);
-  margin-top: -16px;
   position: relative;
+  margin-top: -14px;
   z-index: 3;
-  cursor: grab;
 }
 
 .id-card-header {
-  height: 34px;
-  background: linear-gradient(180deg, rgba(15, 23, 42, 0.98) 0%, rgba(10, 16, 30, 0.98) 100%);
-  border-bottom: 1px solid rgba(34, 211, 238, 0.2);
+  height: 28px;
+  background: #020617;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -128,6 +107,7 @@
   .reveal-left.in,.reveal-right.in{transform:none}
   #idBadge{transform:rotate(0deg)!important}
 }
+
 /* ── #about section layout lock ── */
 #about {
   min-height: 100vh !important;
@@ -157,7 +137,6 @@
   padding-top: var(--hero-shift, 120px) !important;
 }
 
-/* Typewriter title — matches Rijz's big hero heading */
 #about .hero-title {
   font-size: clamp(42px, 6.5vw, 100px) !important;
   line-height: 0.88 !important;
@@ -189,7 +168,6 @@
   justify-content: flex-start !important;
 }
 
-/* Skill panel — sticky and correctly aligned */
 #about .hero-right {
   position: sticky !important;
   top: 88px !important;
@@ -202,33 +180,6 @@
 #about .skill-panel {
   animation: none !important;
   transform: none !important;
-}
-
-@media(max-width:1024px) {
-  #about .hero-grid {
-    grid-template-columns: 1fr !important;
-    justify-items: center !important;
-  }
-  #about .hero-left {
-    align-items: center !important;
-    text-align: center !important;
-    padding-top: clamp(24px, 5vh, 56px) !important;
-  }
-  #about .hero-title {
-    font-size: clamp(36px, 8vw, 72px) !important;
-    text-align: center !important;
-  }
-  #about .hero-sub {
-    text-align: center !important;
-  }
-  #about .hero-actions {
-    justify-content: center !important;
-  }
-  #about .hero-right {
-    position: static !important;
-    margin: 0 auto !important;
-    max-width: 480px !important;
-  }
 }
 
 /* ========================================================
@@ -497,19 +448,6 @@ button,
   display: block;
 }
 
-.hero-portrait-svg {
-  width: auto;
-  max-width: 100%;
-  height: 100%;
-  display: block;
-  overflow: visible;
-  filter: drop-shadow(0 0 25px rgba(0, 240, 255, 0.45)) drop-shadow(0 15px 45px rgba(0, 0, 0, 0.85));
-}
-
-.hero-portrait-fade {
-  display: none;
-}
-
 .hero-bottom-info {
   position: absolute;
   left: 50%;
@@ -627,34 +565,6 @@ button,
   color: #00f0ff;
 }
 
-@media (max-width: 900px) {
-  .hero-socials-vertical {
-    left: 16px;
-    bottom: 24px;
-  }
-  .hero-v-social {
-    width: 36px;
-    height: 36px;
-    font-size: 13px;
-  }
-  .hero-portrait-frame {
-    width: auto;
-    max-width: 100%;
-    height: auto;
-  }
-}
-
-@media (max-width: 640px) {
-  .hero-socials-vertical {
-    display: none;
-  }
-  .hero-portrait-frame {
-    width: auto;
-    max-width: 100%;
-    height: auto;
-  }
-}
-
 /* ========================================================
    Restored Original Floating Centered Pill Navbar
 ======================================================== */
@@ -711,16 +621,6 @@ button,
   background: #ffffff !important;
   font-weight: 600 !important;
   box-shadow: 0 2px 10px rgba(255, 255, 255, 0.3) !important;
-}
-
-@media (max-width: 640px) {
-  .nav {
-    top: 12px !important;
-  }
-  .nav .nav-link {
-    padding: 6px 10px !important;
-    font-size: 11px !important;
-  }
 }
 
 /* ========================================================
@@ -1527,80 +1427,535 @@ button,
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* ══════════════════════════════════════════════════════════════
+   TABLET RESPONSIVE SYSTEM (<= 1024px)
+   Nancy Ahmed Portfolio
+══════════════════════════════════════════════════════════════ */
 @media (max-width: 1024px) {
+  /* Global Page Constraints */
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  .section {
+    padding: 80px 28px !important;
+  }
+
+  /* Floating Navbar on Tablet */
+  .nav {
+    top: 14px !important;
+    padding: 0 16px !important;
+  }
+
+  .nav .nav-links {
+    max-width: 96vw !important;
+    padding: 5px 8px !important;
+    gap: 3px !important;
+  }
+
+  .nav .nav-link {
+    padding: 7px 14px !important;
+    font-size: 12px !important;
+  }
+
+  /* Hero Section Tablet */
+  .hero-name,
+  .hero-name-text {
+    font-size: clamp(3.6rem, min(14.8vw, 26vh), 7.5rem) !important;
+    top: 57% !important;
+  }
+
+  .hero-photo,
+  .hero-portrait-wrap {
+    top: clamp(70px, 8.8vh, 84px) !important;
+  }
+
+  .hero-photo img,
+  .hero-portrait-img {
+    height: calc(100dvh - 165px) !important;
+    max-height: 680px !important;
+    max-width: 78vw !important;
+  }
+
+  /* About Grid & Lanyard Tablet */
+  .about-grid {
+    grid-template-columns: 1fr !important;
+    gap: 36px !important;
+  }
+
+  .about-left {
+    max-width: 680px !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    text-align: left !important;
+  }
+
+  .about-right {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 50px !important;
+    margin-bottom: 30px !important;
+    min-height: 580px !important;
+    height: 580px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    overflow: visible !important;
+  }
+
+  .about-right .lanyard-wrapper,
+  #lanyardWrapper {
+    position: absolute !important;
+    top: -20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+
+  /* Services Grid Tablet */
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 18px !important;
+  }
+
+  /* Testimonials Tablet */
+  .testimonial-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 20px !important;
+  }
+
+  .testimonials-inner {
+    padding: 0 32px !important;
+  }
+
+  /* Contact Tablet */
+  .contact {
+    padding: 90px 28px !important;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  .connect-card {
+    max-width: 680px !important;
+    margin: 0 auto !important;
+  }
+
+  /* Projects Carousel Tablet */
   .proj-card {
     width: min(720px, 90vw);
     height: 480px;
   }
+
   .proj-card-inner {
     padding: 28px;
     gap: 24px;
     grid-template-columns: 1.1fr 0.9fr;
   }
+
   .proj-card.is-prev {
     transform: translateX(-52%) scale(0.8) rotateY(12deg) translateZ(-60px);
   }
+
   .proj-card.is-next {
     transform: translateX(52%) scale(0.8) rotateY(-12deg) translateZ(-60px);
   }
 }
 
-@media (max-width: 768px) {
+/* ══════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE SYSTEM (<= 640px)
+   Nancy Ahmed Portfolio
+══════════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  /* Global Page Constraints & Padding */
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  .section {
+    padding: 60px 18px !important;
+  }
+
+  /* Floating Pill Navbar — Single Smooth Scrollable Line */
+  .nav {
+    top: 10px !important;
+    padding: 0 8px !important;
+    width: 100% !important;
+  }
+
+  .nav .nav-links {
+    max-width: calc(100vw - 16px) !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    padding: 4px 6px !important;
+    gap: 2px !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+  }
+
+  .nav .nav-links::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .nav .nav-link {
+    padding: 6px 9px !important;
+    font-size: 11px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Hero Section Mobile */
+  .hero-socials-vertical {
+    display: none !important;
+  }
+
+  .hero-name,
+  .hero-name-text {
+    font-size: clamp(2.4rem, min(14.8vw, 22vh), 4.2rem) !important;
+    top: 56% !important;
+    line-height: 0.85 !important;
+  }
+
+  .hero-photo,
+  .hero-portrait-wrap {
+    top: clamp(54px, 8vh, 68px) !important;
+  }
+
+  .hero-photo img,
+  .hero-portrait-img {
+    height: calc(100dvh - 142px) !important;
+    max-height: 520px !important;
+    max-width: 86vw !important;
+    min-height: 240px !important;
+  }
+
+  .hero-bottom-info {
+    bottom: clamp(6px, 1.8vh, 16px) !important;
+    gap: 2px !important;
+  }
+
+  .hero-motto-card,
+  .tagline-pill {
+    padding: 6px 14px !important;
+    gap: 8px !important;
+    max-width: 92vw !important;
+  }
+
+  .hero-motto-text {
+    font-size: clamp(9px, 2.7vw, 11px) !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  .hero-scroll-cue {
+    padding: 2px 8px !important;
+    font-size: 10px !important;
+  }
+
+  /* About Section Mobile */
+  .about-title {
+    font-size: clamp(28px, 8vw, 42px) !important;
+  }
+
+  .about-title-stack {
+    font-size: clamp(24px, 7vw, 36px) !important;
+  }
+
+  .about-quote {
+    padding: 14px 16px 14px 38px !important;
+    margin-top: 18px !important;
+  }
+
+  .about-quote blockquote {
+    font-size: 13.5px !important;
+  }
+
+  .about-body {
+    font-size: 0.98rem !important;
+  }
+
+  .about-stats {
+    gap: 12px !important;
+    margin-top: 24px !important;
+  }
+
+  .about-stat-num {
+    font-size: clamp(22px, 6.5vw, 34px) !important;
+  }
+
+  .about-right {
+    margin-top: 40px !important;
+    margin-bottom: 20px !important;
+    min-height: 540px !important;
+    height: 540px !important;
+  }
+
+  .about-right .lanyard-wrapper,
+  #lanyardWrapper {
+    top: -15px !important;
+  }
+
+  .id-card-holder {
+    width: 275px !important;
+    max-width: calc(100vw - 36px) !important;
+  }
+
+  /* Experience Cards Mobile */
+  #experience .service-card {
+    padding: 22px 18px !important;
+  }
+
+  #experience .service-card > div:first-of-type {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+
+  #experience h3 {
+    font-size: 19px !important;
+  }
+
+  #experience ul {
+    padding-left: 16px !important;
+    font-size: 14px !important;
+  }
+
+  /* Selected Projects Showcase & 3D Carousel Mobile */
+  .work-head-row {
+    gap: 14px !important;
+    margin-bottom: 24px !important;
+  }
+
+  .work-head-row .work-title {
+    font-size: clamp(26px, 7.5vw, 38px) !important;
+  }
+
+  .carousel-counter-controls {
+    padding: 4px 12px !important;
+    gap: 10px !important;
+  }
+
+  .carousel-top-btn {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 12px !important;
+  }
+
   .projects-showcase {
-    min-height: 520px;
+    min-height: 480px !important;
+    margin: 10px 0 20px !important;
   }
+
   .proj-stage {
-    height: 500px;
+    height: 440px !important;
   }
+
   .proj-card {
-    width: 92vw;
-    height: 360px;
+    width: 92vw !important;
+    height: 380px !important;
+    border-radius: 18px !important;
   }
+
   .proj-card-inner {
-    padding: 0;
-    display: block;
-    height: 100%;
-    overflow: hidden;
+    padding: 0 !important;
+    display: block !important;
+    height: 100% !important;
+    overflow: hidden !important;
   }
+
   .proj-card-media {
-    min-height: 0;
-    height: 100%;
+    min-height: 0 !important;
+    height: 100% !important;
+    border-radius: 18px !important;
   }
+
+  .proj-media-overlay {
+    padding: 16px 18px !important;
+  }
+
+  .proj-media-action-pill {
+    padding: 6px 12px !important;
+    font-size: 10px !important;
+  }
+
   .proj-nav-arrow {
-    width: 42px;
-    height: 42px;
-    font-size: 15px;
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 14px !important;
   }
+
   .proj-nav-prev {
-    left: -4px;
+    left: -6px !important;
   }
+
   .proj-nav-next {
-    right: -4px;
+    right: -6px !important;
   }
+
   .proj-card.is-prev {
-    transform: translateX(-40%) scale(0.75) translateZ(-80px);
-    opacity: 0.25;
+    transform: translateX(-38%) scale(0.76) translateZ(-80px) !important;
+    opacity: 0.22 !important;
   }
+
   .proj-card.is-next {
-    transform: translateX(40%) scale(0.75) translateZ(-80px);
-    opacity: 0.25;
+    transform: translateX(38%) scale(0.76) translateZ(-80px) !important;
+    opacity: 0.22 !important;
   }
+
+  .proj-dots {
+    margin-top: 20px !important;
+    gap: 8px !important;
+  }
+
+  .work-banner {
+    padding: 18px 20px !important;
+    gap: 14px !important;
+    margin-top: 32px !important;
+  }
+
+  .work-banner-big {
+    font-size: 15px !important;
+  }
+
+  .work-banner-arrow {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  /* Services Grid Mobile */
+  .services-head {
+    margin-bottom: 32px !important;
+  }
+
+  .services-title {
+    font-size: clamp(26px, 7.5vw, 38px) !important;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .service-card {
+    padding: 22px 20px !important;
+  }
+
+  /* Testimonials Mobile */
+  .testimonials {
+    margin: 50px 0 !important;
+    padding: 60px 0 !important;
+  }
+
+  .testimonial-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    margin-top: 32px !important;
+  }
+
+  .testimonials-inner {
+    padding: 0 18px !important;
+  }
+
+  /* Contact Section Mobile */
+  .contact {
+    padding: 60px 18px !important;
+  }
+
+  .contact-title {
+    font-size: clamp(26px, 7.5vw, 38px) !important;
+  }
+
+  .contact-social {
+    padding: 14px 16px !important;
+    gap: 12px !important;
+  }
+
+  .connect-card {
+    padding: 20px 16px !important;
+    border-radius: 16px !important;
+  }
+
+  .connect-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .connect-row {
+    padding: 12px 14px !important;
+  }
+
+  /* Footer Mobile */
+  .footer {
+    padding: 48px 18px 28px !important;
+  }
+
+  .footer-big {
+    font-size: clamp(32px, 8.5vw, 52px) !important;
+    margin-bottom: 36px !important;
+  }
+
+  .footer-row {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    text-align: center !important;
+  }
+
+  .footer-row > div {
+    justify-self: center !important;
+    text-align: center !important;
+  }
+
+  /* Modal Mobile */
+  .modal-backdrop {
+    padding: 12px !important;
+  }
+
   .modal {
-    grid-template-columns: 1fr;
-    max-height: 94vh;
-    width: 95vw;
+    grid-template-columns: 1fr !important;
+    max-height: 94vh !important;
+    width: 95vw !important;
+    border-radius: 18px !important;
   }
+
   .modal-art {
-    min-height: 200px;
-    height: 200px;
-    padding: 14px;
+    min-height: 180px !important;
+    height: 180px !important;
+    padding: 10px !important;
   }
+
   .modal-body {
-    padding: 20px 22px;
-    max-height: calc(94vh - 200px);
-    border-left: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 16px 18px !important;
+    max-height: calc(94vh - 180px) !important;
+    border-left: none !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    gap: 14px !important;
+  }
+
+  .modal-title {
+    font-size: 22px !important;
+  }
+
+  .modal-desc {
+    font-size: 13.5px !important;
+    line-height: 1.6 !important;
+  }
+
+  .modal-features-wrap {
+    padding: 14px 16px !important;
+  }
+
+  .modal-actions {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+
+  .modal-actions .btn {
+    padding: 10px 18px !important;
+    font-size: 12px !important;
+    width: 100% !important;
+    justify-content: center !important;
   }
 }
-
-
