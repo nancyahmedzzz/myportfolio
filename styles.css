@@ -330,7 +330,6 @@ button,
   box-sizing: border-box;
 }
 
-.hero-name,
 .hero-name-layer {
   position: absolute;
   top: 57%;
@@ -347,7 +346,6 @@ button,
   user-select: none;
 }
 
-.hero-name,
 .hero-name-text {
   font-family: var(--display);
   font-weight: 900;
@@ -360,7 +358,6 @@ button,
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: nameShimmer 7s ease-in-out infinite alternate;
   will-change: transform, opacity;
   text-align: center;
 }
@@ -371,12 +368,16 @@ button,
 }
 
 .hero-name-nancy {
-  animation: slideInNancy 1.3s cubic-bezier(0.16, 1, 0.3, 1) both,
+  opacity: 0;
+  transform: translateX(-240px);
+  animation: slideInNancy 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards,
              nameShimmer 7s ease-in-out infinite alternate;
 }
 
 .hero-name-ahmed {
-  animation: slideInAhmed 1.3s cubic-bezier(0.16, 1, 0.3, 1) both,
+  opacity: 0;
+  transform: translateX(240px);
+  animation: slideInAhmed 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards,
              nameShimmer 7s ease-in-out infinite alternate;
 }
 
@@ -396,12 +397,13 @@ button,
   left: 50%;
   top: clamp(80px, 9.5vh, 92px);
   bottom: auto;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(80px);
+  opacity: 0;
   z-index: 2;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  animation: risePortrait 1.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: risePortrait 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   will-change: transform, opacity;
   margin: 0;
   pointer-events: none;
@@ -1460,10 +1462,12 @@ button,
   }
 
   /* Hero Section Tablet */
-  .hero-name,
+  .hero-name-layer {
+    top: 57% !important;
+  }
+
   .hero-name-text {
     font-size: clamp(3.6rem, min(14.8vw, 26vh), 7.5rem) !important;
-    top: 57% !important;
   }
 
   .hero-photo,
@@ -1614,10 +1618,12 @@ button,
     display: none !important;
   }
 
-  .hero-name,
+  .hero-name-layer {
+    top: 56% !important;
+  }
+
   .hero-name-text {
     font-size: clamp(2.4rem, min(14.8vw, 22vh), 4.2rem) !important;
-    top: 56% !important;
     line-height: 0.85 !important;
   }
 
