@@ -13,29 +13,14 @@
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <link rel="stylesheet" href="./styles.css?v=5" />
+  <link rel="stylesheet" href="./styles.css?v=9" />
   <script src="./data.js?v=4"></script>
-  <script src="./app.js?v=4" defer></script>
+  <script src="./app.js?v=9" defer></script>
 </head>
 
 <body data-theme="dark">
 
-  <!-- SVG Chroma-Key Filter: Strips Pure Black Background to 100% Transparent, leaving ONLY Nancy's Cutout -->
-  <svg width="0" height="0" style="position: absolute; pointer-events: none; opacity: 0; width: 0; height: 0;"
-    aria-hidden="true">
-    <defs>
-      <filter id="remove-black-bg" color-interpolation-filters="sRGB">
-        <feColorMatrix in="SourceGraphic" type="matrix" values="
-          1 0 0 0 0
-          0 1 0 0 0
-          0 0 1 0 0
-          0.299 0.587 0.114 0 0" result="lumAlpha" />
-        <feComponentTransfer in="lumAlpha" result="transparentBlack">
-          <feFuncA type="linear" slope="50" intercept="-0.15" />
-        </feComponentTransfer>
-      </filter>
-    </defs>
-  </svg>
+
 
   <!-- Top Left Spinning Decoration (Doubled Radius, Center at Top Edge, Vivid Cyan & Glow) -->
   <div
@@ -98,27 +83,27 @@
       <!-- Center Stage Container -->
       <div class="hero-stage">
         <!-- Giant Typography Layer (Behind Photo) -->
-        <div class="hero-name-layer" aria-hidden="true">
+        <div class="hero-name-layer hero-name" aria-hidden="true">
           <div class="hero-name-text hero-name-nancy" id="heroNameNancy">NANCY</div>
           <div class="hero-name-text hero-name-ahmed" id="heroNameAhmed">AHMED</div>
         </div>
 
         <!-- Nancy's Portrait Photo (Foreground in Front of Name) -->
-        <div class="hero-portrait-wrap" id="heroPortrait">
+        <div class="hero-portrait-wrap hero-photo" id="heroPortrait">
           <div class="hero-portrait-aura"></div>
           <div class="hero-portrait-frame">
             <img id="heroPortraitImg"
-              src="../../.gemini/antigravity-ide/brain/b3557f50-55c7-46af-aff2-6a88f82aa647/.user_uploaded/media_1792801149237.jpg"
-              onerror="if (this.src.indexOf('profile.jpg') === -1) this.src='./data/profile.jpg';" alt="Nancy Ahmed"
+              src="./images/profile-nobg.png"
+              onerror="this.onerror=null;this.src='./data/profile2.png';"
+              alt="Nancy Ahmed"
               class="hero-portrait-img"
-              style="filter: url(#remove-black-bg) drop-shadow(0 0 35px rgba(0, 240, 255, 0.3));" draggable="false" />
-            <div class="hero-portrait-fade"></div>
+              draggable="false" />
           </div>
         </div>
 
         <!-- Personal Motto & Scroll Down Cue -->
         <div class="hero-bottom-info">
-          <div class="hero-motto-card">
+          <div class="hero-motto-card tagline-pill">
             <span class="hero-motto-deco">✦</span>
             <span class="hero-motto-text">DREAMS ARE NOT NEGOTIABLE</span>
             <span class="hero-motto-deco">✦</span>
@@ -186,19 +171,19 @@
             </div>
           </div>
         </div>
-        <div class="about-right reveal-right"
+        <div class="about-right" id="aboutRight"
           style="position: relative; display: flex; justify-content: center; align-items: flex-start; height: 100%; min-height: 600px; overflow: visible;">
           <!-- Ambient glow -->
           <div
             style="position: absolute; top: 40%; left: 50%; transform: translate(-50%,-50%); width: 500px; height: 500px; background: radial-gradient(circle, rgba(20,184,166,0.13) 0%, rgba(14,165,233,0.08) 45%, transparent 70%); filter: blur(60px); z-index: 0; pointer-events: none; border-radius: 50%;">
           </div>
 
-          <!-- Lanyard anchored to header area -->
-          <div
-            style="position: absolute; top: -140px; left: 25%; transform: translateX(-50%); z-index: 10; user-select: none;">
+          <!-- Lanyard anchored to header area — fixed anchor position, no sideways jump -->
+          <div id="lanyardWrapper"
+            style="position: absolute; top: -70px; left: 50%; transform: translateX(-50%); z-index: 10; user-select: none; opacity: 0; pointer-events: auto;">
 
-            <!-- Realistic Metallic Pin / Clamp holding the strap at the top -->
-            <div
+            <!-- Realistic Metallic Pin / Bracket holding strap at top anchor -->
+            <div class="lanyard-anchor-bracket"
               style="position: absolute; top: -8px; left: 50%; transform: translateX(-50%); z-index: 20; display: flex; flex-direction: column; align-items: center; pointer-events: none;">
               <!-- Metallic Pin Head / Bracket -->
               <div
@@ -221,37 +206,95 @@
               </div>
             </div>
 
-            <!-- ═══ FULL PENDULUM — rotates from very top ═══ -->
+            <!-- ═══ FULL PENDULUM — rotates from top anchor ═══ -->
             <div id="idBadge"
               style="display: flex; flex-direction: column; align-items: center; transform-origin: 50% 0px; will-change: transform; cursor: grab;">
 
-              <!-- Wide flat strap (Clean, no logo) -->
-              <div
-                style="width: 22px; height: 200px; background: linear-gradient(to right, #070707, #1c1c1c, #070707); border-radius: 2px; position: relative; overflow: hidden; box-shadow: 2px 0 5px rgba(0,0,0,0.5), -2px 0 5px rgba(0,0,0,0.5);">
+              <!-- Woven Strap with cyan stitched edges and low-contrast repeating text -->
+              <div class="lanyard-strap">
+                <svg width="24" height="200" viewBox="0 0 24 200" style="display: block; width: 100%; height: 100%; pointer-events: none;">
+                  <text x="12" y="100" transform="rotate(90, 12, 100)" text-anchor="middle"
+                        font-family="'JetBrains Mono', monospace" font-size="8.5"
+                        letter-spacing="2.2" fill="rgba(34, 211, 238, 0.28)" font-weight="600">
+                    NANCY AHMED • .NET BACKEND
+                  </text>
+                </svg>
               </div>
 
-              <!-- Metallic O-ring -->
-              <div
-                style="width: 23px; height: 23px; border-radius: 50%; border: 3.5px solid #777; background: linear-gradient(135deg, #555 0%, #aaa 45%, #666 100%); box-shadow: 0 2px 8px rgba(0,0,0,0.7), inset 0 1px 3px rgba(255,255,255,0.15); margin-top: -3px; position: relative;">
-                <div
-                  style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 12px; height: 12px; border-radius: 50%; background: #0a0a12;">
+              <!-- Realistic Metallic Hardware Set (Inline SVG) -->
+              <div class="lanyard-hardware">
+                <svg width="56" height="74" viewBox="0 0 56 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="hwSteel" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#f5f7fa" />
+                      <stop offset="50%" stop-color="#aab3c0" />
+                      <stop offset="100%" stop-color="#e4e9f0" />
+                    </linearGradient>
+                    <linearGradient id="hwBrushed" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#64748b" />
+                      <stop offset="20%" stop-color="#cbd5e1" />
+                      <stop offset="50%" stop-color="#f8fafc" />
+                      <stop offset="80%" stop-color="#94a3b8" />
+                      <stop offset="100%" stop-color="#475569" />
+                    </linearGradient>
+                    <radialGradient id="hwRivet" cx="35%" cy="35%" r="65%">
+                      <stop offset="0%" stop-color="#ffffff" />
+                      <stop offset="55%" stop-color="#94a3b8" />
+                      <stop offset="100%" stop-color="#334155" />
+                    </radialGradient>
+                    <filter id="hwDrop" x="-30%" y="-20%" width="160%" height="150%">
+                      <feDropShadow dx="0" dy="2" stdDeviation="1.8" flood-color="#000000" flood-opacity="0.5" />
+                    </filter>
+                  </defs>
+
+                  <!-- 1. Metal Crimp / Ferrule where strap ends -->
+                  <g filter="url(#hwDrop)">
+                    <rect x="15" y="0" width="26" height="7" rx="1.5" fill="url(#hwBrushed)" stroke="#475569" stroke-width="0.8" />
+                    <line x1="16" y1="0.8" x2="40" y2="0.8" stroke="#ffffff" stroke-width="0.8" stroke-linecap="round" opacity="0.85" />
+                    <line x1="16" y1="6.3" x2="40" y2="6.3" stroke="#1e293b" stroke-width="0.6" opacity="0.5" />
+                    <circle cx="20" cy="3.5" r="0.9" fill="#334155" opacity="0.7" />
+                    <circle cx="36" cy="3.5" r="0.9" fill="#334155" opacity="0.7" />
+                  </g>
+
+                  <!-- 2. Loop connecting crimp to swivel -->
+                  <path d="M 25 7 C 25 13, 31 13, 31 7" fill="none" stroke="url(#hwSteel)" stroke-width="2.2" stroke-linecap="round" stroke="#64748b" />
+
+                  <!-- 3. Swivel Connector -->
+                  <g filter="url(#hwDrop)">
+                    <rect x="22" y="13" width="12" height="15" rx="3" fill="url(#hwSteel)" stroke="#64748b" stroke-width="1" />
+                    <line x1="22.5" y1="20.5" x2="33.5" y2="20.5" stroke="#475569" stroke-width="0.9" />
+                    <rect x="23.5" y="14" width="9" height="5.5" rx="1.5" fill="#ffffff" opacity="0.4" />
+                    <circle cx="28" cy="30.5" r="4.2" fill="none" stroke="url(#hwSteel)" stroke-width="1.8" stroke="#64748b" />
+                    <circle cx="28" cy="30.5" r="2.3" fill="#090e1a" />
+                  </g>
+
+                  <!-- 4. Lobster-claw Clip with visible spring-gate and tiny rivet -->
+                  <g filter="url(#hwDrop)">
+                    <!-- Main curved body of claw passing through slot -->
+                    <path d="M 26 33 C 31 33 34 36 34 42 C 34 48 35 55 34 61 C 33 66 30 68 28 68 C 25.5 68 23 65 23 60 C 23 58 25 58 25 60 C 25 63 26.8 65.2 28 65.2 C 29.5 65.2 31.2 63 31.5 59 C 32 54 31.5 48 31.5 42 C 31.5 38 29.5 35.5 26.5 35.5 Z"
+                          fill="url(#hwSteel)" stroke="#64748b" stroke-width="0.8" />
+                    <!-- Spring-gate thumb lever / trigger -->
+                    <path d="M 32 39.5 L 35.2 38.8 C 36 38.4 36.8 39 36.8 40 L 36.8 42 C 36.8 42.8 36.2 43.4 35.4 43.6 L 32 44 Z"
+                          fill="url(#hwBrushed)" stroke="#64748b" stroke-width="0.6" />
+                    <line x1="34" y1="40.5" x2="36" y2="40.5" stroke="#334155" stroke-width="0.6" />
+                    <line x1="33.5" y1="42" x2="35.5" y2="42" stroke="#334155" stroke-width="0.6" />
+                    <!-- Spring gate bar -->
+                    <line x1="31.5" y1="43" x2="23.5" y2="58" stroke="url(#hwBrushed)" stroke-width="1.8" stroke-linecap="round" />
+                    <!-- Tiny rivet pivot with specular gradient -->
+                    <circle cx="31.5" cy="43" r="1.6" fill="url(#hwRivet)" stroke="#334155" stroke-width="0.4" />
+                    <!-- Specular highlight dot on claw -->
+                    <circle cx="27" cy="35" r="0.6" fill="#ffffff" opacity="0.9" />
+                  </g>
+                </svg>
+              </div>
+
+              <!-- ID Photo Card with punched slot cutout -->
+              <div class="id-card-holder">
+                <div class="id-card-header">
+                  <div class="id-card-slot"></div>
                 </div>
-              </div>
-
-              <!-- Hook stem (straight part) -->
-              <div
-                style="width: 5px; height: 18px; background: linear-gradient(to right, #444, #999, #666); border-radius: 2px 2px 0 0; margin-top: -2px;">
-              </div>
-              <!-- J-hook curved part -->
-              <div
-                style="width: 20px; height: 26px; border: 4.5px solid; border-color: #777 #bbb #888 #666; border-top: none; border-radius: 0 0 18px 18px; margin-top: -1px; box-shadow: 2px 3px 6px rgba(0,0,0,0.5);">
-              </div>
-
-              <!-- Photo card — no border, just image -->
-              <div
-                style="width: 290px; border-radius: 16px; overflow: hidden; box-shadow: 0 32px 70px rgba(0,0,0,0.7), 0 10px 28px rgba(0,0,0,0.45); margin-top: 3px; cursor: grab;">
-                <img src="./data/profile.jpg" alt="Nancy"
-                  style="width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block;" draggable="false" />
+                <div class="id-card-gloss"></div>
+                <img src="./data/profile.jpg" alt="Nancy Ahmed" class="id-card-photo" draggable="false" />
               </div>
 
             </div>
@@ -604,10 +647,10 @@
 
   <div class="modal-backdrop" id="modalBg">
     <div class="modal" id="modalWindow">
+      <button class="modal-close" id="modalClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
       <div class="modal-art">
-        <img src="" class="modal-art-cover-bg" id="modalImgBg">
-        <img src="" class="modal-art-cover" id="modalImg">
-        <button class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></button>
+        <img src="" class="modal-art-cover-bg" id="modalImgBg" alt="">
+        <img src="" class="modal-art-cover" id="modalImg" alt="">
       </div>
       <div class="modal-body">
         <div>

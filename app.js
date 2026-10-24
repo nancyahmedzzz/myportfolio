@@ -47,50 +47,23 @@
     }
 
     // Render Cards in Stage
+    // Render Cards in Stage (Image Only from outside)
     stage.innerHTML = projects.map((p, i) => {
       const safeTitle = p.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
-      const tags = (p.tags || []).slice(0, 4);
-      const tagsHtml = tags.map(t => `<span class="proj-tag">${t}</span>`).join("");
-
-      // Action buttons
-      let liveBtnHtml = "";
-      if (p.live) {
-        liveBtnHtml = `<a href="${p.live}" target="_blank" class="proj-btn-ghost" onclick="event.stopPropagation()">
-          <span>LIVE DEMO</span>
-          <i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </a>`;
-      } else if (p.github) {
-        liveBtnHtml = `<a href="${p.github}" target="_blank" class="proj-btn-ghost" onclick="event.stopPropagation()">
-          <span><i class="fa-brands fa-github"></i> CODE</span>
-        </a>`;
-      }
-
       return `
-        <article class="proj-card" data-index="${i}">
+        <article class="proj-card" data-index="${i}" title="${safeTitle}">
           <div class="proj-card-inner">
-            <div class="proj-card-info">
-              <div class="proj-badge-top">
-                <span class="proj-badge-dot"></span>
-                <span>SELECTED PROJECT</span>
-              </div>
-              <h3 class="proj-card-title">${p.title}</h3>
-              <p class="proj-card-desc">${p.desc}</p>
-              <div class="proj-card-tags">
-                ${tagsHtml}
-              </div>
-              <div class="proj-card-actions">
-                <button type="button" class="proj-btn-primary" onclick="window.openProjectModal('${safeTitle}')">
-                  <span>VIEW FULL DETAILS</span>
-                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </button>
-                ${liveBtnHtml}
-              </div>
-            </div>
-            <div class="proj-card-media" onclick="window.openProjectModal('${safeTitle}')">
+            <div class="proj-card-media">
               <div class="proj-media-glow"></div>
               <img src="${p.image}" alt="${p.title}" class="proj-media-img" loading="lazy" />
               <div class="proj-media-overlay">
-                <span class="proj-media-zoom-hint"><i class="fa-solid fa-expand"></i> View Details</span>
+                <div class="proj-media-tag-hint">
+                  <span class="proj-media-title-text">${safeTitle}</span>
+                  <span class="proj-media-action-pill">
+                    <span>Details</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -115,13 +88,14 @@
 
     const cards = Array.from(stage.querySelectorAll(".proj-card"));
 
-    // Attach click listeners to cards (if clicking on side card, navigate to it!)
+    // Attach click listeners to cards: click on side card rotates, click on center active card opens full details modal!
     cards.forEach((card, i) => {
       card.addEventListener("click", (e) => {
-        if (e.target.closest("button") || e.target.closest("a")) return;
         if (i !== currentIndex) {
           e.preventDefault();
           goTo(i);
+        } else {
+          window.openProjectModal(projects[i].title);
         }
       });
     });
@@ -351,73 +325,82 @@
     }
   }
 
-  // Lanyard — Auto-swing + Cursor-attached drag
+  // ── Lanyard ID Badge: Fixed Anchor & Damped Pendulum Physics ──
   function initLanyard() {
     const badge = $("#idBadge");
-    if (!badge) return;
+    const wrapper = $("#lanyardWrapper") || (badge ? badge.parentElement : null);
+    if (!badge || !wrapper) return;
 
+    // Anchor point calculation:
+    // Anchor top-center is locked horizontally at the center of the right column
+    // without any horizontal travel, sliding animations, or layout jumps.
+    function setLanyardAnchor() {
+      wrapper.style.left = "50%";
+      wrapper.style.transform = "translateX(-50%)";
+    }
+
+    // Set initial anchor position synchronously BEFORE first paint
+    setLanyardAnchor();
     badge.style.transformOrigin = "50% 0px";
-    badge.style.transform = "";
 
-    // ── Drop-in animation on load ──
-    const wrapper = badge.parentElement;
-    wrapper.style.opacity = "0";
-    wrapper.style.transform = "translateX(-50%) translateY(-420px)";
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    setTimeout(() => {
-      wrapper.classList.add("lanyard-drop");
-      wrapper.style.opacity = "";
-      wrapper.style.transform = "";
-    }, 300);
-
-    // After drop lands → start physics with big swing
-    setTimeout(() => {
-      wrapper.classList.remove("lanyard-drop");
-      angle = 28;   // big initial angle = dramatic swing after landing
-      omega = 0;
-    }, 1850);
-
+    // Physics state
     let isDragging = false;
-    let angle = -10;   // start offset → auto-swings immediately on load
-    let omega =  0.4;  // initial kick so it starts moving right away
-    let idleT = 0;
+    // Initial damped pendulum swing (about ±4° decaying to 0 in ~1.5s)
+    let angle = prefersReducedMotion ? 0 : 4.0;
+    let omega = 0;
+    const G = 0.16;      // Gravity factor for natural swing cycle
+    const DAMP = 0.94;   // Damping constant: 4° decays to 0 within ~90 frames (1.5s)
+    const MAX_A = 70;
     const history = [];
 
-    // ── Physics ──
-    const G      = 0.11;   // gravity (controls swing speed)
-    const DAMP   = 0.978;  // friction
-    const IDLE_A = 4.0;    // idle sway amplitude (degrees)
-    const IDLE_S = 0.009;  // idle sway speed
-    const MAX_A  = 75;
-
-    // Pivot = top-center of badge's parent (doesn't rotate, reliable)
+    // Pivot calculation: top-center of fixed lanyard anchor
     function getPivot() {
-      const p = badge.parentElement;
-      const r = p.getBoundingClientRect();
+      const r = wrapper.getBoundingClientRect();
       return { x: r.left + r.width / 2, y: r.top };
     }
 
+    badge.style.transform = `rotate(${angle}deg)`;
+
+    // Wait until layout/fonts/images settle, then fade in over ~400ms with fixed anchor
+    requestAnimationFrame(() => {
+      setLanyardAnchor();
+      requestAnimationFrame(() => {
+        wrapper.style.opacity = "1";
+      });
+    });
+
+    // Window resize recalculates anchor cleanly without jumps
+    window.addEventListener("resize", () => {
+      setLanyardAnchor();
+    });
+
+    // Pendulum physics loop
     function frame() {
       if (!isDragging) {
-        // Pendulum: α = -G·sin(θ)
-        const alpha = -G * Math.sin(angle * Math.PI / 180);
-        omega = (omega + alpha) * DAMP;
-        angle += omega;
-
-        // Idle sway when energy is nearly gone
-        if (Math.abs(omega) < 0.07 && Math.abs(angle) < 3) {
-          idleT += IDLE_S;
-          angle += (Math.sin(idleT) * IDLE_A - angle) * 0.016;
-          omega *= 0.82;
+        if (!prefersReducedMotion) {
+          if (Math.abs(angle) > 0.02 || Math.abs(omega) > 0.002) {
+            // α = -G * sin(θ)
+            const alpha = -G * Math.sin(angle * (Math.PI / 180));
+            omega = (omega + alpha) * DAMP;
+            angle += omega;
+          } else {
+            angle = 0;
+            omega = 0;
+          }
+        } else {
+          angle = 0;
+          omega = 0;
         }
       }
 
       badge.style.transform = `rotate(${angle}deg)`;
       requestAnimationFrame(frame);
     }
-    frame();
+    requestAnimationFrame(frame);
 
-    // ── Mouse: true geometric angle from pivot to cursor ──
+    // ── Mouse Drag: pivots around fixed anchor ──
     badge.addEventListener("mousedown", (e) => {
       isDragging = true;
       history.length = 0;
@@ -429,7 +412,6 @@
     window.addEventListener("mousemove", (e) => {
       if (!isDragging) return;
       const piv = getPivot();
-      // atan2(dx, dy) = angle from vertical straight down
       const raw = Math.atan2(e.clientX - piv.x, e.clientY - piv.y) * (180 / Math.PI);
       angle = Math.max(-MAX_A, Math.min(MAX_A, raw));
       history.push({ a: angle, t: performance.now() });
@@ -440,15 +422,16 @@
       if (!isDragging) return;
       isDragging = false;
       badge.style.cursor = "grab";
-      // Angular velocity from recent angle history → realistic fling
-      if (history.length >= 2) {
+      if (!prefersReducedMotion && history.length >= 2) {
         const first = history[0], last = history[history.length - 1];
         const dt = Math.max(8, last.t - first.t);
         omega = Math.max(-14, Math.min(14, (last.a - first.a) / dt * 18));
+      } else {
+        omega = 0;
       }
     });
 
-    // ── Touch ──
+    // ── Touch Drag: pivots around fixed anchor ──
     badge.addEventListener("touchstart", (e) => {
       isDragging = true;
       history.length = 0;
@@ -468,10 +451,12 @@
     window.addEventListener("touchend", () => {
       if (!isDragging) return;
       isDragging = false;
-      if (history.length >= 2) {
+      if (!prefersReducedMotion && history.length >= 2) {
         const first = history[0], last = history[history.length - 1];
         const dt = Math.max(8, last.t - first.t);
         omega = Math.max(-14, Math.min(14, (last.a - first.a) / dt * 18));
+      } else {
+        omega = 0;
       }
     });
   }
@@ -523,10 +508,19 @@
     });
   }
 
-  // Automatic Background Remover: Key out black background to pure transparent PNG
+  // Automatic Background Remover: Flood-fill remove white or black background to pure transparent PNG
   function initPortraitChromaKey() {
     const img = document.getElementById("heroPortraitImg");
     if (!img) return;
+
+    let processed = false;
+    function attemptRemove() {
+      if (processed || img.__bgRemoved) return;
+      if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+        processed = true;
+        removeBg();
+      }
+    }
 
     function removeBg() {
       try {
@@ -543,30 +537,140 @@
         const imgData = ctx.getImageData(0, 0, w, h);
         const d = imgData.data;
 
-        // Strip pure black background (RGB <= 24)
-        for (let i = 0; i < d.length; i += 4) {
-          const r = d[i], g = d[i + 1], b = d[i + 2];
-          if (r < 24 && g < 24 && b < 24) {
-            d[i + 3] = 0;
+        // BFS flood-fill from all 4 borders to remove white/black background
+        const totalPixels = w * h;
+        const visited = new Uint8Array(totalPixels);
+        const qx = new Int32Array(totalPixels);
+        const qy = new Int32Array(totalPixels);
+        let head = 0, tail = 0;
+
+        function isBg(r, g, b) {
+          const max = Math.max(r, g, b);
+          const min = Math.min(r, g, b);
+          const diff = max - min;
+          // White or off-white background with JPEG noise tolerance
+          if (min >= 165 && diff <= 36) return true;
+          if (min >= 200) return true;
+          // Black or near-black background
+          if (max <= 42) return true;
+          return false;
+        }
+
+        // Push border pixels
+        for (let x = 0; x < w; x++) {
+          // top border
+          let idx0 = x * 4;
+          if (isBg(d[idx0], d[idx0+1], d[idx0+2])) {
+            visited[x] = 1;
+            qx[tail] = x; qy[tail] = 0; tail++;
+          }
+          // bottom border
+          let yB = h - 1;
+          let idxB = (yB * w + x) * 4;
+          if (isBg(d[idxB], d[idxB+1], d[idxB+2])) {
+            visited[yB * w + x] = 1;
+            qx[tail] = x; qy[tail] = yB; tail++;
+          }
+        }
+        for (let y = 0; y < h; y++) {
+          // left border
+          let idxL = (y * w) * 4;
+          if (!visited[y * w] && isBg(d[idxL], d[idxL+1], d[idxL+2])) {
+            visited[y * w] = 1;
+            qx[tail] = 0; qy[tail] = y; tail++;
+          }
+          // right border
+          let xR = w - 1;
+          let idxR = (y * w + xR) * 4;
+          if (!visited[y * w + xR] && isBg(d[idxR], d[idxR+1], d[idxR+2])) {
+            visited[y * w + xR] = 1;
+            qx[tail] = xR; qy[tail] = y; tail++;
+          }
+        }
+
+        // BFS 4-way expansion
+        const dx = [1, -1, 0, 0];
+        const dy = [0, 0, 1, -1];
+
+        while (head < tail) {
+          const cx = qx[head];
+          const cy = qy[head];
+          head++;
+
+          const pIdx = (cy * w + cx) * 4;
+          d[pIdx + 3] = 0; // Set to fully transparent
+
+          for (let i = 0; i < 4; i++) {
+            const nx = cx + dx[i];
+            const ny = cy + dy[i];
+
+            if (nx >= 0 && nx < w && ny >= 0 && ny < h) {
+              const nPos = ny * w + nx;
+              if (!visited[nPos]) {
+                const nIdx = nPos * 4;
+                const nr = d[nIdx], ng = d[nIdx+1], nb = d[nIdx+2];
+                if (isBg(nr, ng, nb)) {
+                  visited[nPos] = 1;
+                  qx[tail] = nx;
+                  qy[tail] = ny;
+                  tail++;
+                }
+              }
+            }
+          }
+        }
+
+        // Defringe border halo pixels
+        for (let y = 1; y < h - 1; y++) {
+          for (let x = 1; x < w - 1; x++) {
+            const pos = y * w + x;
+            if (visited[pos]) continue;
+            const idx = pos * 4;
+            const isNearTransparent = visited[pos - 1] || visited[pos + 1] || visited[pos - w] || visited[pos + w];
+            if (isNearTransparent) {
+              const r = d[idx], g = d[idx+1], b = d[idx+2];
+              if (r > 175 && g > 175 && b > 175) {
+                const brightness = (r + g + b) / 3;
+                if (brightness > 220) {
+                  d[idx + 3] = 0;
+                } else {
+                  const factor = (220 - brightness) / 45;
+                  d[idx + 3] = Math.max(0, Math.min(255, Math.round(d[idx + 3] * factor)));
+                }
+              }
+            }
           }
         }
 
         ctx.putImageData(imgData, 0, 0);
         const dataUrl = canvas.toDataURL("image/png");
-        if (dataUrl && dataUrl.length > 100) {
+        if (dataUrl && dataUrl.length > 200) {
+          img.__bgRemoved = true;
           img.src = dataUrl;
-          img.style.filter = "drop-shadow(0 0 35px rgba(0, 240, 255, 0.3))";
+          img.style.filter = "drop-shadow(0 20px 50px rgba(0, 240, 255, 0.4)) drop-shadow(0 6px 20px rgba(0, 0, 0, 0.85))";
         }
       } catch (err) {
-        // GPU SVG filter handles it smoothly
+        console.warn("Portrait background processing fallback:", err);
       }
     }
 
-    if (img.complete && img.naturalWidth) {
-      removeBg();
+    if (img.complete && img.naturalWidth > 0) {
+      attemptRemove();
     } else {
-      img.addEventListener("load", removeBg, { once: true });
+      img.addEventListener("load", attemptRemove, { once: true });
     }
+
+    // Safety polling retry in case load event fired before handler or image cached
+    let pollCount = 0;
+    const pollInterval = setInterval(() => {
+      pollCount++;
+      if (processed || pollCount > 35) {
+        clearInterval(pollInterval);
+      } else if (img.naturalWidth > 0) {
+        attemptRemove();
+        clearInterval(pollInterval);
+      }
+    }, 60);
   }
 
   // Boot
