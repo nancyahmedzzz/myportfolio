@@ -1,405 +1,642 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="color-scheme" content="dark light" />
-  <meta name="robots" content="index,follow" />
-  <meta name="description"
-    content="Nancy Ahmed - .NET Backend Developer. Clean, scalable APIs with performance-focused SQL and modern tooling (Docker, Git)." />
-  <meta name="theme-color" content="#0b1220" />
-  <link rel="canonical" href="https://nancyahmedzzz.github.io/portfolio/" />
-
   <title>Nancy Ahmed | .NET Backend Developer</title>
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="data/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="data/favicon-48.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="data/favicon-180.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="data/favicon-192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="data/favicon-512.png">
-
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Nancy Ahmed | .NET Backend Developer" />
-  <meta property="og:description"
-    content="Clean, scalable APIs with performance-focused SQL and modern tooling (Docker, Git)." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://nancyahmedzzz.github.io/portfolio/" />
-  <meta property="og:image" content="data/profile.jpg" />
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Nancy Ahmed | .NET Backend Developer" />
-  <meta name="twitter:description"
-    content="Clean, scalable APIs with performance-focused SQL and modern tooling (Docker, Git)." />
-  <meta name="twitter:image" content="data/profile.jpg" />
-
-  <!-- JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"Person",
-    "name":"Nancy Ahmed",
-    "jobTitle":".NET Backend Developer",
-    "url":"https://nancyahmedzzz.github.io/portfolio/",
-    "image":"https://nancyahmedzzz.github.io/portfolio/data/profile.jpg",
-    "sameAs":[
-      "https://www.linkedin.com/in/nancy-ahmed-/",
-      "https://github.com/nancyahmedzzz"
-    ]
-  }
-  </script>
-
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap"
     rel="stylesheet">
-
-  <!-- Icons -->
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" as="style">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <link rel="stylesheet" href="./styles.css" />
-  <script src="./data.js"></script>
-  <script src="./app.js" defer></script>
+  <link rel="stylesheet" href="./styles.css?v=5" />
+  <script src="./data.js?v=4"></script>
+  <script src="./app.js?v=4" defer></script>
 </head>
 
-<body>
-  <!-- Background -->
-  <div class="bg" aria-hidden="true">
-    <div class="blob b1"></div>
-    <div class="blob b2"></div>
-    <div class="grid"></div>
+<body data-theme="dark">
+
+  <!-- SVG Chroma-Key Filter: Strips Pure Black Background to 100% Transparent, leaving ONLY Nancy's Cutout -->
+  <svg width="0" height="0" style="position: absolute; pointer-events: none; opacity: 0; width: 0; height: 0;"
+    aria-hidden="true">
+    <defs>
+      <filter id="remove-black-bg" color-interpolation-filters="sRGB">
+        <feColorMatrix in="SourceGraphic" type="matrix" values="
+          1 0 0 0 0
+          0 1 0 0 0
+          0 0 1 0 0
+          0.299 0.587 0.114 0 0" result="lumAlpha" />
+        <feComponentTransfer in="lumAlpha" result="transparentBlack">
+          <feFuncA type="linear" slope="50" intercept="-0.15" />
+        </feComponentTransfer>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- Top Left Spinning Decoration (Doubled Radius, Center at Top Edge, Vivid Cyan & Glow) -->
+  <div
+    style="position: fixed; top: -140px; left: -140px; width: 280px; height: 280px; pointer-events: none; z-index: 90; filter: drop-shadow(0 0 18px rgba(0, 240, 255, 0.65)); opacity: 0.85;">
+    <svg viewBox="0 0 200 200"
+      style="width: 100%; height: 100%; animation: ls-spin 10s linear infinite; transform-origin: center;">
+      <circle cx="100" cy="100" r="95" fill="none" stroke="#00f0ff" stroke-width="2" stroke-dasharray="14 10" />
+      <circle cx="100" cy="100" r="82" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="6 8" />
+      <path d="M 100 0 L 100 200 M 0 100 L 200 100" stroke="#00f0ff" stroke-width="1.8" stroke-dasharray="6 12" />
+      <path d="M 29.3 29.3 L 170.7 170.7 M 29.3 170.7 L 170.7 29.3" stroke="rgba(96, 165, 250, 0.6)" stroke-width="1.2"
+        stroke-dasharray="4 14" />
+      <circle cx="100" cy="100" r="56" fill="none" stroke="#00f0ff" stroke-width="2" stroke-dasharray="8 6" />
+      <circle cx="100" cy="100" r="30" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="4 4" />
+      <circle cx="100" cy="100" r="8" fill="#00f0ff" />
+    </svg>
   </div>
 
-  <header class="nav">
-    <div class="container nav__inner">
-      <a class="brand" href="#home" aria-label="Go to home">
-        <span class="brand__mark" aria-hidden="true">
-          <span class="logo-a">N</span><span class="logo-e">A</span>
-        </span>
-        <span class="brand__text">Nancy <span class="accent">Ahmed</span></span>
-      </a>
-
-      <nav class="nav__links" aria-label="Primary">
-        <a class="nav__link active" href="#home">Home</a>
-        <a class="nav__link" href="#skills">Skills</a>
-        <a class="nav__link" href="#experience">Experience</a>
-        <a class="nav__link" href="#projects">Projects</a>
-        <a class="nav__link" href="#contact">Contact</a>
-      </nav>
-
-      <div class="nav__actions">
-        <a class="btn btn--ghost btn--sm magnetic" data-magnetic href="./data/CV.pdf" target="_blank" rel="noreferrer">
-          <i class="fa-regular fa-file-pdf"></i> CV
-        </a>
-
-        <button class="toggle" id="themeToggle" type="button" aria-label="Toggle theme">
-          <i class="fa-solid fa-moon" id="themeIcon" aria-hidden="true"></i>
-          <span class="toggle__text" id="themeText">Dark</span>
-        </button>
-
-        <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
+  <!-- Space Background -->
+  <div class="space-bg">
+    <div class="space-canvas">
+      <div class="space-nebula"></div>
     </div>
+  </div>
 
-    <!-- Mobile menu -->
-    <div class="mobile" id="mobileMenu" aria-hidden="true">
-      <a href="#home" class="mobile__link">Home</a>
-      <a href="#skills" class="mobile__link">Skills</a>
-      <a href="#experience" class="mobile__link">Experience</a>
-      <a href="#projects" class="mobile__link">Projects</a>
-      <a href="#contact" class="mobile__link">Contact</a>
-
-      <div class="mobile__actions">
-        <a class="btn btn--ghost" href="./data/CV.pdf" target="_blank" rel="noreferrer">
-          <i class="fa-regular fa-file-pdf"></i> Download CV
-        </a>
-
-        <button class="toggle" id="themeToggleMobile" type="button" aria-label="Toggle theme">
-          <i class="fa-solid fa-moon" id="themeIconMobile" aria-hidden="true"></i>
-          <span class="toggle__text" id="themeTextMobile">Dark</span>
-        </button>
-      </div>
+  <!-- Restored Original Floating Centered Pill Navbar -->
+  <nav class="nav" id="mainNav">
+    <div class="nav-links">
+      <a href="#home" class="nav-link active">Home</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#experience" class="nav-link">Experience</a>
+      <a href="#work" class="nav-link">Work</a>
+      <a href="#services" class="nav-link">Services</a>
+      <a href="#contact" class="nav-link">Contact</a>
     </div>
-  </header>
+  </nav>
 
-  <main class="container">
-    <!-- HERO -->
-    <section id="home" class="hero">
-      <div class="hero__copy">
-        <div class="pill reveal">
-          <span class="dot" aria-hidden="true"></span>
-          <span>Available for opportunities</span>
+  <main class="app ready" id="appMain" style="opacity: 1;">
+
+    <!-- ==================== CINEMATIC HERO (FIRST SCREEN) ==================== -->
+    <section class="hero-cinematic" id="home">
+      <div class="hero-ambient-glow"></div>
+
+      <!-- Vertical Social Links (Left Edge) -->
+      <div class="hero-socials-vertical">
+        <a href="https://github.com/nancyahmedzzz" target="_blank" title="GitHub" class="hero-v-social">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/nancy-ahmed-/" target="_blank" title="LinkedIn" class="hero-v-social">
+          <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+        <a href="./data/CV.pdf" target="_blank" title="Resume" class="hero-v-social">
+          <i class="fa-regular fa-file-pdf"></i>
+        </a>
+        <a href="mailto:nancy.ahmed.abdelgawad@gmail.com" title="Email" class="hero-v-social">
+          <i class="fa-regular fa-envelope"></i>
+        </a>
+        <div class="hero-v-line"></div>
+      </div>
+
+      <!-- Center Stage Container -->
+      <div class="hero-stage">
+        <!-- Giant Typography Layer (Behind Photo) -->
+        <div class="hero-name-layer" aria-hidden="true">
+          <div class="hero-name-text hero-name-nancy" id="heroNameNancy">NANCY</div>
+          <div class="hero-name-text hero-name-ahmed" id="heroNameAhmed">AHMED</div>
         </div>
 
-        <h1 class="title reveal"><span class="text-reveal-mask"><span class="text-reveal-inner">Nancy Ahmed</span></span></h1>
-        <p class="role reveal">
-          <span id="typeTarget"></span><span class="caret" aria-hidden="true"></span>
-        </p>
-
-        <p class="lead reveal">
-          I build clean, scalable <strong>.NET</strong> backend APIs with performance-focused <strong>SQL
-            Server</strong>,
-          and modern tooling like <strong>Docker</strong> and <strong>GitHub</strong>.
-        </p>
-
-        <div class="cta reveal">
-          <a class="btn btn--primary magnetic" data-magnetic href="#projects"><i class="fa-solid fa-layer-group"></i> Projects</a>
-          <a class="btn btn--ghost magnetic" data-magnetic href="#contact"><i class="fa-regular fa-paper-plane"></i> Contact</a>
-          <button class="btn btn--ghost magnetic" data-magnetic id="copyEmailBtn" type="button"><i class="fa-regular fa-copy"></i> Copy
-            Email</button>
+        <!-- Nancy's Portrait Photo (Foreground in Front of Name) -->
+        <div class="hero-portrait-wrap" id="heroPortrait">
+          <div class="hero-portrait-aura"></div>
+          <div class="hero-portrait-frame">
+            <img id="heroPortraitImg"
+              src="../../.gemini/antigravity-ide/brain/b3557f50-55c7-46af-aff2-6a88f82aa647/.user_uploaded/media_1792801149237.jpg"
+              onerror="if (this.src.indexOf('profile.jpg') === -1) this.src='./data/profile.jpg';" alt="Nancy Ahmed"
+              class="hero-portrait-img"
+              style="filter: url(#remove-black-bg) drop-shadow(0 0 35px rgba(0, 240, 255, 0.3));" draggable="false" />
+            <div class="hero-portrait-fade"></div>
+          </div>
         </div>
 
-        <div class="links reveal">
-          <a class="link" href="https://www.linkedin.com/in/nancy-ahmed-/" target="_blank" rel="noreferrer">
-            <i class="fa-brands fa-linkedin"></i> LinkedIn
-          </a>
-          <a class="link" href="https://github.com/nancyahmedzzz" target="_blank" rel="noreferrer">
-            <i class="fa-brands fa-github"></i> GitHub
+        <!-- Personal Motto & Scroll Down Cue -->
+        <div class="hero-bottom-info">
+          <div class="hero-motto-card">
+            <span class="hero-motto-deco">✦</span>
+            <span class="hero-motto-text">DREAMS ARE NOT NEGOTIABLE</span>
+            <span class="hero-motto-deco">✦</span>
+          </div>
+          <a href="#about" class="hero-scroll-cue" aria-label="Scroll down to About">
+            <span>EXPLORE</span>
+            <i class="fa-solid fa-chevron-down"></i>
           </a>
         </div>
-
-        <div class="quick reveal" aria-label="Quick highlights">
-          <div class="quick__item">
-            <div class="quick__kpi">fresh</div>
-            <div class="quick__txt">Years Freelancing</div>
-          </div>
-          <div class="quick__item">
-            <div class="quick__kpi">APIs</div>
-            <div class="quick__txt">ASP.NET Core</div>
-          </div>
-          <div class="quick__item">
-            <div class="quick__kpi">SQL</div>
-            <div class="quick__txt">Performance mindset</div>
-          </div>
-        </div>
       </div>
-
-      <aside class="hero__side hero__side--3d">
-        <div class="hero__blob"></div>
-        
-        <!-- Floating Badges -->
-        <div class="hero__badge-pill hero__badge-pill--1 reveal" style="display:flex; flex-direction:column; gap:4px; align-items:flex-start;">
-          <span style="font-size:10px; color:var(--accent); font-family:monospace;">GET /api/skills</span>
-          <span style="font-size:14px;"><i class="fa-solid fa-check-circle" style="color: #4ade80; margin-right:4px;"></i> 200 OK <span style="opacity:0.6; font-size:11px; margin-left:4px;">12ms</span></span>
-        </div>
-        <div class="hero__badge-pill hero__badge-pill--2 reveal">
-          <i class="fa-solid fa-code"></i> .NET Developer
-        </div>
-
-        <!-- Spinning 'HIRE ME' Circle -->
-        <div class="hero__badge-spin reveal">
-          <svg viewBox="0 0 100 100" width="130" height="130" class="spin-svg">
-            <defs>
-              <path id="circlePath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" />
-            </defs>
-            <text fill="var(--text)" font-size="13" font-weight="bold" letter-spacing="2">
-              <textPath href="#circlePath">
-                HIRE ME • NANCY AHMED • 
-              </textPath>
-            </text>
-          </svg>
-          <div class="hero__badge-spin-inner">
-             <i class="fa-solid fa-arrow-down" style="transform: rotate(-45deg);"></i>
-          </div>
-        </div>
-
-        <!-- 3D Photo -->
-        <div class="photoCard reveal" id="profileCard">
-          <div class="photoCard__shine" aria-hidden="true"></div>
-          <img class="photoCard__img" src="./data/profile.jpg" alt="Nancy Ahmed" width="900" height="900" loading="eager" />
-        </div>
-      </aside>
     </section>
 
-    <!-- SKILLS -->
-    <section id="skills" class="section">
-      <header class="section__head reveal">
-        <h2 class="section__title"><span class="text-reveal-mask"><span class="text-reveal-inner">Skills</span></span></h2>
-        <p class="section__sub">Focused, not noisy - the stack I actually use.</p>
-      </header>
-
-      <div class="skills reveal" id="skillsGrid"></div>
-    </section>
-
-    <!-- EXPERIENCE -->
-    <section id="experience" class="section">
-      <header class="section__head reveal">
-        <h2 class="section__title"><span class="text-reveal-mask"><span class="text-reveal-inner">Experience</span></span></h2>
-        <p class="section__sub">Short and recruiter-friendly.</p>
-      </header>
-
-      <div class="xp reveal">
-        <article class="card xp__item">
-          <div class="xp__top">
-            <div>
-              <h3 class="xp__title">DEPI - Digital Egypt Pioneers Initiative</h3>
-              <div class="xp__meta">NXT Training Program</div>
+    <section class="section about-section reveal" id="about" style="padding-top: 80px; padding-bottom: 20px;">
+      <div class="about-grid">
+        <div class="about-left reveal-left">
+          <div
+            style="display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; margin-bottom: 24px; color: var(--fg-muted);">
+            <div
+              style="width: 8px; height: 8px; border-radius: 50%; background: #1cce79; box-shadow: 0 0 10px #1cce79cc;">
             </div>
-            <span class="pill2">Training</span>
+            BASED IN EGYPT • OPEN FOR WORK
           </div>
-          <p class="xp__p">Focused on practical backend projects, team workflows, and production-readiness practices.
+          <h2 class="about-title" style="margin-bottom: 8px;">
+            <span class="about-title-stack">Hi, I'm <span class="about-hello" style="display: inline-block;">Nancy
+                Ahmed</span></span>
+          </h2>
+          <div class="about-quote">
+            <div class="about-quote-mark">"</div>
+            <blockquote>A passionate .NET Backend Developer from Egypt, specializing in building clean, scalable APIs
+              and high-performance database solutions. I thrive on turning complex problems into elegant, maintainable
+              code.</blockquote>
+          </div>
+          <div class="about-body" style="font-size: 1.15rem; max-width: 600px; margin-bottom: 20px; margin-top: 16px;">
+            I build clean, scalable <strong>.NET</strong> backend APIs with performance-focused <strong>SQL
+              Server</strong>, and modern tooling like <strong>Docker</strong> and <strong>GitHub</strong>.
+          </div>
+          <div class="hero-actions" style="margin-bottom: 24px; justify-content: flex-start;">
+            <a href="#work" class="btn primary magnetic">
+              Projects <i class="fa-solid fa-arrow-right btn-arrow"></i>
+            </a>
+            <a href="#contact" class="btn ghost magnetic">
+              Contact <i class="fa-solid fa-paper-plane"></i>
+            </a>
+            <div class="hero-socials" style="margin-top: 0;">
+              <a href="https://github.com/nancyahmedzzz" class="hero-social" target="_blank" title="GitHub"><i
+                  class="fa-brands fa-github"></i></a>
+              <a href="https://www.linkedin.com/in/nancy-ahmed-/" class="hero-social" target="_blank"
+                title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="./data/CV.pdf" class="hero-social" target="_blank" title="Resume"><i
+                  class="fa-regular fa-file-pdf"></i></a>
+            </div>
+          </div>
+          <div class="about-stats" style="margin-top: 0; padding-top: 24px; border-top: 1px solid var(--line);">
+            <div class="about-stat" style="border: none; padding: 0;">
+              <div class="about-stat-num">Fresh<sup>+</sup></div>
+              <div class="about-stat-label">Years Exp</div>
+            </div>
+            <div class="about-stat" style="border: none; padding: 0;">
+              <div class="about-stat-num">11<sup>+</sup></div>
+              <div class="about-stat-label">Projects</div>
+            </div>
+            <div class="about-stat" style="border: none; padding: 0;">
+              <div class="about-stat-num">5<sup>+</sup></div>
+              <div class="about-stat-label">Clients</div>
+            </div>
+          </div>
+        </div>
+        <div class="about-right reveal-right"
+          style="position: relative; display: flex; justify-content: center; align-items: flex-start; height: 100%; min-height: 600px; overflow: visible;">
+          <!-- Ambient glow -->
+          <div
+            style="position: absolute; top: 40%; left: 50%; transform: translate(-50%,-50%); width: 500px; height: 500px; background: radial-gradient(circle, rgba(20,184,166,0.13) 0%, rgba(14,165,233,0.08) 45%, transparent 70%); filter: blur(60px); z-index: 0; pointer-events: none; border-radius: 50%;">
+          </div>
+
+          <!-- Lanyard anchored to header area -->
+          <div
+            style="position: absolute; top: -140px; left: 25%; transform: translateX(-50%); z-index: 10; user-select: none;">
+
+            <!-- Realistic Metallic Pin / Clamp holding the strap at the top -->
+            <div
+              style="position: absolute; top: -8px; left: 50%; transform: translateX(-50%); z-index: 20; display: flex; flex-direction: column; align-items: center; pointer-events: none;">
+              <!-- Metallic Pin Head / Bracket -->
+              <div
+                style="width: 32px; height: 12px; background: linear-gradient(180deg, #f8fafc 0%, #cbd5e1 35%, #64748b 80%, #334155 100%); border-radius: 4px; border: 1px solid #94a3b8; box-shadow: 0 4px 10px rgba(0,0,0,0.65), inset 0 1px 1px rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: center; position: relative;">
+                <!-- Center silver rivet/screw -->
+                <div
+                  style="width: 7px; height: 7px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #ffffff 0%, #94a3b8 60%, #334155 100%); box-shadow: 0 1px 2px rgba(0,0,0,0.6), inset 0 1px 1px #fff;">
+                </div>
+                <!-- Left & right micro rivets -->
+                <div
+                  style="position: absolute; left: 3px; width: 2.5px; height: 2.5px; border-radius: 50%; background: #475569;">
+                </div>
+                <div
+                  style="position: absolute; right: 3px; width: 2.5px; height: 2.5px; border-radius: 50%; background: #475569;">
+                </div>
+              </div>
+              <!-- Metallic clamp crimp slot -->
+              <div
+                style="width: 25px; height: 4px; background: linear-gradient(180deg, #475569 0%, #1e293b 100%); border-radius: 0 0 2px 2px; border: 1px solid #334155; border-top: none; box-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+              </div>
+            </div>
+
+            <!-- ═══ FULL PENDULUM — rotates from very top ═══ -->
+            <div id="idBadge"
+              style="display: flex; flex-direction: column; align-items: center; transform-origin: 50% 0px; will-change: transform; cursor: grab;">
+
+              <!-- Wide flat strap (Clean, no logo) -->
+              <div
+                style="width: 22px; height: 200px; background: linear-gradient(to right, #070707, #1c1c1c, #070707); border-radius: 2px; position: relative; overflow: hidden; box-shadow: 2px 0 5px rgba(0,0,0,0.5), -2px 0 5px rgba(0,0,0,0.5);">
+              </div>
+
+              <!-- Metallic O-ring -->
+              <div
+                style="width: 23px; height: 23px; border-radius: 50%; border: 3.5px solid #777; background: linear-gradient(135deg, #555 0%, #aaa 45%, #666 100%); box-shadow: 0 2px 8px rgba(0,0,0,0.7), inset 0 1px 3px rgba(255,255,255,0.15); margin-top: -3px; position: relative;">
+                <div
+                  style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 12px; height: 12px; border-radius: 50%; background: #0a0a12;">
+                </div>
+              </div>
+
+              <!-- Hook stem (straight part) -->
+              <div
+                style="width: 5px; height: 18px; background: linear-gradient(to right, #444, #999, #666); border-radius: 2px 2px 0 0; margin-top: -2px;">
+              </div>
+              <!-- J-hook curved part -->
+              <div
+                style="width: 20px; height: 26px; border: 4.5px solid; border-color: #777 #bbb #888 #666; border-top: none; border-radius: 0 0 18px 18px; margin-top: -1px; box-shadow: 2px 3px 6px rgba(0,0,0,0.5);">
+              </div>
+
+              <!-- Photo card — no border, just image -->
+              <div
+                style="width: 290px; border-radius: 16px; overflow: hidden; box-shadow: 0 32px 70px rgba(0,0,0,0.7), 0 10px 28px rgba(0,0,0,0.45); margin-top: 3px; cursor: grab;">
+                <img src="./data/profile.jpg" alt="Nancy"
+                  style="width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block;" draggable="false" />
+              </div>
+
+            </div>
+            <!-- ═══ END PENDULUM ═══ -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="marquee">
+      <div class="marquee-track" aria-hidden="true" style="animation-duration: 12s;">
+        <!-- Set 1 -->
+        <span class="marquee-item">ASP.NET CORE</span><span class="marquee-dot"></span>
+        <span class="marquee-item outline">SQL SERVER</span><span class="marquee-dot"></span>
+        <span class="marquee-item">DOCKER</span><span class="marquee-dot"></span>
+        <span class="marquee-item outline">CLEAN ARCHITECTURE</span><span class="marquee-dot"></span>
+        <span class="marquee-item">ENTITY FRAMEWORK</span><span class="marquee-dot"></span>
+        <span class="marquee-item outline">REST APIs</span><span class="marquee-dot"></span>
+        <span class="marquee-item">C#</span><span class="marquee-dot"></span>
+        <span class="marquee-item outline">GITHUB</span><span class="marquee-dot"></span>
+
+        <!-- Set 2 -->
+        <span class="marquee-item">ASP.NET CORE</span><span class="marquee-dot"></span>
+        <span class="marquee-item outline">SQL SERVER</span><span class="marquee-dot"></span>
+        <span class="marquee-item">DOCKER</span><span class="marquee-dot"></span>
+        <span class="marquee-item outline">CLEAN ARCHITECTURE</span><span class="marquee-dot"></span>
+        <span class="marquee-item">ENTITY FRAMEWORK</span><span class="marquee-dot"></span>
+        <span class="marquee-item outline">REST APIs</span><span class="marquee-dot"></span>
+        <span class="marquee-item">C#</span><span class="marquee-dot"></span>
+        <span class="marquee-item outline">GITHUB</span><span class="marquee-dot"></span>
+
+        <!-- Set 3 -->
+        <span class="marquee-item">ASP.NET CORE</span><span class="marquee-dot"></span>
+        <span class="marquee-item outline">SQL SERVER</span><span class="marquee-dot"></span>
+        <span class="marquee-item">DOCKER</span><span class="marquee-dot"></span>
+        <span class="marquee-item outline">CLEAN ARCHITECTURE</span><span class="marquee-dot"></span>
+        <span class="marquee-item">ENTITY FRAMEWORK</span><span class="marquee-dot"></span>
+        <span class="marquee-item outline">REST APIs</span><span class="marquee-dot"></span>
+        <span class="marquee-item">C#</span><span class="marquee-dot"></span>
+        <span class="marquee-item outline">GITHUB</span><span class="marquee-dot"></span>
+      </div>
+    </div>
+
+
+    <section class="section" id="experience">
+      <div class="work-head reveal" style="margin-bottom: 40px;">
+        <div>
+
+          <h2 class="work-title">Professional <span class="italic-accent">experience.</span></h2>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+        <!-- Card 1 -->
+        <div class="service-card reveal-left"
+          style="width: 100%; display: flex; flex-direction: column; align-items: flex-start; text-align: left; padding: 32px; gap: 16px;">
+          <div class="service-card-spot"></div>
+          <div class="service-card-ghost" style="font-size: 80px; top: -10px; right: 20px;">01</div>
+
+          <div
+            style="display: flex; justify-content: space-between; width: 100%; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 16px;">
+            <div>
+              <h3
+                style="font-family: var(--display); font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 4px;">
+                DEPI - Digital Egypt Pioneers Initiative</h3>
+              <div
+                style="color: var(--accent); font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">
+                NXT Training Program</div>
+            </div>
+            <div
+              style="border: 1px solid var(--line); border-radius: 99px; padding: 6px 16px; font-size: 12px; font-weight: 600; color: #a1a1aa; background: rgba(0,0,0,0.3); backdrop-filter: blur(5px);">
+              Training</div>
+          </div>
+
+          <p style="color: #a1a1aa; font-size: 15px; line-height: 1.6; margin: 0; padding-top: 8px;">
+            Focused on practical backend projects, team workflows, and production-readiness practices within a
+            structured professional environment.
           </p>
-
-        </article>
-
-        <article class="card xp__item">
-          <div class="xp__top">
-            <div>
-              <h3 class="xp__title">Freelancer - Backend Developer .NET core , Reverse Engineering</h3>
-            </div>
-            <span class="pill2">2026 - Present</span>
-          </div>
-          <ul class="xp__list">
-            <li>Built and maintained REST APIs with ASP.NET Core for multiple freelance clients.</li>
-            <li>Designed and optimized SQL Server queries and procedures for reliable production use.</li>
-            <li>Delivered modular backend code with clean architecture patterns and versioned releases.</li>
-            <li>Designed and optimized database schemas, tables, relationships, and stored procedures.</li>
-            <li>Implemented business logic, data validation, and error handling in backend services.</li>
-            <li>Integrated backend APIs with front-end interfaces using HTML, CSS, and JavaScript.</li>
-            <li>Used Entity Framework Core for data access and ORM mapping.</li>
-            <li>Applied basic Docker concepts for containerized application environments.</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <!-- PROJECTS -->
-    <section id="projects" class="section">
-      <header class="section__head reveal">
-        <h2 class="section__title"><span class="text-reveal-mask"><span class="text-reveal-inner">Projects</span></span></h2>
-        <p class="section__sub">A couple of selected work items.</p>
-      </header>
-
-      <div class="filters reveal" role="tablist" aria-label="Project filters">
-        <button class="filter active" data-filter="all" type="button">All</button>
-        <button class="filter" data-filter="Site" type="button">Site</button>
-        <button class="filter" data-filter="Dashboard" type="button">Dashboard</button>
-        <button class="filter" data-filter="chat system" type="button">C++</button>
-        <button class="filter" data-filter="Maze Solver" type="button">Python</button>
-
-      </div>
-
-      <div class="projects reveal" id="projectsGrid" aria-live="polite"></div>
-      <div id="projectsPagination" class="pagination reveal" aria-hidden="true"></div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="section">
-      <header class="section__head reveal">
-        <h2 class="section__title"><span class="text-reveal-mask"><span class="text-reveal-inner">Contact</span></span></h2>
-        <p class="section__sub">Fastest way: email.</p>
-      </header>
-
-      <div class="contact reveal">
-        <div class="card contact__left">
-          <a class="contactRow" href="mailto:nancy.ahmed.abdelgawad@gmail.com">
-            <span class="contactRow__icon"><i class="fa-regular fa-envelope"></i></span>
-            <span>
-              <span class="contactRow__title">Email</span>
-              <span class="contactRow__value">nancy.ahmed.abdelgawad@gmail.com</span>
-            </span>
-          </a>
-
-          <a class="contactRow" href="https://www.linkedin.com/in/nancy-ahmed-/" target="_blank" rel="noreferrer">
-            <span class="contactRow__icon"><i class="fa-brands fa-linkedin"></i></span>
-            <span>
-              <span class="contactRow__title">LinkedIn</span>
-              <span class="contactRow__value">Connect with me</span>
-            </span>
-          </a>
-
-          <a class="contactRow" href="https://github.com/nancyahmedzzz" target="_blank" rel="noreferrer">
-            <span class="contactRow__icon"><i class="fa-brands fa-github"></i></span>
-            <span>
-              <span class="contactRow__title">GitHub</span>
-              <span class="contactRow__value">View my code</span>
-            </span>
-          </a>
-
-          <div class="contact__btns">
-            <a class="btn btn--primary magnetic" data-magnetic href="mailto:nancy.ahmed.abdelgawad@gmail.com"><i
-                class="fa-regular fa-paper-plane"></i> Send Email</a>
-            <a class="btn btn--ghost magnetic" data-magnetic href="./data/CV.pdf" target="_blank" rel="noreferrer"><i
-                class="fa-regular fa-file-pdf"></i> Download CV</a>
-          </div>
         </div>
 
-        <form class="card contact__right" id="contactForm">
-          <h3 class="formTitle">Quick message</h3>
+        <!-- Card 2 -->
+        <div class="service-card reveal-right"
+          style="width: 100%; display: flex; flex-direction: column; align-items: flex-start; text-align: left; padding: 32px; gap: 16px;">
+          <div class="service-card-spot" style="--spot-c: var(--accent-2)"></div>
+          <div class="service-card-ghost" style="font-size: 80px; top: -10px; right: 20px;">02</div>
 
-          <label class="field">
-            <span>Name</span>
-            <input id="name" name="name" type="text" autocomplete="name" placeholder="Your name" required />
-          </label>
+          <div
+            style="display: flex; justify-content: space-between; width: 100%; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 16px; flex-wrap: wrap; gap: 16px;">
+            <div>
+              <h3
+                style="font-family: var(--display); font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 4px;">
+                Freelancer Backend Developer</h3>
+              <div
+                style="color: var(--accent); font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">
+                .NET Core & Reverse Engineering</div>
+            </div>
+            <div
+              style="border: 1px solid var(--line); border-radius: 99px; padding: 6px 16px; font-size: 12px; font-weight: 600; color: #a1a1aa; background: rgba(0,0,0,0.3); backdrop-filter: blur(5px);">
+              2026 - Present</div>
+          </div>
 
-          <label class="field">
-            <span>Email</span>
-            <input id="email" name="email" type="email" autocomplete="email" placeholder="your@email.com" required />
-          </label>
+          <ul
+            style="color: #a1a1aa; font-size: 15px; line-height: 1.8; margin: 0; padding-left: 20px; list-style-type: disc; padding-top: 8px; display: grid; gap: 8px;">
+            <li>Built and maintained robust REST APIs with ASP.NET Core for multiple freelance clients.</li>
+            <li>Designed and optimized SQL Server queries, schemas, and procedures for reliable production use.</li>
+            <li>Delivered modular backend code with clean architecture patterns and versioned releases.</li>
+            <li>Implemented complex business logic, strict data validation, and unified error handling.</li>
+            <li>Integrated backend APIs with dynamic front-end interfaces using HTML, CSS, and JavaScript.</li>
+            <li>Applied Docker concepts for containerized application environments and reliable deployment.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-          <label class="field">
-            <span>Message</span>
-            <textarea id="message" name="message" rows="5" placeholder="Write your message..." required></textarea>
-          </label>
+    <section class="section work-section" id="work">
+      <div class="work-head-row reveal-left">
+        <div>
+          <h2 class="work-title">Selected <span class="italic-accent">projects</span></h2>
+        </div>
+        <div class="carousel-counter-controls">
+          <button class="carousel-top-btn" id="projTopPrev" aria-label="Previous project"><i
+              class="fa-solid fa-chevron-left"></i></button>
+          <div class="carousel-counter-display">
+            <span id="projCounterCurrent">01</span> <span class="carousel-counter-sep">/</span> <span
+              id="projCounterTotal">11</span>
+          </div>
+          <button class="carousel-top-btn" id="projTopNext" aria-label="Next project"><i
+              class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </div>
 
-          <button class="btn btn--primary magnetic" data-magnetic type="submit">
-            <i class="fa-regular fa-paper-plane"></i> Send Message
-          </button>
+      <!-- 3D Carousel Showcase -->
+      <div class="projects-showcase" id="projectsShowcase">
+        <button class="proj-nav-arrow proj-nav-prev" id="projSidePrev" aria-label="Previous project">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
 
-          <p class="note">Static hosting friendly (mailto).</p>
-        </form>
+        <div class="proj-stage" id="projStage">
+          <!-- Rendered by JS -->
+        </div>
+
+        <button class="proj-nav-arrow proj-nav-next" id="projSideNext" aria-label="Next project">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <!-- Pagination Dots -->
+      <div class="proj-dots" id="projDots">
+        <!-- Rendered by JS -->
+      </div>
+
+      <a href="https://github.com/nancyahmedzzz" target="_blank" class="work-banner reveal" style="margin-top: 48px;">
+        <div class="work-banner-text">
+          <div class="work-banner-label">GITHUB</div>
+          <div class="work-banner-big">Explore more builds on <strong>GitHub</strong></div>
+        </div>
+        <div class="work-banner-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+      </a>
+    </section>
+
+    <section class="section services-section" id="services">
+      <div class="services-head reveal-right">
+
+        <h2 class="services-title">Services & <span class="italic-accent">capabilities.</span></h2>
+      </div>
+      <div class="services-grid reveal-left">
+        <div class="service-card">
+          <div class="service-card-spot"></div>
+          <div class="service-card-ghost">01</div>
+          <div class="service-card-num">01</div>
+          <div class="service-card-icon"><i class="fa-solid fa-server service-icon-emoji"></i>
+            <div class="service-icon-ring"></div>
+          </div>
+          <div class="service-card-name">Backend Dev</div>
+          <div class="service-card-desc">Building robust, scalable REST APIs using ASP.NET Core with clean architecture.
+          </div>
+          <div class="service-card-tags">
+            <div class="service-tag">.NET</div>
+            <div class="service-tag">C#</div>
+          </div>
+        </div>
+        <div class="service-card">
+          <div class="service-card-spot" style="--spot-c: var(--accent-2)"></div>
+          <div class="service-card-ghost">02</div>
+          <div class="service-card-num">02</div>
+          <div class="service-card-icon"><i class="fa-solid fa-database service-icon-emoji"></i>
+            <div class="service-icon-ring"></div>
+          </div>
+          <div class="service-card-name">Database</div>
+          <div class="service-card-desc">Designing optimized SQL Server schemas, stored procedures for high-performance.
+          </div>
+          <div class="service-card-tags">
+            <div class="service-tag">SQL Server</div>
+            <div class="service-tag">T-SQL</div>
+          </div>
+        </div>
+        <div class="service-card">
+          <div class="service-card-spot"></div>
+          <div class="service-card-ghost">03</div>
+          <div class="service-card-num">03</div>
+          <div class="service-card-icon"><i class="fa-brands fa-docker service-icon-emoji"></i>
+            <div class="service-icon-ring"></div>
+          </div>
+          <div class="service-card-name">DevOps</div>
+          <div class="service-card-desc">Containerizing applications with Docker and managing releases via GitHub
+            workflows.</div>
+          <div class="service-card-tags">
+            <div class="service-tag">Docker</div>
+            <div class="service-tag">Git</div>
+          </div>
+        </div>
+        <div class="service-card">
+          <div class="service-card-spot" style="--spot-c: var(--accent-2)"></div>
+          <div class="service-card-ghost">04</div>
+          <div class="service-card-num">04</div>
+          <div class="service-card-icon"><i class="fa-solid fa-puzzle-piece service-icon-emoji"></i>
+            <div class="service-icon-ring"></div>
+          </div>
+          <div class="service-card-name">Integration</div>
+          <div class="service-card-desc">Integrating backend APIs with front-end interfaces using EF Core and modern
+            patterns.</div>
+          <div class="service-card-tags">
+            <div class="service-tag">EF Core</div>
+            <div class="service-tag">REST</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact reveal-left" id="contact">
+      <div class="contact-grid">
+        <div class="contact-left">
+
+          <h2 class="contact-title">Have a project? <br /><span class="italic-accent">Let's talk.</span></h2>
+          <div class="contact-socials">
+            <a href="https://www.linkedin.com/in/nancy-ahmed-/" class="contact-social" target="_blank">
+              <div class="contact-social-icon"><i class="fa-brands fa-linkedin-in"></i></div>
+              <div class="contact-social-text">
+                <div class="contact-social-label">Professional Network</div>
+                <div class="contact-social-val">LinkedIn</div>
+              </div>
+              <div class="contact-social-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+            <a href="https://github.com/nancyahmedzzz" class="contact-social" target="_blank">
+              <div class="contact-social-icon"><i class="fa-brands fa-github"></i></div>
+              <div class="contact-social-text">
+                <div class="contact-social-label">Code Repository</div>
+                <div class="contact-social-val">GitHub</div>
+              </div>
+              <div class="contact-social-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+            </a>
+          </div>
+        </div>
+        <div class="connect-card">
+          <div class="connect-card-title">
+            <div class="connect-card-bar" style="width: 24px; background:#3b82f6;"></div> Connect With Me
+          </div>
+
+          <a href="https://www.linkedin.com/in/nancy-ahmed-/" target="_blank" class="connect-row connect-row-wide"
+            style="margin-bottom: 12px;">
+            <div class="connect-row-glow"></div>
+            <div class="connect-row-sweep"></div>
+            <div class="connect-row-main">
+              <div class="connect-row-icon-wrap" style="--brand: #0a66c2;"><i
+                  class="fa-brands fa-linkedin-in connect-row-icon"></i></div>
+              <div class="connect-row-text">
+                <div class="connect-row-label">Let's Connect</div>
+                <div class="connect-row-val">on LinkedIn</div>
+              </div>
+            </div>
+          </a>
+
+          <div class="connect-grid">
+            <a href="mailto:nancy.ahmed.abdelgawad@gmail.com" class="connect-row connect-row-small">
+              <div class="connect-row-glow"></div>
+              <div class="connect-row-sweep"></div>
+              <div class="connect-row-main">
+                <div class="connect-row-icon-wrap connect-row-icon-wrap-sm" style="--brand: #ea4335;"><i
+                    class="fa-regular fa-envelope connect-row-icon connect-row-icon-sm"></i></div>
+                <div class="connect-row-text">
+                  <div class="connect-row-label connect-row-label-sm">Email</div>
+                  <div class="connect-row-val connect-row-val-sm">nancy.ahmed...</div>
+                </div>
+              </div>
+            </a>
+
+            <a href="./data/CV.pdf" target="_blank" class="connect-row connect-row-small">
+              <div class="connect-row-glow"></div>
+              <div class="connect-row-sweep"></div>
+              <div class="connect-row-main">
+                <div class="connect-row-icon-wrap connect-row-icon-wrap-sm" style="--brand: #25d366;"><i
+                    class="fa-regular fa-file-pdf connect-row-icon connect-row-icon-sm"></i></div>
+                <div class="connect-row-text">
+                  <div class="connect-row-label connect-row-label-sm">Resume</div>
+                  <div class="connect-row-val connect-row-val-sm">Download CV</div>
+                </div>
+              </div>
+            </a>
+
+            <div class="connect-row connect-row-small" id="copyBtn" style="cursor:pointer;">
+              <div class="connect-row-glow"></div>
+              <div class="connect-row-sweep"></div>
+              <div class="connect-row-main">
+                <div class="connect-row-icon-wrap connect-row-icon-wrap-sm" style="--brand: #14b8a6;"><i
+                    class="fa-solid fa-copy connect-row-icon connect-row-icon-sm"></i></div>
+                <div class="connect-row-text">
+                  <div class="connect-row-label connect-row-label-sm">Copy Email</div>
+                  <div class="connect-row-val connect-row-val-sm">Click to copy</div>
+                </div>
+              </div>
+            </div>
+
+            <a href="https://github.com/nancyahmedzzz" target="_blank" class="connect-row connect-row-small">
+              <div class="connect-row-glow"></div>
+              <div class="connect-row-sweep"></div>
+              <div class="connect-row-main">
+                <div class="connect-row-icon-wrap connect-row-icon-wrap-sm" style="--brand: #ffffff;"><i
+                    class="fa-brands fa-github connect-row-icon connect-row-icon-sm"></i></div>
+                <div class="connect-row-text">
+                  <div class="connect-row-label connect-row-label-sm">GitHub</div>
+                  <div class="connect-row-val connect-row-val-sm">@nancyahmedzzz</div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
       </div>
     </section>
 
     <footer class="footer">
-      <div class="footer__inner">
-        <div>&copy; <span id="year"></span> Nancy Ahmed</div>
-        <div class="footer__links">
-          <a href="#home">Top</a>
-          <a href="./data/CV.pdf" target="_blank" rel="noreferrer">CV</a>
-          <a href="https://www.linkedin.com/in/nancy-ahmed-/" target="_blank" rel="noreferrer">LinkedIn</a>
-          <a href="https://github.com/nancyahmedzzz" target="_blank" rel="noreferrer">GitHub</a>
-        </div>
+      <div class="footer-kicker">HAVE AN IDEA FOR A PROJECT?</div>
+      <a href="mailto:nancy.ahmed.abdelgawad@gmail.com" class="footer-big">
+        Let's <span class="italic-accent">build.</span>
+        <div class="footer-big-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+      </a>
+      <div class="hero-socials" style="justify-content: center; margin: 40px 0 20px;">
+        <a href="https://github.com/nancyahmedzzz" class="hero-social" target="_blank" title="GitHub"><i
+            class="fa-brands fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/nancy-ahmed-/" class="hero-social" target="_blank" title="LinkedIn"><i
+            class="fa-brands fa-linkedin-in"></i></a>
+        <a href="./data/CV.pdf" class="hero-social" target="_blank" title="Resume"><i
+            class="fa-regular fa-file-pdf"></i></a>
+      </div>
+      <div class="footer-row" style="grid-template-columns: 1fr 1fr;">
+        <div>© 2026 NANCY AHMED. ALL RIGHTS RESERVED.</div>
+        <div style="justify-self: end;">EGYPT, CAIRO · V1</div>
       </div>
     </footer>
   </main>
 
-  <div class="cursor cursor--dot" id="cursorDot" aria-hidden="true"></div>
-  <div class="cursor cursor--ring" id="cursorRing" aria-hidden="true"></div>
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-  <!-- Project Modal -->
-  <div id="projectModal" class="modal-overlay">
-    <div class="modal-content">
-      <button class="modal-close" onclick="window.closeProjectModal()" aria-label="Close modal">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-      
-      <div class="modal-body">
-        <div class="modal-info">
-          <div id="modalTags" class="modal-tags"></div>
-          <h2 id="modalTitle" class="modal-title"></h2>
-          <p id="modalDesc" class="modal-desc"></p>
-        </div>
-        <div class="modal-visual">
-          <img id="modalImage" src="" alt="" class="modal-img">
-        </div>
+  <div class="modal-backdrop" id="modalBg">
+    <div class="modal" id="modalWindow">
+      <div class="modal-art">
+        <img src="" class="modal-art-cover-bg" id="modalImgBg">
+        <img src="" class="modal-art-cover" id="modalImg">
+        <button class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      
-      <div class="modal-footer">
-        <a id="modalBtnGithub" href="#" target="_blank" rel="noreferrer" class="btn btn--ghost"><i class="fa-brands fa-github"></i> Source Code</a>
-        <a id="modalBtnLive" href="#" target="_blank" rel="noreferrer" class="btn btn--primary"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo</a>
+      <div class="modal-body">
+        <div>
+          <div class="modal-cat" id="modalCat">CATEGORY</div>
+          <h3 class="modal-title" id="modalTitle">Project Name</h3>
+        </div>
+        <p class="modal-desc" id="modalDesc">Project Description</p>
+        <div class="modal-features-wrap" id="modalFeaturesWrap" style="display: none;">
+          <div class="modal-features-title">
+            <i class="fa-solid fa-circle-check"></i> Key Highlights & Features
+          </div>
+          <ul class="modal-features-list" id="modalFeaturesList"></ul>
+        </div>
+        <div class="modal-tags" id="modalTags"></div>
+        <div class="modal-actions">
+          <a href="#" target="_blank" class="btn primary magnetic" id="modalLive">Live Demo <span
+              class="btn-arrow">→</span></a>
+          <a href="#" target="_blank" class="btn ghost magnetic" id="modalGit">Source Code</a>
+        </div>
       </div>
     </div>
   </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
 </body>
 
 </html>

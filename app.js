@@ -1,704 +1,590 @@
 (() => {
   const PROFILE = window.PROFILE;
-
   const $ = (s, root = document) => root.querySelector(s);
   const $$ = (s, root = document) => Array.from(root.querySelectorAll(s));
-
-  // Projects pagination state
-  const PAGE_SIZE = 3;
-  const projectState = { page: 1, filter: "all" };
 
   // Toast
   function toast(msg) {
     const t = $("#toast");
     if (!t) return;
     t.textContent = msg;
-    t.style.display = "block";
+    t.classList.add("show");
     clearTimeout(window.__toastTimer);
-    window.__toastTimer = setTimeout(() => (t.style.display = "none"), 2100);
+    window.__toastTimer = setTimeout(() => t.classList.remove("show"), 2500);
   }
 
-  // Theme
-  const THEME_KEY = "ae_theme";
-  function getPreferredTheme() {
-    const saved = localStorage.getItem(THEME_KEY);
-    if (saved === "dark" || saved === "light") return saved;
-    return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
-  }
-  function setTheme(theme) {
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem(THEME_KEY, theme);
-
-    const isLight = theme === "light";
-    const iconClass = isLight ? "fa-sun" : "fa-moon";
-    const label = isLight ? "Light" : "Dark";
-
-    const icon = $("#themeIcon");
-    const text = $("#themeText");
-    const iconM = $("#themeIconMobile");
-    const textM = $("#themeTextMobile");
-
-    if (icon) icon.className = `fa-solid ${iconClass}`;
-    if (text) text.textContent = label;
-    if (iconM) iconM.className = `fa-solid ${iconClass}`;
-    if (textM) textM.textContent = label;
-
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", isLight ? "#f7f8fb" : "#0b1220");
-  }
-  function initTheme() {
-    setTheme(getPreferredTheme());
-    $("#themeToggle")?.addEventListener("click", () => {
-      const curr = document.documentElement.getAttribute("data-theme") || "dark";
-      setTheme(curr === "dark" ? "light" : "dark");
-    });
-    $("#themeToggleMobile")?.addEventListener("click", () => {
-      const curr = document.documentElement.getAttribute("data-theme") || "dark";
-      setTheme(curr === "dark" ? "light" : "dark");
-    });
-  }
-
-  // Mobile menu
-  function initMobileMenu() {
-    const burger = $("#burger");
-    const menu = $("#mobileMenu");
-    if (!burger || !menu) return;
-
-    const close = () => {
-      menu.classList.remove("open");
-      burger.setAttribute("aria-expanded", "false");
-      menu.setAttribute("aria-hidden", "true");
-    };
-
-    burger.addEventListener("click", () => {
-      const open = menu.classList.toggle("open");
-      burger.setAttribute("aria-expanded", String(open));
-      menu.setAttribute("aria-hidden", String(!open));
-    });
-
-    $$(".mobile__link").forEach((a) => a.addEventListener("click", close));
-    window.addEventListener("keydown", (e) => e.key === "Escape" && close());
-  }
-
-  // Active nav
-  function initActiveNav() {
-    const links = $$(".nav__link");
-    const ids = ["home", "skills", "experience", "projects", "contact"];
-    const sections = ids.map((id) => document.getElementById(id)).filter(Boolean);
-
-    const byHash = (hash) => links.find((a) => a.getAttribute("href") === hash);
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((x) => x.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (!visible) return;
-
-        links.forEach((a) => a.classList.remove("active"));
-        const l = byHash("#" + visible.target.id);
-        if (l) l.classList.add("active");
-      },
-      { rootMargin: "-45% 0px -50% 0px", threshold: [0.08, 0.2, 0.45] }
-    );
-
-    sections.forEach((s) => io.observe(s));
-  }
-
-  // Reveal
-  function initReveal() {
-    const els = $$(".reveal");
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
-      els.forEach((el) => el.classList.add("show"));
-      return;
-    }
-    els.forEach((el, idx) => {
-      if (!el.style.getPropertyValue("--reveal-delay")) {
-        el.style.setProperty("--reveal-delay", `${Math.min(idx * 28, 220)}ms`);
-      }
-    });
-    const io = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add("show")),
-      { threshold: 0.12 }
-    );
-    els.forEach((el) => io.observe(el));
-  }
-
-  // Desktop custom cursor
-  function initCursor() {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    if (reduce || !finePointer) return;
-
-    const dot = $("#cursorDot");
-    const ring = $("#cursorRing");
-    if (!dot || !ring) return;
-
-    document.body.classList.add("cursor-enhanced");
-
-    const state = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    const ringPos = { x: state.x, y: state.y };
-    let raf = 0;
-
-    const show = () => {
-      dot.style.opacity = "1";
-      ring.style.opacity = "1";
-    };
-    const hide = () => {
-      dot.style.opacity = "0";
-      ring.style.opacity = "0";
-      ring.classList.remove("is-hover", "is-press");
-    };
-
-    const animate = () => {
-      ringPos.x += (state.x - ringPos.x) * 0.2;
-      ringPos.y += (state.y - ringPos.y) * 0.2;
-      dot.style.left = `${state.x}px`;
-      dot.style.top = `${state.y}px`;
-      ring.style.left = `${ringPos.x}px`;
-      ring.style.top = `${ringPos.y}px`;
-      raf = requestAnimationFrame(animate);
-    };
-    raf = requestAnimationFrame(animate);
-
-    window.addEventListener("mousemove", (e) => {
-      state.x = e.clientX;
-      state.y = e.clientY;
-      show();
-    }, { passive: true });
-    window.addEventListener("mouseout", (e) => {
-      if (!e.relatedTarget) hide();
-    });
-    window.addEventListener("blur", hide);
-
-    const hoverSelector = "a, button, input, textarea, .btn, .filter, .nav__link, .contactRow, .skill";
-    document.addEventListener("mouseover", (e) => {
-      if (e.target.closest(hoverSelector)) ring.classList.add("is-hover");
-    });
-    document.addEventListener("mouseout", (e) => {
-      if (e.target.closest(hoverSelector)) ring.classList.remove("is-hover");
-    });
-    document.addEventListener("mousedown", () => ring.classList.add("is-press"));
-    document.addEventListener("mouseup", () => ring.classList.remove("is-press"));
-
-    window.addEventListener("beforeunload", () => cancelAnimationFrame(raf));
-  }
-
-  // Typing
-  function typeLoop(targetEl, words, speed = 44, pause = 900) {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) { targetEl.textContent = words[0]; return; }
-
-    let w = 0, i = 0, del = false;
-    const tick = () => {
-      const word = words[w % words.length];
-      if (!del) {
-        i++;
-        targetEl.textContent = word.slice(0, i);
-        if (i >= word.length) { del = true; setTimeout(tick, pause); return; }
-      } else {
-        i--;
-        targetEl.textContent = word.slice(0, i);
-        if (i <= 0) { del = false; w++; }
-      }
-      setTimeout(tick, del ? speed * 0.65 : speed);
-    };
-    tick();
-  }
-
-  // Copy email + mailto form
-  function initContact() {
-    const yearEl = $("#year");
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-    const EMAILJS_KEY = "q-8nRXtqcr5NmmViF";
-    const EMAILJS_SERVICE_ID = "service_m1ez5zm";
-    const EMAILJS_TEMPLATE_ID = "template_4ml6ubo";
-
-    const isConfigured = EMAILJS_KEY && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID;
-
-    if (isConfigured) {
-      const script = document.createElement("script");
-      script.src = "https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js";
-      script.onload = () => {
-        window.emailjs.init(EMAILJS_KEY);
-        console.log("EmailJS ready.");
-      };
-      document.head.appendChild(script);
-    }
-
-    const copyBtn = $("#copyEmailBtn");
-    if (copyBtn) {
-      copyBtn.addEventListener("click", async () => {
-        try {
-          await navigator.clipboard.writeText(PROFILE.email);
-          toast("Email copied.");
-        } catch {
-          toast("Copy failed.");
+  // App Init & Immediate Reveal
+  function initAppVisibility() {
+    const appMain = $("#appMain");
+    if (appMain) appMain.classList.add("ready");
+    
+    // Reveal visible elements immediately
+    setTimeout(() => {
+      document.querySelectorAll('.reveal, .reveal-stagger, .reveal-left, .reveal-right, .reveal-anim').forEach(el => {
+        if (el.getBoundingClientRect().top < window.innerHeight + 100) {
+          el.classList.add('in');
         }
       });
-    }
-
-    const form = $("#contactForm");
-    if (form) {
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const name = $("#name")?.value.trim() || "";
-        const email = $("#email")?.value.trim() || "";
-        const message = $("#message")?.value.trim() || "";
-
-        if (!name || !email || !message) {
-          toast("Please fill all fields.");
-          return;
-        }
-
-        if (!isConfigured) {
-          const subject = encodeURIComponent(`Portfolio Contact - ${name}`);
-          const body = encodeURIComponent(
-            `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-          );
-          window.location.href = `mailto:${PROFILE.email}?subject=${subject}&body=${body}`;
-          return;
-        }
-
-        const btn = form.querySelector("button[type='submit']");
-        const originalText = btn.innerHTML;
-
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-spinner" style="animation: spin 1s linear infinite;"></i> Sending...';
-
-        try {
-          const result = await window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-            from_name: name,
-            from_email: email,
-            message,
-            to_email: PROFILE.email
-          });
-
-          toast("Message sent successfully.");
-          form.reset();
-        } catch (err) {
-          console.error("EmailJS error:", err);
-          toast("Failed, opening mail app...");
-          const subject = encodeURIComponent(`Portfolio Contact - ${name}`);
-          const body = encodeURIComponent(
-            `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-          );
-          window.location.href = `mailto:${PROFILE.email}?subject=${subject}&body=${body}`;
-        } finally {
-          btn.disabled = false;
-          btn.innerHTML = originalText;
-        }
-      });
-    }
+    }, 50);
   }
 
-  // Render skills
-  function renderSkills() {
-    const grid = $("#skillsGrid");
-    if (!grid) return;
+  // 3D Coverflow Projects Carousel
+  function initProjectsCarousel() {
+    const stage = $("#projStage");
+    const dotsContainer = $("#projDots");
+    const counterCurrent = $("#projCounterCurrent");
+    const counterTotal = $("#projCounterTotal");
+    const showcase = $("#projectsShowcase");
+    if (!stage || !PROFILE.projects || PROFILE.projects.length === 0) return;
 
-    grid.innerHTML = PROFILE.skills.map((s) => `
-      <article class="card skill">
-        <div class="skill__icon"><i class="${s.icon}"></i></div>
-        <div class="skill__name">${s.name}</div>
-        <div class="skill__hint">${s.hint}</div>
-      </article>
-    `).join("");
-  }
+    const projects = PROFILE.projects;
+    const total = projects.length;
+    let currentIndex = 0;
 
-  // Render projects
-  function renderProjects(page = projectState.page, size = PAGE_SIZE, filter = projectState.filter) {
-    const grid = $("#projectsGrid");
-    const pager = $("#projectsPagination");
-    if (!grid) return;
+    // Set total counter
+    if (counterTotal) {
+      counterTotal.textContent = String(total).padStart(2, "0");
+    }
 
-    // Filter projects
-    const filtered = PROFILE.projects.filter((p) => filter === "all" || p.category === filter);
-    const total = filtered.length;
-    const totalPages = Math.max(1, Math.ceil(total / size));
-    if (page > totalPages) page = totalPages;
-    projectState.page = page;
+    // Render Cards in Stage
+    stage.innerHTML = projects.map((p, i) => {
+      const safeTitle = p.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+      const tags = (p.tags || []).slice(0, 4);
+      const tagsHtml = tags.map(t => `<span class="proj-tag">${t}</span>`).join("");
 
-    const start = (page - 1) * size;
-    const slice = filtered.slice(start, start + size);
-
-    grid.innerHTML = slice.map((p, idx) => {
-      // Support staggered reveal: set --delay based on index
-      const delay = idx * 60;
-
-      // Escape quotes for HTML attribute
-      const safeTitle = p.title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-      const tagsString = (p.tags || []).join(" &bull; ");
+      // Action buttons
+      let liveBtnHtml = "";
+      if (p.live) {
+        liveBtnHtml = `<a href="${p.live}" target="_blank" class="proj-btn-ghost" onclick="event.stopPropagation()">
+          <span>LIVE DEMO</span>
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>`;
+      } else if (p.github) {
+        liveBtnHtml = `<a href="${p.github}" target="_blank" class="proj-btn-ghost" onclick="event.stopPropagation()">
+          <span><i class="fa-brands fa-github"></i> CODE</span>
+        </a>`;
+      }
 
       return `
-        <article class="project" data-category="${p.category}" data-delay="${delay}" style="--delay:${delay}ms">
-          <div class="project__visual" onclick="window.openProjectModal('${safeTitle}')">
-            <img src="${p.image}" alt="${p.title}" class="project__img" loading="lazy" />
-            <div class="project__overlay">
-              <div class="project__links">
-                ${p.live ? `<a href="${p.live}" target="_blank" class="project__circle-btn" onclick="event.stopPropagation()" title="Live Demo"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>` : ''}
-                ${p.github ? `<a href="${p.github}" target="_blank" class="project__circle-btn" onclick="event.stopPropagation()" title="GitHub"><i class="fa-brands fa-github"></i></a>` : ''}
-                <button class="project__circle-btn" title="View Details" onclick="event.stopPropagation(); window.openProjectModal('${safeTitle}')"><i class="fa-solid fa-info"></i></button>
+        <article class="proj-card" data-index="${i}">
+          <div class="proj-card-inner">
+            <div class="proj-card-info">
+              <div class="proj-badge-top">
+                <span class="proj-badge-dot"></span>
+                <span>SELECTED PROJECT</span>
+              </div>
+              <h3 class="proj-card-title">${p.title}</h3>
+              <p class="proj-card-desc">${p.desc}</p>
+              <div class="proj-card-tags">
+                ${tagsHtml}
+              </div>
+              <div class="proj-card-actions">
+                <button type="button" class="proj-btn-primary" onclick="window.openProjectModal('${safeTitle}')">
+                  <span>VIEW FULL DETAILS</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </button>
+                ${liveBtnHtml}
               </div>
             </div>
-          </div>
-          <div class="project__info">
-            <h3 class="project__title" onclick="window.openProjectModal('${safeTitle}')">${p.title}</h3>
-            <div class="project__tags">${tagsString}</div>
+            <div class="proj-card-media" onclick="window.openProjectModal('${safeTitle}')">
+              <div class="proj-media-glow"></div>
+              <img src="${p.image}" alt="${p.title}" class="proj-media-img" loading="lazy" />
+              <div class="proj-media-overlay">
+                <span class="proj-media-zoom-hint"><i class="fa-solid fa-expand"></i> View Details</span>
+              </div>
+            </div>
           </div>
         </article>
       `;
     }).join("");
 
-    // Update pagination controls
-    if (pager) {
-      pager.setAttribute("aria-hidden", totalPages <= 1 ? "true" : "false");
-      pager.innerHTML = renderPaginationHtml(totalPages, page);
-      bindPaginationEvents(pager, totalPages);
+    // Render Pagination Dots
+    if (dotsContainer) {
+      dotsContainer.innerHTML = projects.map((_, i) => `
+        <button type="button" class="proj-dot ${i === 0 ? 'is-active' : ''}" data-dot-index="${i}" aria-label="Go to project ${i + 1}"></button>
+      `).join("");
+
+      // Dot click handlers
+      dotsContainer.querySelectorAll(".proj-dot").forEach(dot => {
+        dot.addEventListener("click", () => {
+          const idx = parseInt(dot.getAttribute("data-dot-index"), 10);
+          goTo(idx);
+        });
+      });
     }
 
-    // Apply staggered reveal for newly inserted items
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    Array.from(grid.querySelectorAll('.project')).forEach((el) => {
-      const d = parseInt(el.getAttribute('data-delay')) || 0;
-      el.style.setProperty('--delay', `${d}ms`);
-      if (reduce) {
-        el.classList.add('show');
-      } else {
-        el.classList.add('reveal');
-        setTimeout(() => el.classList.add('show'), d + 150);
-      }
-    });
-  }
+    const cards = Array.from(stage.querySelectorAll(".proj-card"));
 
-  function renderPaginationHtml(totalPages, current) {
-    if (totalPages <= 1) return "";
-    let html = `<button class=\"pagination__nav\" data-action=\"prev\" aria-label=\"Previous page\">Prev</button>`;
-    for (let i = 1; i <= totalPages; i++) {
-      html += ` <button class=\"pagination__dot ${i === current ? 'active' : ''}\" data-page=\"${i}\" aria-label=\"Page ${i}\"></button>`;
-    }
-    html += ` <button class=\"pagination__nav\" data-action=\"next\" aria-label=\"Next page\">Next</button>`;
-    return html;
-  }
-
-  function scrollToProjects() {
-    const section = document.getElementById('projects');
-    if (section) {
-      const navHeight = document.querySelector('.nav')?.offsetHeight || 70;
-      const top = section.getBoundingClientRect().top + window.scrollY - navHeight - 20;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
-  }
-
-  function bindPaginationEvents(container, totalPages) {
-    container.querySelectorAll('[data-page]').forEach((b) => {
-      b.addEventListener('click', () => {
-        const p = Number(b.dataset.page);
-        if (projectState.page === p) return;
-        projectState.page = p;
-        renderProjects(p, PAGE_SIZE, projectState.filter);
-      });
-    });
-    container.querySelectorAll('[data-action]').forEach((b) => {
-      b.addEventListener('click', () => {
-        const action = b.dataset.action;
-        let p = projectState.page;
-        if (action === 'prev' && p > 1) p--;
-        if (action === 'next' && p < totalPages) p++;
-        if (p === projectState.page) return;
-        projectState.page = p;
-        renderProjects(p, PAGE_SIZE, projectState.filter);
-      });
-    });
-  }
-
-  // Filter
-  function initProjectFilter() {
-    const btns = $$(".filter");
-
-    btns.forEach((b) => {
-      b.addEventListener("click", () => {
-        btns.forEach((x) => x.classList.remove("active"));
-        b.classList.add("active");
-        projectState.filter = b.dataset.filter || "all";
-        projectState.page = 1;
-        renderProjects(projectState.page, PAGE_SIZE, projectState.filter);
-      });
-    });
-
-    // set initial active
-    btns.forEach((b) => b.classList.toggle("active", b.dataset.filter === projectState.filter));
-  }
-
-  // Smooth anchors (stable on mobile)
-  function initSmoothAnchors() {
-    $$('a[href^="#"]').forEach((a) => {
-      a.addEventListener("click", (e) => {
-        const href = a.getAttribute("href");
-        if (!href || href === "#") return;
-        const el = document.querySelector(href);
-        if (!el) return;
-        e.preventDefault();
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-        history.replaceState(null, "", href);
-      });
-    });
-  }
-
-  // Strong 3D tilt on photo card
-  function initPhotoTilt() {
-    const container = document.querySelector(".hero__side--3d") || $("#profileCard");
-    if (!container) return;
-    const card = document.getElementById("profileCard");
-    if (!card) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
-
-    let raf = 0;
-    const onMove = (e) => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const r = container.getBoundingClientRect();
-        // x and y are between -1 and 1
-        const x = ((e.clientX - r.left) / r.width) * 2 - 1;
-        const y = ((e.clientY - r.top) / r.height) * 2 - 1;
-        
-        // Remove rotation entirely, just keep the slight scale if needed
-        card.style.transform = `scale(1.05)`;
-      });
-    };
-    
-    const onLeave = () => {
-      cancelAnimationFrame(raf);
-      card.style.transform = `scale(1)`; // return to resting state
-    };
-
-    container.addEventListener("mousemove", onMove);
-    container.addEventListener("mouseleave", onLeave);
-    container.addEventListener("touchstart", onLeave, { passive: true });
-  }
-
-  // Animated counters (quick KPIs)
-  function initCounters() {
-    const els = Array.from(document.querySelectorAll('.quick__kpi[data-target]'));
-    if (!els.length) return;
-
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) {
-      els.forEach((el) => {
-        const t = Number(el.dataset.target) || 0;
-        const suffix = String(el.textContent).trim().endsWith('+') ? '+' : '';
-        el.textContent = `${t}${suffix}`;
-      });
-      return;
-    }
-
-    const io = new IntersectionObserver((entries, obs) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        const el = entry.target;
-        obs.unobserve(el);
-        const target = Number(el.dataset.target) || 0;
-        const suffix = String(el.textContent).trim().endsWith('+') ? '+' : '';
-
-        const duration = 900;
-        const start = performance.now();
-
-        const tick = (now) => {
-          const t = Math.min(1, (now - start) / duration);
-          const eased = 1 - Math.pow(1 - t, 3);
-          const value = Math.round(eased * target);
-          el.textContent = `${value}${suffix}`;
-          if (t < 1) requestAnimationFrame(tick);
-          else el.classList.add('animate');
-        };
-        requestAnimationFrame(tick);
-      });
-    }, { threshold: 0.2 });
-
-    els.forEach((el) => io.observe(el));
-  }
-
-  // Magnetic Buttons
-  function initMagneticButtons() {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
-
-    const magnetics = $$('.magnetic');
-    magnetics.forEach((btn) => {
-      btn.addEventListener('mousemove', (e) => {
-        const rect = btn.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
-      });
-      btn.addEventListener('mouseleave', () => {
-        btn.style.transform = `translate(0px, 0px)`;
-      });
-    });
-  }
-
-  // Cards Glow
-  function initCardsGlow() {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
-
-    document.addEventListener("mousemove", (e) => {
-      const cards = $$('.card');
-      cards.forEach((card) => {
-        const rect = card.getBoundingClientRect();
-        // Optimization: only update if mouse is relatively close
-        if (e.clientX > rect.left - 300 && e.clientX < rect.right + 300 &&
-            e.clientY > rect.top - 300 && e.clientY < rect.bottom + 300) {
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          card.style.setProperty('--mouse-x', `${x}px`);
-          card.style.setProperty('--mouse-y', `${y}px`);
+    // Attach click listeners to cards (if clicking on side card, navigate to it!)
+    cards.forEach((card, i) => {
+      card.addEventListener("click", (e) => {
+        if (e.target.closest("button") || e.target.closest("a")) return;
+        if (i !== currentIndex) {
+          e.preventDefault();
+          goTo(i);
         }
       });
-    }, { passive: true });
-  }
+    });
 
-  // Button ripple micro-interaction
-  function initButtonRipples() {
-    document.addEventListener('click', (e) => {
-      const b = e.target.closest('.btn');
-      if (!b) return;
-      const rect = b.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+    // Update positions and visual classes
+    function updateCarousel() {
+      cards.forEach((card, i) => {
+        card.classList.remove("is-active", "is-prev", "is-next", "is-far-prev", "is-far-next", "is-hidden");
 
-      let r = b.querySelector('.ripple');
-      if (!r) {
-        r = document.createElement('span');
-        r.className = 'ripple';
-        b.appendChild(r);
+        let diff = i - currentIndex;
+        // Circular difference
+        if (diff > total / 2) diff -= total;
+        if (diff < -total / 2) diff += total;
+
+        if (diff === 0) {
+          card.classList.add("is-active");
+        } else if (diff === -1) {
+          card.classList.add("is-prev");
+        } else if (diff === 1) {
+          card.classList.add("is-next");
+        } else if (diff === -2) {
+          card.classList.add("is-far-prev");
+        } else if (diff === 2) {
+          card.classList.add("is-far-next");
+        } else {
+          card.classList.add("is-hidden");
+        }
+      });
+
+      // Update counter
+      if (counterCurrent) {
+        counterCurrent.textContent = String(currentIndex + 1).padStart(2, "0");
       }
-      r.classList.remove('show');
-      r.style.left = `${x}px`;
-      r.style.top = `${y}px`;
-      r.style.width = r.style.height = '8px';
-      // force reflow
-      // expand
-      requestAnimationFrame(() => {
-        const size = Math.max(rect.width, rect.height) * 2;
-        r.style.width = r.style.height = `${size}px`;
-        r.classList.add('show');
-        setTimeout(() => r.classList.remove('show'), 450);
-      });
-    });
-  }
 
-  function initEntryZoom() {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
-      document.body.classList.add("is-entered");
-      return;
+      // Update dots
+      if (dotsContainer) {
+        dotsContainer.querySelectorAll(".proj-dot").forEach((d, i) => {
+          d.classList.toggle("is-active", i === currentIndex);
+        });
+      }
     }
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        document.body.classList.add("is-entered");
+
+    function goTo(index) {
+      currentIndex = (index + total) % total;
+      updateCarousel();
+    }
+
+    function next() {
+      goTo(currentIndex + 1);
+    }
+
+    function prev() {
+      goTo(currentIndex - 1);
+    }
+
+    // Attach button listeners
+    const topPrev = $("#projTopPrev");
+    const topNext = $("#projTopNext");
+    const sidePrev = $("#projSidePrev");
+    const sideNext = $("#projSideNext");
+
+    if (topPrev) topPrev.addEventListener("click", prev);
+    if (topNext) topNext.addEventListener("click", next);
+    if (sidePrev) sidePrev.addEventListener("click", prev);
+    if (sideNext) sideNext.addEventListener("click", next);
+
+    // Keyboard navigation
+    window.addEventListener("keydown", (e) => {
+      if ($("#modalBg") && $("#modalBg").classList.contains("open")) return;
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+
+      if (e.key === "ArrowLeft") {
+        prev();
+      } else if (e.key === "ArrowRight") {
+        next();
+      }
+    });
+
+    // Touch & Mouse Swipe / Drag support
+    if (showcase) {
+      let touchStartX = 0;
+      let touchEndX = 0;
+      let isDragging = false;
+      let dragStartX = 0;
+
+      showcase.addEventListener("touchstart", (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      showcase.addEventListener("touchend", (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchEndX - touchStartX;
+        if (Math.abs(diff) > 45) {
+          if (diff < 0) next();
+          else prev();
+        }
+      }, { passive: true });
+
+      showcase.addEventListener("mousedown", (e) => {
+        if (e.target.closest("button") || e.target.closest("a")) return;
+        isDragging = true;
+        dragStartX = e.clientX;
       });
+
+      window.addEventListener("mouseup", (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        const diff = e.clientX - dragStartX;
+        if (Math.abs(diff) > 60) {
+          if (diff < 0) next();
+          else prev();
+        }
+      });
+    }
+
+    // Initialize initial state
+    updateCarousel();
+  }
+
+  // Reveal Animations
+  function initReveal() {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+          }
+        });
+      },
+      { threshold: 0.05, rootMargin: "0px 0px -20px 0px" }
+    );
+    $$(".reveal, .reveal-stagger, .reveal-anim, .reveal-left, .reveal-right").forEach((el) => {
+      if (el.getBoundingClientRect().top < window.innerHeight) {
+        el.classList.add("in");
+      }
+      io.observe(el);
     });
   }
 
-  // Scroll Progress
-  function initScrollProgress() {
-    const progress = $("#scrollProgress");
-    if (!progress) return;
+  // Enhanced Modal for full project details
+  function initModal() {
+    const modalBg = $("#modalBg");
+    const closeBtn = $("#modalClose");
+
+    window.openProjectModal = function(title) {
+      const project = PROFILE.projects.find((p) => p.title === title);
+      if (!project || !modalBg) return;
+
+      $("#modalTitle").textContent = project.title;
+      $("#modalDesc").textContent = project.fullDescription || project.desc;
+      $("#modalImgBg").src = project.image;
+      $("#modalImg").src = project.image;
+      $("#modalCat").textContent = project.category || "Selected Project";
+
+      // Features list
+      const featuresWrap = $("#modalFeaturesWrap");
+      const featuresList = $("#modalFeaturesList");
+      if (featuresWrap && featuresList) {
+        if (project.features && project.features.length > 0) {
+          featuresWrap.style.display = "block";
+          featuresList.innerHTML = project.features.map(f => `
+            <li class="modal-feature-item">
+              <i class="fa-solid fa-circle-check modal-feature-icon"></i>
+              <span>${f}</span>
+            </li>
+          `).join("");
+        } else {
+          featuresWrap.style.display = "none";
+          featuresList.innerHTML = "";
+        }
+      }
+
+      const tagsContainer = $("#modalTags");
+      if (tagsContainer) {
+        tagsContainer.innerHTML = (project.tags || [])
+          .map((t) => `<div class="modal-tag">${t}</div>`)
+          .join("");
+      }
+
+      const btnLive = $("#modalLive");
+      if (btnLive) {
+        btnLive.style.display = project.live ? "inline-flex" : "none";
+        btnLive.href = project.live || "#";
+      }
+
+      const btnGit = $("#modalGit");
+      if (btnGit) {
+        btnGit.style.display = project.github ? "inline-flex" : "none";
+        btnGit.href = project.github || "#";
+      }
+
+      modalBg.classList.add("open");
+      document.body.style.overflow = "hidden";
+    };
+
+    window.closeProjectModal = function() {
+      if (modalBg) {
+        modalBg.classList.remove("open");
+        document.body.style.overflow = "";
+      }
+    };
+
+    if(closeBtn) closeBtn.addEventListener("click", window.closeProjectModal);
+    if(modalBg) modalBg.addEventListener("click", (e) => {
+      if(e.target === modalBg) window.closeProjectModal();
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modalBg && modalBg.classList.contains("open")) {
+        window.closeProjectModal();
+      }
+    });
+  }
+
+  // Copy Email & Contact
+  function initContact() {
+    const copyBtn = $("#copyBtn");
+    if (copyBtn) {
+      copyBtn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText("nancy.ahmed.abdelgawad@gmail.com");
+          toast("Email copied to clipboard!");
+        } catch {
+          toast("Failed to copy email.");
+        }
+      });
+    }
+  }
+
+  // Lanyard — Auto-swing + Cursor-attached drag
+  function initLanyard() {
+    const badge = $("#idBadge");
+    if (!badge) return;
+
+    badge.style.transformOrigin = "50% 0px";
+    badge.style.transform = "";
+
+    // ── Drop-in animation on load ──
+    const wrapper = badge.parentElement;
+    wrapper.style.opacity = "0";
+    wrapper.style.transform = "translateX(-50%) translateY(-420px)";
+
+    setTimeout(() => {
+      wrapper.classList.add("lanyard-drop");
+      wrapper.style.opacity = "";
+      wrapper.style.transform = "";
+    }, 300);
+
+    // After drop lands → start physics with big swing
+    setTimeout(() => {
+      wrapper.classList.remove("lanyard-drop");
+      angle = 28;   // big initial angle = dramatic swing after landing
+      omega = 0;
+    }, 1850);
+
+    let isDragging = false;
+    let angle = -10;   // start offset → auto-swings immediately on load
+    let omega =  0.4;  // initial kick so it starts moving right away
+    let idleT = 0;
+    const history = [];
+
+    // ── Physics ──
+    const G      = 0.11;   // gravity (controls swing speed)
+    const DAMP   = 0.978;  // friction
+    const IDLE_A = 4.0;    // idle sway amplitude (degrees)
+    const IDLE_S = 0.009;  // idle sway speed
+    const MAX_A  = 75;
+
+    // Pivot = top-center of badge's parent (doesn't rotate, reliable)
+    function getPivot() {
+      const p = badge.parentElement;
+      const r = p.getBoundingClientRect();
+      return { x: r.left + r.width / 2, y: r.top };
+    }
+
+    function frame() {
+      if (!isDragging) {
+        // Pendulum: α = -G·sin(θ)
+        const alpha = -G * Math.sin(angle * Math.PI / 180);
+        omega = (omega + alpha) * DAMP;
+        angle += omega;
+
+        // Idle sway when energy is nearly gone
+        if (Math.abs(omega) < 0.07 && Math.abs(angle) < 3) {
+          idleT += IDLE_S;
+          angle += (Math.sin(idleT) * IDLE_A - angle) * 0.016;
+          omega *= 0.82;
+        }
+      }
+
+      badge.style.transform = `rotate(${angle}deg)`;
+      requestAnimationFrame(frame);
+    }
+    frame();
+
+    // ── Mouse: true geometric angle from pivot to cursor ──
+    badge.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      history.length = 0;
+      history.push({ a: angle, t: performance.now() });
+      badge.style.cursor = "grabbing";
+      e.preventDefault();
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      const piv = getPivot();
+      // atan2(dx, dy) = angle from vertical straight down
+      const raw = Math.atan2(e.clientX - piv.x, e.clientY - piv.y) * (180 / Math.PI);
+      angle = Math.max(-MAX_A, Math.min(MAX_A, raw));
+      history.push({ a: angle, t: performance.now() });
+      if (history.length > 6) history.shift();
+    });
+
+    window.addEventListener("mouseup", () => {
+      if (!isDragging) return;
+      isDragging = false;
+      badge.style.cursor = "grab";
+      // Angular velocity from recent angle history → realistic fling
+      if (history.length >= 2) {
+        const first = history[0], last = history[history.length - 1];
+        const dt = Math.max(8, last.t - first.t);
+        omega = Math.max(-14, Math.min(14, (last.a - first.a) / dt * 18));
+      }
+    });
+
+    // ── Touch ──
+    badge.addEventListener("touchstart", (e) => {
+      isDragging = true;
+      history.length = 0;
+      history.push({ a: angle, t: performance.now() });
+    }, { passive: true });
+
+    window.addEventListener("touchmove", (e) => {
+      if (!isDragging) return;
+      const t = e.touches[0];
+      const piv = getPivot();
+      const raw = Math.atan2(t.clientX - piv.x, t.clientY - piv.y) * (180 / Math.PI);
+      angle = Math.max(-MAX_A, Math.min(MAX_A, raw));
+      history.push({ a: angle, t: performance.now() });
+      if (history.length > 6) history.shift();
+    }, { passive: true });
+
+    window.addEventListener("touchend", () => {
+      if (!isDragging) return;
+      isDragging = false;
+      if (history.length >= 2) {
+        const first = history[0], last = history[history.length - 1];
+        const dt = Math.max(8, last.t - first.t);
+        omega = Math.max(-14, Math.min(14, (last.a - first.a) / dt * 18));
+      }
+    });
+  }
+
+  // Scroll Spy for Nav
+  function initNavScrollSpy() {
+    const navLinks = $$(".nav-link");
+    const sections = ["#home", "#about", "#experience", "#work", "#services", "#contact"]
+      .map(id => $(id))
+      .filter(Boolean);
+
     window.addEventListener("scroll", () => {
-      const scrollPx = document.documentElement.scrollTop || document.body.scrollTop;
-      const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = `${(scrollPx / winHeightPx) * 100}%`;
-      progress.style.width = scrolled;
+      let currentSectionId = "";
+      const scrollPos = window.scrollY + 220;
+
+      sections.forEach(sec => {
+        if (sec.offsetTop <= scrollPos) {
+          currentSectionId = sec.getAttribute("id");
+        }
+      });
+
+      if (currentSectionId) {
+        navLinks.forEach(link => {
+          const href = link.getAttribute("href");
+          if (href === `#${currentSectionId}`) {
+            link.classList.add("active");
+          } else {
+            link.classList.remove("active");
+          }
+        });
+      }
     }, { passive: true });
   }
 
-  // Blob Follow
-  function initBlobFollow() {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
-    const bg = $(".bg");
-    if (!bg) return;
-    document.addEventListener("mousemove", (e) => {
-      const x = e.clientX / window.innerWidth - 0.5;
-      const y = e.clientY / window.innerHeight - 0.5;
-      bg.style.setProperty('--mx', x);
-      bg.style.setProperty('--my', y);
+  // Scroll to Top
+  function initScrollTop() {
+    const btn = $("#scrollTop");
+    if (!btn) return;
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btn.classList.add("is-visible");
+      } else {
+        btn.classList.remove("is-visible");
+      }
     }, { passive: true });
+
+    btn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
   }
 
+  // Automatic Background Remover: Key out black background to pure transparent PNG
+  function initPortraitChromaKey() {
+    const img = document.getElementById("heroPortraitImg");
+    if (!img) return;
+
+    function removeBg() {
+      try {
+        const w = img.naturalWidth || img.width;
+        const h = img.naturalHeight || img.height;
+        if (!w || !h) return;
+
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
+        ctx.drawImage(img, 0, 0);
+
+        const imgData = ctx.getImageData(0, 0, w, h);
+        const d = imgData.data;
+
+        // Strip pure black background (RGB <= 24)
+        for (let i = 0; i < d.length; i += 4) {
+          const r = d[i], g = d[i + 1], b = d[i + 2];
+          if (r < 24 && g < 24 && b < 24) {
+            d[i + 3] = 0;
+          }
+        }
+
+        ctx.putImageData(imgData, 0, 0);
+        const dataUrl = canvas.toDataURL("image/png");
+        if (dataUrl && dataUrl.length > 100) {
+          img.src = dataUrl;
+          img.style.filter = "drop-shadow(0 0 35px rgba(0, 240, 255, 0.3))";
+        }
+      } catch (err) {
+        // GPU SVG filter handles it smoothly
+      }
+    }
+
+    if (img.complete && img.naturalWidth) {
+      removeBg();
+    } else {
+      img.addEventListener("load", removeBg, { once: true });
+    }
+  }
+
+  // Boot
   function boot() {
-    initEntryZoom();
-    initTheme();
-    initMobileMenu();
-    initActiveNav();
+    initAppVisibility();
+    initNavScrollSpy();
+    initPortraitChromaKey();
+    initProjectsCarousel();
     initReveal();
-    initCursor();
+    initModal();
     initContact();
-    initSmoothAnchors();
-
-    const typeTarget = $("#typeTarget");
-    if (typeTarget) typeLoop(typeTarget, PROFILE.roleTyping);
-
-    renderSkills();
-    renderProjects();
-    initProjectFilter();
-    initPhotoTilt();
-    initCounters();
-    initButtonRipples();
-    initMagneticButtons();
-    initCardsGlow();
-    initScrollProgress();
-    initBlobFollow();
+    initLanyard();
+    initScrollTop();
   }
 
-  // Modal logic exposed globally
-  window.openProjectModal = function(title) {
-    const project = PROFILE.projects.find(p => p.title === title);
-    if (!project) return;
-    
-    const modal = document.getElementById('projectModal');
-    if (!modal) return;
-    
-    document.getElementById('modalTitle').textContent = project.title;
-    document.getElementById('modalDesc').textContent = project.fullDescription || project.desc;
-    document.getElementById('modalImage').src = project.image;
-    
-    const tagsContainer = document.getElementById('modalTags');
-    tagsContainer.innerHTML = (project.tags || []).map(t => `<span class="tag" style="font-size: 10px; padding: 4px 8px;">${t}</span>`).join("");
-    
-    const btnLive = document.getElementById('modalBtnLive');
-    if (project.live) {
-      btnLive.style.display = 'inline-flex';
-      btnLive.href = project.live;
-    } else {
-      btnLive.style.display = 'none';
-    }
-    
-    const btnGithub = document.getElementById('modalBtnGithub');
-    if (project.github) {
-      btnGithub.style.display = 'inline-flex';
-      btnGithub.href = project.github;
-    } else {
-      btnGithub.style.display = 'none';
-    }
-
-    modal.classList.add('show');
-    document.body.style.overflow = 'hidden'; // prevent scrolling
-  };
-  
-  window.closeProjectModal = function() {
-    const modal = document.getElementById('projectModal');
-    if (modal) {
-      modal.classList.remove('show');
-      document.body.style.overflow = '';
-    }
-  };
-
-  document.addEventListener("DOMContentLoaded", boot);
+  if(document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
 })();
-

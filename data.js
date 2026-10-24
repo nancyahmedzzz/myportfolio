@@ -1,5 +1,5 @@
 window.PROFILE = {
-  email: "ahmeddagla99@gmail.com",
+  email: "nancy.ahmed.abdelgawad@gmail.com",
   roleTyping: [
     ".NET Backend Developer",
     "ASP.NET Core | Clean Architecture",
