@@ -448,6 +448,7 @@ button,
   max-width: 96vw;
   object-fit: contain;
   display: block;
+  filter: drop-shadow(0 20px 50px rgba(0, 240, 255, 0.4)) drop-shadow(0 6px 20px rgba(0, 0, 0, 0.85));
 }
 
 .hero-bottom-info {

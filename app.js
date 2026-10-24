@@ -17,7 +17,7 @@
   function initAppVisibility() {
     const appMain = $("#appMain");
     if (appMain) appMain.classList.add("ready");
-    
+
     // Reveal visible elements immediately
     setTimeout(() => {
       document.querySelectorAll('.reveal, .reveal-stagger, .reveal-left, .reveal-right, .reveal-anim').forEach(el => {
@@ -240,7 +240,7 @@
     const modalBg = $("#modalBg");
     const closeBtn = $("#modalClose");
 
-    window.openProjectModal = function(title) {
+    window.openProjectModal = function (title) {
       const project = PROFILE.projects.find((p) => p.title === title);
       if (!project || !modalBg) return;
 
@@ -291,16 +291,16 @@
       document.body.style.overflow = "hidden";
     };
 
-    window.closeProjectModal = function() {
+    window.closeProjectModal = function () {
       if (modalBg) {
         modalBg.classList.remove("open");
         document.body.style.overflow = "";
       }
     };
 
-    if(closeBtn) closeBtn.addEventListener("click", window.closeProjectModal);
-    if(modalBg) modalBg.addEventListener("click", (e) => {
-      if(e.target === modalBg) window.closeProjectModal();
+    if (closeBtn) closeBtn.addEventListener("click", window.closeProjectModal);
+    if (modalBg) modalBg.addEventListener("click", (e) => {
+      if (e.target === modalBg) window.closeProjectModal();
     });
 
     window.addEventListener("keydown", (e) => {
@@ -508,176 +508,10 @@
     });
   }
 
-  // Automatic Background Remover: Flood-fill remove white or black background to pure transparent PNG
-  function initPortraitChromaKey() {
-    const img = document.getElementById("heroPortraitImg");
-    if (!img) return;
-
-    let processed = false;
-    function attemptRemove() {
-      if (processed || img.__bgRemoved) return;
-      if (img.naturalWidth > 0 && img.naturalHeight > 0) {
-        processed = true;
-        removeBg();
-      }
-    }
-
-    function removeBg() {
-      try {
-        const w = img.naturalWidth || img.width;
-        const h = img.naturalHeight || img.height;
-        if (!w || !h) return;
-
-        const canvas = document.createElement("canvas");
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext("2d", { willReadFrequently: true });
-        ctx.drawImage(img, 0, 0);
-
-        const imgData = ctx.getImageData(0, 0, w, h);
-        const d = imgData.data;
-
-        // BFS flood-fill from all 4 borders to remove white/black background
-        const totalPixels = w * h;
-        const visited = new Uint8Array(totalPixels);
-        const qx = new Int32Array(totalPixels);
-        const qy = new Int32Array(totalPixels);
-        let head = 0, tail = 0;
-
-        function isBg(r, g, b) {
-          const max = Math.max(r, g, b);
-          const min = Math.min(r, g, b);
-          const diff = max - min;
-          // White or off-white background with JPEG noise tolerance
-          if (min >= 165 && diff <= 36) return true;
-          if (min >= 200) return true;
-          // Black or near-black background
-          if (max <= 42) return true;
-          return false;
-        }
-
-        // Push border pixels
-        for (let x = 0; x < w; x++) {
-          // top border
-          let idx0 = x * 4;
-          if (isBg(d[idx0], d[idx0+1], d[idx0+2])) {
-            visited[x] = 1;
-            qx[tail] = x; qy[tail] = 0; tail++;
-          }
-          // bottom border
-          let yB = h - 1;
-          let idxB = (yB * w + x) * 4;
-          if (isBg(d[idxB], d[idxB+1], d[idxB+2])) {
-            visited[yB * w + x] = 1;
-            qx[tail] = x; qy[tail] = yB; tail++;
-          }
-        }
-        for (let y = 0; y < h; y++) {
-          // left border
-          let idxL = (y * w) * 4;
-          if (!visited[y * w] && isBg(d[idxL], d[idxL+1], d[idxL+2])) {
-            visited[y * w] = 1;
-            qx[tail] = 0; qy[tail] = y; tail++;
-          }
-          // right border
-          let xR = w - 1;
-          let idxR = (y * w + xR) * 4;
-          if (!visited[y * w + xR] && isBg(d[idxR], d[idxR+1], d[idxR+2])) {
-            visited[y * w + xR] = 1;
-            qx[tail] = xR; qy[tail] = y; tail++;
-          }
-        }
-
-        // BFS 4-way expansion
-        const dx = [1, -1, 0, 0];
-        const dy = [0, 0, 1, -1];
-
-        while (head < tail) {
-          const cx = qx[head];
-          const cy = qy[head];
-          head++;
-
-          const pIdx = (cy * w + cx) * 4;
-          d[pIdx + 3] = 0; // Set to fully transparent
-
-          for (let i = 0; i < 4; i++) {
-            const nx = cx + dx[i];
-            const ny = cy + dy[i];
-
-            if (nx >= 0 && nx < w && ny >= 0 && ny < h) {
-              const nPos = ny * w + nx;
-              if (!visited[nPos]) {
-                const nIdx = nPos * 4;
-                const nr = d[nIdx], ng = d[nIdx+1], nb = d[nIdx+2];
-                if (isBg(nr, ng, nb)) {
-                  visited[nPos] = 1;
-                  qx[tail] = nx;
-                  qy[tail] = ny;
-                  tail++;
-                }
-              }
-            }
-          }
-        }
-
-        // Defringe border halo pixels
-        for (let y = 1; y < h - 1; y++) {
-          for (let x = 1; x < w - 1; x++) {
-            const pos = y * w + x;
-            if (visited[pos]) continue;
-            const idx = pos * 4;
-            const isNearTransparent = visited[pos - 1] || visited[pos + 1] || visited[pos - w] || visited[pos + w];
-            if (isNearTransparent) {
-              const r = d[idx], g = d[idx+1], b = d[idx+2];
-              if (r > 175 && g > 175 && b > 175) {
-                const brightness = (r + g + b) / 3;
-                if (brightness > 220) {
-                  d[idx + 3] = 0;
-                } else {
-                  const factor = (220 - brightness) / 45;
-                  d[idx + 3] = Math.max(0, Math.min(255, Math.round(d[idx + 3] * factor)));
-                }
-              }
-            }
-          }
-        }
-
-        ctx.putImageData(imgData, 0, 0);
-        const dataUrl = canvas.toDataURL("image/png");
-        if (dataUrl && dataUrl.length > 200) {
-          img.__bgRemoved = true;
-          img.src = dataUrl;
-          img.style.filter = "drop-shadow(0 20px 50px rgba(0, 240, 255, 0.4)) drop-shadow(0 6px 20px rgba(0, 0, 0, 0.85))";
-        }
-      } catch (err) {
-        console.warn("Portrait background processing fallback:", err);
-      }
-    }
-
-    if (img.complete && img.naturalWidth > 0) {
-      attemptRemove();
-    } else {
-      img.addEventListener("load", attemptRemove, { once: true });
-    }
-
-    // Safety polling retry in case load event fired before handler or image cached
-    let pollCount = 0;
-    const pollInterval = setInterval(() => {
-      pollCount++;
-      if (processed || pollCount > 35) {
-        clearInterval(pollInterval);
-      } else if (img.naturalWidth > 0) {
-        attemptRemove();
-        clearInterval(pollInterval);
-      }
-    }, 60);
-  }
-
   // Boot
   function boot() {
     initAppVisibility();
     initNavScrollSpy();
-    initPortraitChromaKey();
     initProjectsCarousel();
     initReveal();
     initModal();
@@ -686,7 +520,7 @@
     initScrollTop();
   }
 
-  if(document.readyState === "loading") {
+  if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);
   } else {
     boot();
