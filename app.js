@@ -331,6 +331,17 @@
     const wrapper = $("#lanyardWrapper") || (badge ? badge.parentElement : null);
     if (!badge || !wrapper) return;
 
+    const strap = badge.querySelector(".lanyard-strap");
+    const hardware = badge.querySelector(".lanyard-hardware");
+    const card = badge.querySelector(".id-card-holder");
+    if (strap) strap.style.transformOrigin = "50% 0px";
+
+    if (card && !card.querySelector(".id-card-back")) {
+      const back = document.createElement("div");
+      back.className = "id-card-back";
+      card.appendChild(back);
+    }
+
     // Anchor point calculation:
     // Anchor top-center is locked horizontally at the center of the right column
     // without any horizontal travel, sliding animations, or layout jumps.
@@ -344,6 +355,7 @@
     badge.style.transformOrigin = "50% 0px";
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
 
     // Physics state
     let isDragging = false;
@@ -354,6 +366,37 @@
     const DAMP = 0.94;   // Damping constant: 4° decays to 0 within ~90 frames (1.5s)
     const MAX_A = 70;
     const history = [];
+
+    // Idle sway constants & state
+    const SWAY_AMP = 3;
+    const SWAY_PERIOD = 3.6;
+    let idle = prefersReducedMotion ? 0 : 1;
+
+    // 360 Spin Fling constants & state
+    const SPIN_SPEED = 1.4; // px/ms
+    const SPIN_MS = 1200;
+    let spin = null;
+    const pointerSamples = [];
+
+    // Elastic spring pull & flip constants
+    const MAX_PULL = 150;
+    const STRAP_H = 200;
+    const PULL_K = 0.1;
+    const PULL_DAMP = 0.93;
+    const BOB_AMP = 4;
+    const BOB_PERIOD = 1.8;
+    const FLIP_FLING = 1.2;
+    const FLIP_PULL = 60;
+    const FLIP_TURN_MS = 1500;
+
+    // Elastic spring & flip state
+    let pull = 0;
+    let pullVel = 0;
+    let pullTarget = 0;
+    let grabY = 0;
+    let flipTurn = null; // { t0 }
+    let flipExtra = 0;
+    let lastShowBack = false;
 
     // Pivot calculation: top-center of fixed lanyard anchor
     function getPivot() {
@@ -378,6 +421,14 @@
 
     // Pendulum physics loop
     function frame() {
+      if (prefersReducedMotion) {
+        idle = 0;
+      } else if (isDragging || spin) {
+        idle += (0 - idle) * 0.25;
+      } else {
+        idle += (1 - idle) * 0.03;
+      }
+
       if (!isDragging) {
         if (!prefersReducedMotion) {
           if (Math.abs(angle) > 0.02 || Math.abs(omega) > 0.002) {
@@ -393,18 +444,136 @@
           angle = 0;
           omega = 0;
         }
+
+        // Elastic spring bounce physics for pull
+        pullVel = (pullVel - PULL_K * pull) * PULL_DAMP;
+        pull += pullVel;
+        if (Math.abs(pull) < 0.05 && Math.abs(pullVel) < 0.05) {
+          pull = 0;
+          pullVel = 0;
+        }
+      } else {
+        // While dragging: ease pull towards pullTarget
+        pull += (pullTarget - pull) * 0.4;
+        pullVel = 0;
       }
 
-      badge.style.transform = `rotate(${angle}deg)`;
+      const now = performance.now();
+      const sway = SWAY_AMP * idle * Math.sin((now / 1000) * ((2 * Math.PI) / SWAY_PERIOD));
+
+      let spinOffset = 0;
+      if (spin) {
+        const t = Math.min(1, (now - spin.t0) / SPIN_MS);
+        const c1 = 1.1;
+        const c3 = c1 + 1;
+        const diff = t - 1;
+        const e = 1 + c3 * diff * diff * diff + c1 * diff * diff;
+        spinOffset = spin.dir * 360 * e;
+        if (t >= 1) {
+          spin = null;
+          spinOffset = 0;
+        }
+      }
+
+      // Smooth calm 360 turn on card flip
+      if (flipTurn) {
+        const t = Math.min(1, (now - flipTurn.t0) / FLIP_TURN_MS);
+        const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; // easeInOutCubic
+        flipExtra = 360 * e;
+        if (t >= 1) {
+          flipTurn = null;
+          flipExtra = 0;
+        }
+      }
+
+      // 1) Rotate entire pendulum badge
+      badge.style.transform = `rotate(${angle + sway + spinOffset}deg)`;
+
+      // 2 & 4) Elastic spring: stretch, bob, gentle bounce tilt, and calm 360 card flip
+      const bob = prefersReducedMotion ? 0 : BOB_AMP * idle * Math.sin((now / 1000) * ((2 * Math.PI) / BOB_PERIOD));
+      const p = pull + bob;
+      const tilt = prefersReducedMotion ? 0 : Math.max(-22, Math.min(22, p * 0.3));
+      const flip = tilt + flipExtra;
+
+      // Plain card back visibility toggle (facing away: between 90 and 270 deg)
+      const f = ((flip % 360) + 360) % 360;
+      const showBack = f > 90 && f < 270;
+      if (showBack !== lastShowBack) {
+        card.classList.toggle("show-back", showBack);
+        lastShowBack = showBack;
+      }
+
+      if (strap) {
+        const strapScaleY = Math.max(0.1, (STRAP_H + p) / STRAP_H);
+        strap.style.transform = `scaleY(${strapScaleY})`;
+      }
+      if (hardware) {
+        hardware.style.transform = `translateY(${p}px)`;
+      }
+      if (card) {
+        card.style.transform = `translateY(${p}px) perspective(900px) rotateY(${flip}deg)`;
+      }
+
       requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
 
+    function onRelease() {
+      const now = performance.now();
+      let vx = 0;
+      let vy = 0;
+
+      if (pointerSamples.length >= 2) {
+        const lastSample = pointerSamples[pointerSamples.length - 1];
+        if (now - lastSample.t <= 80) {
+          const recent = pointerSamples.filter((s) => now - s.t <= 120);
+          if (recent.length >= 2) {
+            const first = recent[0];
+            const last = recent[recent.length - 1];
+            const dt = last.t - first.t;
+            if (dt > 0) {
+              vx = (last.x - first.x) / dt;
+              vy = (last.y - first.y) / dt;
+            }
+          }
+        }
+      }
+
+      // Elastic pull bounce on release
+      pullVel = clamp(vy * 4, -25, 25);
+      const flingDown = vy >= FLIP_FLING && vy > 1.3 * Math.abs(vx);
+      if (!prefersReducedMotion && (flingDown || pull > FLIP_PULL) && !flipTurn) {
+        flipTurn = { t0: performance.now() };
+      }
+
+      // Strong sideways fling = 360 spin or standard pendulum momentum
+      if (
+        !prefersReducedMotion &&
+        Math.abs(vx) >= SPIN_SPEED &&
+        Math.abs(vx) > 1.3 * Math.abs(vy)
+      ) {
+        spin = { dir: vx > 0 ? -1 : 1, t0: now };
+        omega = 0;
+      } else if (!prefersReducedMotion && history.length >= 2) {
+        const first = history[0];
+        const last = history[history.length - 1];
+        const dt = Math.max(8, last.t - first.t);
+        omega = Math.max(-14, Math.min(14, ((last.a - first.a) / dt) * 18));
+      } else {
+        omega = 0;
+      }
+    }
+
     // ── Mouse Drag: pivots around fixed anchor ──
     badge.addEventListener("mousedown", (e) => {
+      if (spin) return;
       isDragging = true;
       history.length = 0;
       history.push({ a: angle, t: performance.now() });
+      pointerSamples.length = 0;
+      pointerSamples.push({ x: e.clientX, y: e.clientY, t: performance.now() });
+      grabY = e.clientY;
+      pullTarget = 0;
       badge.style.cursor = "grabbing";
       e.preventDefault();
     });
@@ -412,52 +581,59 @@
     window.addEventListener("mousemove", (e) => {
       if (!isDragging) return;
       const piv = getPivot();
-      const raw = Math.atan2(e.clientX - piv.x, e.clientY - piv.y) * (180 / Math.PI);
+      const raw = -Math.atan2(e.clientX - piv.x, e.clientY - piv.y) * (180 / Math.PI);
       angle = Math.max(-MAX_A, Math.min(MAX_A, raw));
-      history.push({ a: angle, t: performance.now() });
+      const now = performance.now();
+      history.push({ a: angle, t: now });
       if (history.length > 6) history.shift();
+      pointerSamples.push({ x: e.clientX, y: e.clientY, t: now });
+      if (pointerSamples.length > 10) pointerSamples.shift();
+
+      pullTarget = clamp(e.clientY - grabY, 0, MAX_PULL);
     });
 
     window.addEventListener("mouseup", () => {
       if (!isDragging) return;
       isDragging = false;
       badge.style.cursor = "grab";
-      if (!prefersReducedMotion && history.length >= 2) {
-        const first = history[0], last = history[history.length - 1];
-        const dt = Math.max(8, last.t - first.t);
-        omega = Math.max(-14, Math.min(14, (last.a - first.a) / dt * 18));
-      } else {
-        omega = 0;
-      }
+      onRelease();
     });
 
     // ── Touch Drag: pivots around fixed anchor ──
     badge.addEventListener("touchstart", (e) => {
+      if (spin) return;
       isDragging = true;
       history.length = 0;
       history.push({ a: angle, t: performance.now() });
+      pointerSamples.length = 0;
+      const t = e.touches[0];
+      if (t) {
+        pointerSamples.push({ x: t.clientX, y: t.clientY, t: performance.now() });
+        grabY = t.clientY;
+      }
+      pullTarget = 0;
     }, { passive: true });
 
     window.addEventListener("touchmove", (e) => {
       if (!isDragging) return;
       const t = e.touches[0];
+      if (!t) return;
       const piv = getPivot();
-      const raw = Math.atan2(t.clientX - piv.x, t.clientY - piv.y) * (180 / Math.PI);
+      const raw = -Math.atan2(t.clientX - piv.x, t.clientY - piv.y) * (180 / Math.PI);
       angle = Math.max(-MAX_A, Math.min(MAX_A, raw));
-      history.push({ a: angle, t: performance.now() });
+      const now = performance.now();
+      history.push({ a: angle, t: now });
       if (history.length > 6) history.shift();
+      pointerSamples.push({ x: t.clientX, y: t.clientY, t: now });
+      if (pointerSamples.length > 10) pointerSamples.shift();
+
+      pullTarget = clamp(t.clientY - grabY, 0, MAX_PULL);
     }, { passive: true });
 
     window.addEventListener("touchend", () => {
       if (!isDragging) return;
       isDragging = false;
-      if (!prefersReducedMotion && history.length >= 2) {
-        const first = history[0], last = history[history.length - 1];
-        const dt = Math.max(8, last.t - first.t);
-        omega = Math.max(-14, Math.min(14, (last.a - first.a) / dt * 18));
-      } else {
-        omega = 0;
-      }
+      onRelease();
     });
   }
 

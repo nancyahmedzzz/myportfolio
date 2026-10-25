@@ -349,7 +349,7 @@ button,
 .hero-name-text {
   font-family: var(--display);
   font-weight: 900;
-  font-size: clamp(5rem, min(14.8vw, 32vh), 22rem);
+  font-size: clamp(5.8rem, min(17.3vw, 37vh), 25.5rem);
   line-height: 0.85;
   letter-spacing: -0.04em;
   text-transform: uppercase;
@@ -370,15 +370,15 @@ button,
 .hero-name-nancy {
   opacity: 0;
   transform: translateX(-240px);
-  animation: slideInNancy 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards,
-             nameShimmer 7s ease-in-out infinite alternate;
+  animation: slideInNancy 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards,
+             nameShimmer 1.5s ease-in-out infinite alternate;
 }
 
 .hero-name-ahmed {
   opacity: 0;
   transform: translateX(240px);
-  animation: slideInAhmed 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards,
-             nameShimmer 7s ease-in-out infinite alternate;
+  animation: slideInAhmed 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards,
+             nameShimmer 1.5s ease-in-out infinite alternate;
 }
 
 @keyframes slideInNancy {
@@ -395,7 +395,7 @@ button,
 .hero-portrait-wrap {
   position: absolute;
   left: 50%;
-  top: clamp(80px, 9.5vh, 92px);
+  top: calc(clamp(80px, 9.5vh, 92px) + 20px);
   bottom: auto;
   transform: translateX(-50%) translateY(80px);
   opacity: 0;
@@ -403,7 +403,7 @@ button,
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  animation: risePortrait 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: risePortrait 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
   will-change: transform, opacity;
   margin: 0;
   pointer-events: none;
@@ -1468,12 +1468,12 @@ button,
   }
 
   .hero-name-text {
-    font-size: clamp(3.6rem, min(14.8vw, 26vh), 7.5rem) !important;
+    font-size: clamp(4.2rem, min(17.3vw, 30vh), 8.8rem) !important;
   }
 
   .hero-photo,
   .hero-portrait-wrap {
-    top: clamp(70px, 8.8vh, 84px) !important;
+    top: calc(clamp(70px, 8.8vh, 84px) + 18px) !important;
   }
 
   .hero-photo img,
@@ -1624,13 +1624,13 @@ button,
   }
 
   .hero-name-text {
-    font-size: clamp(2.4rem, min(14.8vw, 22vh), 4.2rem) !important;
+    font-size: clamp(2.8rem, min(17.3vw, 26vh), 4.9rem) !important;
     line-height: 0.85 !important;
   }
 
   .hero-photo,
   .hero-portrait-wrap {
-    top: clamp(54px, 8vh, 68px) !important;
+    top: calc(clamp(54px, 8vh, 68px) + 14px) !important;
   }
 
   .hero-photo img,
@@ -1966,3 +1966,26 @@ button,
     justify-content: center !important;
   }
 }
+
+/* Plain Card Back Face */
+.id-card-holder .id-card-back {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  display: none;
+  z-index: 6;
+  border-radius: inherit;
+  background: linear-gradient(145deg, #0b1220 0%, #030712 100%);
+}
+.id-card-holder .id-card-back::before {
+  content: "";
+  position: absolute;
+  top: 9px; left: 50%;
+  width: 36px; height: 9px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #050812;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+.id-card-holder.show-back .id-card-back { display: block; }
+.id-card-holder.show-back > :not(.id-card-back) { visibility: hidden; }
