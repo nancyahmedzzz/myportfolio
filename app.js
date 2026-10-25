@@ -46,6 +46,11 @@
       counterTotal.textContent = String(total).padStart(2, "0");
     }
 
+    let currentLang = "en";
+    try { currentLang = localStorage.getItem("portfolio_lang") || "en"; } catch (_) {}
+    const dict = (window.I18N && window.I18N[currentLang]) || (window.I18N && window.I18N.en) || {};
+    const detailsLabel = dict.proj_card_details || "Details";
+
     // Render Cards in Stage
     // Render Cards in Stage (Image Only from outside)
     stage.innerHTML = projects.map((p, i) => {
@@ -60,7 +65,7 @@
                 <div class="proj-media-tag-hint">
                   <span class="proj-media-title-text">${safeTitle}</span>
                   <span class="proj-media-action-pill">
-                    <span>Details</span>
+                    <span>${detailsLabel}</span>
                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                   </span>
                 </div>
@@ -244,19 +249,24 @@
       const project = PROFILE.projects.find((p) => p.title === title);
       if (!project || !modalBg) return;
 
+      const lang = (localStorage.getItem("portfolio_lang") || "en");
+      const pI18n = (project.i18n && project.i18n[lang]) || {};
+      const dict = (window.I18N && window.I18N[lang]) || (window.I18N && window.I18N.en) || {};
+
       $("#modalTitle").textContent = project.title;
-      $("#modalDesc").textContent = project.fullDescription || project.desc;
+      $("#modalDesc").textContent = pI18n.fullDescription || pI18n.desc || project.fullDescription || project.desc;
       $("#modalImgBg").src = project.image;
       $("#modalImg").src = project.image;
-      $("#modalCat").textContent = project.category || "Selected Project";
+      $("#modalCat").textContent = pI18n.category || project.category || "Selected Project";
 
       // Features list
       const featuresWrap = $("#modalFeaturesWrap");
       const featuresList = $("#modalFeaturesList");
+      const features = pI18n.features || project.features;
       if (featuresWrap && featuresList) {
-        if (project.features && project.features.length > 0) {
+        if (features && features.length > 0) {
           featuresWrap.style.display = "block";
-          featuresList.innerHTML = project.features.map(f => `
+          featuresList.innerHTML = features.map(f => `
             <li class="modal-feature-item">
               <i class="fa-solid fa-circle-check modal-feature-icon"></i>
               <span>${f}</span>
@@ -269,8 +279,9 @@
       }
 
       const tagsContainer = $("#modalTags");
+      const tags = pI18n.tags || project.tags;
       if (tagsContainer) {
-        tagsContainer.innerHTML = (project.tags || [])
+        tagsContainer.innerHTML = (tags || [])
           .map((t) => `<div class="modal-tag">${t}</div>`)
           .join("");
       }
@@ -313,17 +324,29 @@
   // Copy Email & Contact
   function initContact() {
     const copyBtn = $("#copyBtn");
+    const copyVal = $("#copyBtnVal");
     if (copyBtn) {
       copyBtn.addEventListener("click", async () => {
+        let lang = "en";
+        try { lang = localStorage.getItem("portfolio_lang") || "en"; } catch (_) {}
+        const dict = (window.I18N && window.I18N[lang]) || (window.I18N && window.I18N.en) || {};
         try {
           await navigator.clipboard.writeText("nancy.ahmed.abdelgawad@gmail.com");
-          toast("Email copied to clipboard!");
+          if (copyVal) copyVal.textContent = lang === "ar" ? "تم النسخ!" : (lang === "de" ? "Kopiert!" : "Copied!");
+          toast(dict.toast_email_copied || "Email copied to clipboard!");
+          setTimeout(() => {
+            let currentLang = "en";
+            try { currentLang = localStorage.getItem("portfolio_lang") || "en"; } catch (_) {}
+            const curDict = (window.I18N && window.I18N[currentLang]) || (window.I18N && window.I18N.en) || {};
+            if (copyVal) copyVal.textContent = curDict.connect_copy_val || "Click to copy";
+          }, 2200);
         } catch {
-          toast("Failed to copy email.");
+          toast(lang === "ar" ? "تعذر نسخ البريد." : (lang === "de" ? "Kopieren fehlgeschlagen." : "Failed to copy email."));
         }
       });
     }
   }
+
 
   // ── Lanyard ID Badge: Fixed Anchor & Damped Pendulum Physics ──
   function initLanyard() {
@@ -684,8 +707,216 @@
     });
   }
 
+  // ========================================================
+  // Theme Manager (Dark / Light)
+  // ========================================================
+  function initTheme() {
+    const themeBtn = $("#themeCtrlBtn");
+    const themeIcon = $("#themeCtrlIcon");
+    let saved = "dark";
+    try {
+      saved = localStorage.getItem("portfolio_theme") || "dark";
+    } catch (_) {}
+
+    function applyTheme(t, announce = false) {
+      document.documentElement.dataset.theme = t;
+      document.documentElement.setAttribute("data-theme", t);
+      document.body.dataset.theme = t;
+      document.body.setAttribute("data-theme", t);
+
+      if (themeIcon) {
+        // Dark mode shows moon; Light mode shows sun (smooth swap)
+        if (t === "light") {
+          themeIcon.className = "fa-solid fa-moon";
+        } else {
+          themeIcon.className = "fa-solid fa-sun";
+        }
+      }
+
+      if (themeBtn) {
+        let curLang = "en";
+        try { curLang = localStorage.getItem("portfolio_lang") || "en"; } catch (_) {}
+        const dict = (window.I18N && window.I18N[curLang]) || (window.I18N && window.I18N.en) || {};
+        themeBtn.setAttribute("aria-label", t === "light" 
+          ? (dict.theme_switch_dark || "Switch to dark theme") 
+          : (dict.theme_switch_light || "Switch to light theme")
+        );
+        themeBtn.setAttribute("title", t === "light"
+          ? (dict.theme_switch_dark || "Switch to dark theme")
+          : (dict.theme_switch_light || "Switch to light theme")
+        );
+      }
+
+      try {
+        localStorage.setItem("portfolio_theme", t);
+      } catch (_) {}
+    }
+
+    applyTheme(saved, false);
+
+    if (themeBtn) {
+      themeBtn.addEventListener("click", () => {
+        const current = document.documentElement.dataset.theme || "dark";
+        const next = current === "light" ? "dark" : "light";
+        applyTheme(next, true);
+      });
+    }
+  }
+
+  // ========================================================
+  // Language Manager (Arabic / English / German)
+  // ========================================================
+  function initLanguage() {
+    const langBtn = $("#langCtrlBtn");
+    const langMenu = $("#langMenu");
+    const langItems = $$(".lang-menu-item");
+    let saved = "en";
+    try {
+      saved = localStorage.getItem("portfolio_lang") || "en";
+    } catch (_) {}
+
+    function applyLang(lang, announce = false) {
+      if (!window.I18N || !window.I18N[lang]) {
+        lang = "en";
+      }
+
+      const isAr = lang === "ar";
+      document.documentElement.setAttribute("lang", lang);
+      document.documentElement.setAttribute("dir", isAr ? "rtl" : "ltr");
+      document.body.setAttribute("dir", isAr ? "rtl" : "ltr");
+
+      // Active state and checkmarks inside dropdown
+      langItems.forEach(item => {
+        const itemLang = item.getAttribute("data-lang");
+        const isActive = itemLang === lang;
+        item.classList.toggle("active", isActive);
+        item.setAttribute("aria-selected", isActive ? "true" : "false");
+      });
+
+      const dict = window.I18N[lang] || window.I18N.en;
+
+      // 1) Text keys
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (dict[key] !== undefined) {
+          el.textContent = dict[key];
+        }
+      });
+
+      // 2) HTML keys (formatting, strong tags, spans)
+      document.querySelectorAll("[data-i18n-html]").forEach(el => {
+        const key = el.getAttribute("data-i18n-html");
+        if (dict[key] !== undefined) {
+          el.innerHTML = dict[key];
+        }
+      });
+
+      // 3) ARIA labels
+      document.querySelectorAll("[data-i18n-aria]").forEach(el => {
+        const key = el.getAttribute("data-i18n-aria");
+        if (dict[key] !== undefined) {
+          el.setAttribute("aria-label", dict[key]);
+        }
+      });
+
+      // 4) Title attributes
+      document.querySelectorAll("[data-i18n-title]").forEach(el => {
+        const key = el.getAttribute("data-i18n-title");
+        if (dict[key] !== undefined) {
+          el.setAttribute("title", dict[key]);
+        }
+      });
+
+      // Update Carousel card action pills
+      document.querySelectorAll(".proj-media-action-pill span").forEach(span => {
+        span.textContent = dict.proj_card_details || "Details";
+      });
+
+      // Update active theme button labels
+      const curTheme = document.documentElement.dataset.theme || "dark";
+      const themeBtn = $("#themeCtrlBtn");
+      if (themeBtn) {
+        themeBtn.setAttribute("aria-label", curTheme === "light"
+          ? (dict.theme_switch_dark || "Switch to dark theme")
+          : (dict.theme_switch_light || "Switch to light theme")
+        );
+      }
+
+      // If modal is open, re-render its text with new language
+      const modalBg = $("#modalBg");
+      if (modalBg && modalBg.classList.contains("open")) {
+        const currentTitle = $("#modalTitle") ? $("#modalTitle").textContent : "";
+        if (currentTitle && window.openProjectModal) {
+          window.openProjectModal(currentTitle);
+        }
+      }
+
+      try {
+        localStorage.setItem("portfolio_lang", lang);
+      } catch (_) {}
+
+      if (announce) {
+        toast(dict.toast_lang_switched || (isAr ? "تم التحويل إلى اللغة العربية 🇪🇬" : (lang === "de" ? "Auf Deutsch umgestellt 🇩🇪" : "Switched to English 🌐")));
+      }
+    }
+
+    // Toggle dropdown
+    function closeDropdown() {
+      if (langMenu) {
+        langMenu.classList.remove("open");
+      }
+      if (langBtn) {
+        langBtn.setAttribute("aria-expanded", "false");
+      }
+    }
+
+    function toggleDropdown(e) {
+      if (e) e.stopPropagation();
+      if (!langMenu || !langBtn) return;
+      const isOpen = langMenu.classList.toggle("open");
+      langBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    }
+
+    if (langBtn) {
+      langBtn.addEventListener("click", toggleDropdown);
+    }
+
+    // Language selection
+    langItems.forEach(item => {
+      item.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const selectedLang = item.getAttribute("data-lang");
+        if (selectedLang) {
+          applyLang(selectedLang, true);
+        }
+        closeDropdown();
+      });
+    });
+
+    // Close on outside click
+    document.addEventListener("click", (e) => {
+      if (langMenu && langMenu.classList.contains("open")) {
+        if (!langMenu.contains(e.target) && (!langBtn || !langBtn.contains(e.target))) {
+          closeDropdown();
+        }
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && langMenu && langMenu.classList.contains("open")) {
+        closeDropdown();
+        if (langBtn) langBtn.focus();
+      }
+    });
+
+    applyLang(saved, false);
+  }
+
   // Boot
   function boot() {
+    initTheme();
+    initLanguage();
     initAppVisibility();
     initNavScrollSpy();
     initProjectsCarousel();
@@ -702,3 +933,4 @@
     boot();
   }
 })();
+

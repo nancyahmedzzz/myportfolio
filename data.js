@@ -5,15 +5,96 @@ window.PROFILE = {
     "ASP.NET Core | Clean Architecture",
     "SQL Server | Docker | Git"
   ],
+  roleTypingI18n: {
+    en: [
+      ".NET Backend Developer",
+      "ASP.NET Core | Clean Architecture",
+      "SQL Server | Docker | Git"
+    ],
+    ar: [
+      "مطورة باك إند .NET",
+      "ASP.NET Core ومعمارية برمجية نظيفة",
+      "SQL Server | Docker | Git"
+    ],
+    de: [
+      ".NET Backend-Entwicklerin",
+      "ASP.NET Core | Clean Architecture",
+      "SQL Server | Docker | Git"
+    ]
+  },
   skills: [
-    { icon: "fa-brands fa-microsoft", name: ".NET", hint: "ASP.NET Core" },
-    { icon: "fa-solid fa-database", name: "SQL Server", hint: "T-SQL" },
-    { icon: "fa-brands fa-docker", name: "Docker", hint: "Containers" },
-    { icon: "fa-brands fa-git-alt", name: "Git", hint: "Version control" },
-    { icon: "fa-brands fa-github", name: "GitHub", hint: "Repos" },
-    { icon: "fa-brands fa-gitlab", name: "HTML,CSS,JS", hint: "Interfaces" },
-    { icon: "fa-brands fa-gitlab", name: "Microsoft Office", hint: "Word,Excel,PowerPoint" },
-    { icon: "fa-brands fa-github", name: "Problem Solving", hint: "C++" }
+    {
+      icon: "fa-brands fa-microsoft",
+      name: ".NET",
+      hint: "ASP.NET Core",
+      i18n: {
+        ar: { hint: "ASP.NET Core" },
+        de: { hint: "ASP.NET Core" }
+      }
+    },
+    {
+      icon: "fa-solid fa-database",
+      name: "SQL Server",
+      hint: "T-SQL",
+      i18n: {
+        ar: { hint: "استعلامات T-SQL" },
+        de: { hint: "T-SQL" }
+      }
+    },
+    {
+      icon: "fa-brands fa-docker",
+      name: "Docker",
+      hint: "Containers",
+      i18n: {
+        ar: { hint: "حاويات التطبيقات" },
+        de: { hint: "Container" }
+      }
+    },
+    {
+      icon: "fa-brands fa-git-alt",
+      name: "Git",
+      hint: "Version control",
+      i18n: {
+        ar: { hint: "إدارة الإصدارات" },
+        de: { hint: "Versionskontrolle" }
+      }
+    },
+    {
+      icon: "fa-brands fa-github",
+      name: "GitHub",
+      hint: "Repos",
+      i18n: {
+        ar: { hint: "المستودعات البرمجية" },
+        de: { hint: "Repositories" }
+      }
+    },
+    {
+      icon: "fa-brands fa-gitlab",
+      name: "HTML,CSS,JS",
+      hint: "Interfaces",
+      i18n: {
+        ar: { hint: "واجهات الويب" },
+        de: { hint: "Web-Oberflächen" }
+      }
+    },
+    {
+      icon: "fa-brands fa-gitlab",
+      name: "Microsoft Office",
+      hint: "Word,Excel,PowerPoint",
+      i18n: {
+        ar: { hint: "Word، Excel، PowerPoint" },
+        de: { hint: "Word, Excel, PowerPoint" }
+      }
+    },
+    {
+      icon: "fa-brands fa-github",
+      name: "Problem Solving",
+      hint: "C++",
+      i18n: {
+        ar: { name: "حل المشكلات", hint: "خوارزميات C++" },
+        de: { name: "Problemlösung", hint: "C++" }
+      }
+    }
   ],
   projects: [
     {
@@ -31,7 +112,35 @@ window.PROFILE = {
       tags: ["Cyber Security", "Web", "UI/UX", "HTML/CSS"],
       category: "Site",
       live: "https://nancyahmedzzz.github.io/Cyber-Sec-Company/",
-      github: ""
+      github: "",
+      i18n: {
+        ar: {
+          category: "موقع ويب",
+          desc: "موقع ويب حديث لشركة أمن سيبراني مطوّر باستخدام HTML و CSS و JavaScript، يتميز بحركات تفاعلية سلسة وتصميم عصري يعكس تقنيات الحماية المتقدمة.",
+          fullDescription: "تمثل صفحة الهبوط لشركة الأمن السيبراني حضوراً رقمياً قوياً وحديثاً لشركة تقنية متقدمة. ركزنا على تصميم الوضع الليلي الاحترافي الذي ينسجم تماماً مع طابع الحماية والأمن الرقمي. يعتمد الموقع على حركات CSS متطورة وواجهة تفاعلية ومبادئ التصميم المتجاوب لضمان تجربة مستخدم راقية على كافة الأجهزة.",
+          features: [
+            "واجهة تفاعلية بالوضع الليلي مصممة خصيصاً لمجال الأمن السيبراني.",
+            "تأثيرات انتقالية وحركات ظهور ناعمة مع التمرير.",
+            "تصميم شبكي متجاوب بالكامل لضمان التوافق مع مختلف الشاشات.",
+            "بنية HTML دلالية لتحسين محركات البحث وسهولة الوصول.",
+            "تحسين سرعة تحميل الموارد لتحقيق أعلى أداء وسرعة استجابة."
+          ],
+          tags: ["الأمن السيبراني", "ويب", "UI/UX", "HTML/CSS"]
+        },
+        de: {
+          category: "Webseite",
+          desc: "Eine moderne Cybersecurity-Webseite, entwickelt mit HTML, CSS und JavaScript, mit flüssigen Animationen und einer professionellen UI für fortschrittliche Sicherheitstechnologien.",
+          fullDescription: "Diese Landingpage für ein Cybersecurity-Unternehmen bietet einen modernen, vertrauenserweckenden digitalen Auftritt. Der Fokus lag auf einer professionellen Dark-Mode-Ästhetik, die ideal zu Sicherheitsthemen passt. Die Seite nutzt moderne CSS-Animationen, eine interaktive Benutzeroberfläche und responsive Gestaltungsprinzipien für ein erstklassiges Nutzungserlebnis.",
+          features: [
+            "Interaktives Dark-Mode-Interface, maßgeschneidert für Cybersecurity.",
+            "Flüssige CSS-Übergänge und scroll-basierte Einblendanimationen.",
+            "Vollständig responsives Grid-Layout für alle Bildschirmgrößen.",
+            "Semantische HTML-Struktur für SEO und Barrierefreiheit.",
+            "Optimierte Ladezeiten für schnelle Rendering-Performance."
+          ],
+          tags: ["Cyber Security", "Web", "UI/UX", "HTML/CSS"]
+        }
+      }
     },
     {
       title: "E L I T E",
@@ -48,7 +157,35 @@ window.PROFILE = {
       tags: ["E-Commerce", "E L I T E", "Web", "JavaScript"],
       category: "Site",
       live: "https://nancyahmedzzz.github.io/E-L-I-T-E/",
-      github: ""
+      github: "",
+      i18n: {
+        ar: {
+          category: "موقع ويب",
+          desc: "متجر عطور فاخر مطوّر باستخدام HTML و CSS و JavaScript، يتميز بتصميم أنيق وحركات ناعمة لعرض العطور بأسلوب راقٍ وجذاب.",
+          fullDescription: "يعد متجر E L I T E منصة تجارة إلكترونية فاخرة صُممت لتعكس أرقى معايير الأناقة والجاذبية. يرتكز التصميم على استخدام خطوط طباعية مميزة وحركات تفاعلية دقيقة مع لوحة ألوان هادئة تبرز جمال زجاجات العطور، مقدماً تجربة تسوق غامرة تبدأ من استعراض التشكيلات حتى إتمام الطلب.",
+          features: [
+            "واجهة تجارة إلكترونية فاخرة تركز على أدق التفاصيل الجمالية.",
+            "خطوط راقية ولوحة ألوان مخصصة تعكس هوية العلامة التجارية.",
+            "حركات تفاعلية سلسة عند تمرير المؤشر لزيادة تفاعل الزوار.",
+            "تصميم متجاوب بالكامل ومتوافق بدقة مع مستخدمي الهواتف.",
+            "معرض منتجات تفاعلي مع عرض ديناميكي لأسعار العطور."
+          ],
+          tags: ["تجارة إلكترونية", "E L I T E", "ويب", "JavaScript"]
+        },
+        de: {
+          category: "Webseite",
+          desc: "Ein moderner Online-Shop für Parfums mit HTML, CSS und JavaScript, der Düfte durch elegantes Design und flüssige Interaktionen exklusiv präsentiert.",
+          fullDescription: "E L I T E ist eine exklusive E-Commerce-Plattform für Luxusparfums, die Hochwertigkeit und Stil vermittelt. Das Design setzt auf elegante Typografie, subtile Mikro-Animationen und eine reduzierte Farbpalette, die Produkte optimal in Szene setzt. Besucher genießen ein intuitives Einkaufserlebnis von der Produktgalerie bis zum Checkout.",
+          features: [
+            "Premium-E-Commerce-Interface mit Fokus auf Luxus-Ästhetik.",
+            "Elegante Typografie und ein abgestimmtes Farbschema für die Markenidentität.",
+            "Sanfte Hover-Animationen zur Steigerung der Nutzerinteraktion.",
+            "Responsives Shopping-Layout, optimiert für Mobilgeräte.",
+            "Interaktive Produktgalerie mit dynamischer Preisanzeige."
+          ],
+          tags: ["E-Commerce", "E L I T E", "Web", "JavaScript"]
+        }
+      }
     },
     {
       title: "Travel Company",
@@ -65,7 +202,35 @@ window.PROFILE = {
       tags: ["Travel", "Web", "Frontend", "Animations"],
       category: "Site",
       live: "https://nancyahmedzzz.github.io/Travel-Company/",
-      github: ""
+      github: "",
+      i18n: {
+        ar: {
+          category: "موقع ويب",
+          desc: "موقع سياحي عصري مطوّر بـ HTML و CSS و JavaScript، يحتوي على حركات مشوقة وعروض تفاعلية للرحلات لاكتشاف الوجهات السياحية بسهولة.",
+          fullDescription: "يقدم هذا الموقع لشركة السياحة والسفر رحلة بصرية ملهمة تحفز على السفر وتسهل حجز الرحلات والبرامج السياحية. يتيح الموقع استكشاف الوجهات بصور جذابة وتأثيرات تمرير بارالاكس سلسة، مع تصميم متجاوب وقوائم تنقل واضحة ترشد الزائر خطوة بخطوة.",
+          features: [
+            "عرض تفاعلي للوجهات السياحية مع أدوات تصفية ذكية.",
+            "تأثيرات حركة ممتعة مع التمرير وتقنية البارالاكس.",
+            "واجهة حجز سهلة الاستخدام مع أزرار دعوة لاتخاذ إجراء واضحة.",
+            "معرض صور عالي الدقة مُحسّن للتحميل السريع.",
+            "خرائط تفاعلية مخصصة لتوضيح مسارات الرحلات السياحية."
+          ],
+          tags: ["سياحة وسفر", "ويب", "فرونت إند", "حركات تفاعلية"]
+        },
+        de: {
+          category: "Webseite",
+          desc: "Eine moderne Webseite für ein Reiseunternehmen mit HTML, CSS und JavaScript, die Reiseziele durch interaktive Touren und lebendige Animationen erlebbar macht.",
+          fullDescription: "Diese Touristik-Webseite nimmt Besucher mit auf eine visuelle Entdeckungsreise und fördert Buchungsanfragen. Sie verbindet interaktive Zielgebietspräsentationen, großformatige Bildwelten und Parallax-Scrolling mit einer voll responsiven Navigation auf allen Endgeräten.",
+          features: [
+            "Interaktive Präsentation von Reisezielen mit dynamischer Filterung.",
+            "Fesselnde Scroll-Animationen und visuelle Parallax-Effekte.",
+            "Responsives Buchungsinterface mit klaren Call-to-Actions.",
+            "Hochauflösendes Bilder-Grid, optimiert für schnelle Ladezeiten.",
+            "Individuelle Karteneinbindung zur Anzeige von Reiserouten."
+          ],
+          tags: ["Reisen", "Web", "Frontend", "Animationen"]
+        }
+      }
     },
     {
       title: "Accounting Company",
@@ -82,7 +247,35 @@ window.PROFILE = {
       tags: ["Corporate", "Accounting", "Web", "UI Design"],
       category: "Site",
       live: "https://nancyahmedzzz.github.io/Accounting-Company/",
-      github: ""
+      github: "",
+      i18n: {
+        ar: {
+          category: "موقع ويب",
+          desc: "موقع احترافي لشركة محاسبة واستشارات مالية بـ HTML و CSS و JavaScript، يبرز الخدمات والحلول المالية بأسلوب عصري وموثوق.",
+          fullDescription: "صُمم هذا الموقع لشركة خدمات واستشارات مالية ومحاسبية ليبرز معاني الثقة والشفافية. يستعرض الموقع الخدمات الضريبية والمالية المعقدة بأسلوب مبسط ومنظم، مع خطوط واضحة وتوزيع متناسق للمعلومات ونماذج تواصل مباشرة لتحويل الزوار إلى عملاء دائمين.",
+          features: [
+            "تصميم مؤسسي احترافي يركز على بناء الثقة والوضوح.",
+            "عرض منظم للخدمات والاستشارات باستخدام شبكات CSS متقدمة.",
+            "حركات ظهور ناعمة للمحتوى لسهولة القراءة والتصفح.",
+            "واجهة متجاوبة بالكامل ومتوافقة مع معايير الويب القياسية.",
+            "نماذج تواصل تفاعلية مزودة بالتحقق الفوري من صحة البيانات."
+          ],
+          tags: ["شركات", "محاسبة", "ويب", "تصميم واجهات"]
+        },
+        de: {
+          category: "Webseite",
+          desc: "Eine professionelle Unternehmenswebseite für eine Wirtschaftsprüfungs- und Steuerberatungsgesellschaft, umgesetzt mit HTML, CSS und JavaScript.",
+          fullDescription: "Konzipiert für ein Finanzdienstleistungsunternehmen vermittelt dieser Webauftritt Seriosität, Klarheit und Verlässlichkeit. Komplexe steuerliche und buchhalterische Leistungen werden transparent strukturiert dargeboten, unterstützt von klarer Typografie und gezielten Kontaktmöglichkeiten.",
+          features: [
+            "Professionelles Corporate Design mit Fokus auf Vertrauen und Klarheit.",
+            "Strukturierte Leistungsübersicht mit modernen CSS-Grids.",
+            "Flüssige Einblendeffekte zur optimalen Leseführung.",
+            "Responsives, zugängliches Layout nach aktuellen Webstandards.",
+            "Integrierte Kontaktformulare mit Validierung der Eingaben."
+          ],
+          tags: ["Unternehmen", "Buchhaltung", "Web", "UI-Design"]
+        }
+      }
     },
     {
       title: "Choose your Car with US",
@@ -99,7 +292,35 @@ window.PROFILE = {
       tags: ["Automotive", "Web", "JavaScript DOM"],
       category: "Site",
       live: "https://nancyahmedzzz.github.io/Choose-your-Own-Car-with-US-Now-/",
-      github: ""
+      github: "",
+      i18n: {
+        ar: {
+          category: "موقع ويب",
+          desc: "منصة حديثة لمعرض سيارات بـ HTML و CSS و JavaScript، تتيح استعراض السيارات ومميزاتها وتوفر تجربة تفاعلية ممتعة للمشترين.",
+          fullDescription: "منصة ديناميكية لمعرض سيارات تتيح عرض السيارات الفاخرة والعائلية بأبهى صورة. تضم المنصة بطاقات سيارات تفصيلية، وإبرازاً للمواصفات الفنية، وتصفية مباشرة عبر JavaScript حسب الفئة والسعر والشركة المصنعة دون الحاجة لإعادة تحميل الصفحة.",
+          features: [
+            "معرض سيارات تفاعلي يضم صوراً ومعاينات من زوايا متعددة.",
+            "تصميم عصري مستوحى من عالم السيارات مع لمسات زجاجية أنيقة.",
+            "تجربة تصفح تفاعلية مع تصفية فورية باستخدام JavaScript.",
+            "تصميم شبكي متجاوب يتكيف تلقائياً مع الهواتف الذكية.",
+            "جداول مواصفات تفصيلية مخصصة لكل موديل سيارة."
+          ],
+          tags: ["سيارات", "ويب", "JavaScript DOM"]
+        },
+        de: {
+          category: "Webseite",
+          desc: "Ein moderner Webauftritt für ein Autohaus mit HTML, CSS und JavaScript, der Fahrzeuge mit dynamischen Filtern und Spezifikationstabellen ansprechend vorstellt.",
+          fullDescription: "Diese interaktive Plattform für den Fahrzeughandel präsentiert Neu- und Gebrauchtwagen mit hoher Detailtiefe. Sie bietet eine dynamische Filterung über JavaScript-DOM-Manipulation nach Marke, Preis und Fahrzeugklasse in Echtzeit.",
+          features: [
+            "Dynamische Fahrzeugpräsentation mit Bildergalerien aus mehreren Blickwinkeln.",
+            "Edles Automobil-Design mit modernen Glassmorphism-Elementen.",
+            "Interaktives Browsing mit Echtzeit-Filterung über JavaScript DOM.",
+            "Responsives Grid-Layout, das sich ideal an Mobilgeräte anpasst.",
+            "Maßgeschneiderte Tabellen für technische Spezifikationen."
+          ],
+          tags: ["Automobil", "Web", "JavaScript DOM"]
+        }
+      }
     },
     {
       title: "NeuroCore Admin Dashboard",
@@ -116,7 +337,35 @@ window.PROFILE = {
       tags: ["Dashboard", "Healthcare", "Data Viz"],
       category: "Dashboard",
       live: "https://nancyahmedzzz.github.io/NeuroCore-Admin-Dashboard/",
-      github: ""
+      github: "",
+      i18n: {
+        ar: {
+          category: "لوحة تحكم",
+          desc: "لوحة تحكم إدارية لمركز طب وجراحة الأعصاب بـ HTML و CSS و JavaScript، تشمل رسوماً بيانية تفاعلية لإدارة المرضى والمواعيد بكفاءة.",
+          fullDescription: "نظام NeuroCore يمثل لوحة تحكم متكاملة مخصصة لمراكز وعيادات الأعصاب. يوفر النظام تمثيلاً بيانياً متقدماً للبيانات الطبية، وأدوات لإدارة سجلات المرضى ومتابعة المواعيد في واجهة تفاعلية فائقة السرعة والاستجابة تساعد الطاقم الطبي على اتخاذ القرارات السليمة.",
+          features: [
+            "رسوم بيانية تفاعلية لتصور بيانات المرضى والموارد الطبية.",
+            "واجهة شاملة لإدارة بيانات وسجلات المرضى مع إمكانية البحث.",
+            "تصميم متجاوب ومتناسق باستخدام CSS Grid و Flexbox.",
+            "حركات انتقال سلسة لعناصر اللوحة لتجربة استخدام مريحة.",
+            "نظام عناصر ووحدات قابلة للتخصيص حسب متطلبات الطبيب والإدارة."
+          ],
+          tags: ["لوحة تحكم", "رعاية صحية", "تصور البيانات"]
+        },
+        de: {
+          category: "Dashboard",
+          desc: "Ein Verwaltungs-Dashboard für ein Neurologiezentrum mit HTML, CSS und JavaScript, inklusive interaktiver Diagramme zur Patienten- und Terminverwaltung.",
+          fullDescription: "NeuroCore ist ein maßgeschneidertes Administrations-Dashboard für neurologische Fachkliniken. Es bündelt Patientenverwaltung, Terminplanung und klinische Kennzahlen in einer übersichtlichen, hochperformanten Oberfläche.",
+          features: [
+            "Interaktive Datencharts zur Visualisierung von Patientendaten und Kapazitäten.",
+            "Umfassendes Patientenmanagement mit schneller Suchfunktion.",
+            "Responsives Dashboard-Layout auf Basis von CSS Grid und Flexbox.",
+            "Flüssige Komponenten-Animationen für eine moderne Benutzeroberfläche.",
+            "Modulares Widget-System zur flexiblen Ansichtskonfiguration."
+          ],
+          tags: ["Dashboard", "Gesundheitswesen", "Datenvisualisierung"]
+        }
+      }
     },
     {
       title: "iStore Admin Dashboard",
@@ -133,7 +382,35 @@ window.PROFILE = {
       tags: ["Dashboard", "E-Commerce Admin", "Analytics"],
       category: "Dashboard",
       live: "https://nancyahmedzzz.github.io/iStore-Admin-Dashboard/",
-      github: ""
+      github: "",
+      i18n: {
+        ar: {
+          category: "لوحة تحكم",
+          desc: "لوحة تحكم حديثة لمتجر إلكترونيات بـ HTML و CSS و JavaScript، لإدارة أجهزة اللابتوب والهواتف ومتابعة المبيعات والمخزون بدقة.",
+          fullDescription: "توفر لوحة تحكم iStore واجهة تحليلية دقيقة لتجارة الأجهزة الإلكترونية الذكية. تسهل اللوحة إدارة المخزون وتتبع المبيعات وتصنيف المنتجات ضمن بيئة إدارية متطورة تركز على وضوح البيانات المالية وتتبع الإيرادات الشهرية للأجهزة التقنية.",
+          features: [
+            "نظام متكامل لتتبع المخزون والمبيعات في واجهة عصرية وسلسة.",
+            "مخططات تحليلية تفاعلية لمتابعة اتجاهات الإيرادات والكميات المتوفرة.",
+            "تصميم لوحة إدارة تجزئة أنيق بالوضع الليلي.",
+            "جداول وشبكات بيانات متجاوبة لتسهيل قراءة الأرقام المالية.",
+            "قوائم إجراءات سريعة لإضافة وتعديل المنتجات الإلكترونية بسهولة."
+          ],
+          tags: ["لوحة تحكم", "إدارة تجارة إلكترونية", "تحليلات"]
+        },
+        de: {
+          category: "Dashboard",
+          desc: "Ein Dashboard für einen Elektronikfachhandel mit HTML, CSS und JavaScript zur effizienten Nachverfolgung von Produkten, Verkäufen und Lagerbeständen.",
+          fullDescription: "Das iStore Admin Dashboard bietet eine analysegestützte Verwaltung für den Elektronikeinzelhandel. Es optimiert Bestandsführung, Verkaufstracking und Warengruppierung durch übersichtliche Diagramme zu Umsatz und Lagerbewegungen.",
+          features: [
+            "Integrierte Inventar- und Verkaufsverfolgung in einer klaren Oberfläche.",
+            "Interaktive Analysediagramme für Umsatztrends und Lagerbestände.",
+            "Modernes Retail-Admin-Interface mit fokusiertem Dark-Mode-Design.",
+            "Responsive Tabellen und Raster zur übersichtlichen Datenvisualisierung.",
+            "Schnellaktionen zum einfachen Hinzufügen und Bearbeiten von Artikeln."
+          ],
+          tags: ["Dashboard", "E-Commerce Admin", "Analytik"]
+        }
+      }
     },
     {
       title: "Prime Estate Admin Dashboard",
@@ -150,7 +427,35 @@ window.PROFILE = {
       tags: ["Real Estate", "Dashboard", "Admin Panel"],
       category: "Dashboard",
       live: "https://nancyahmedzzz.github.io/Prime-Estate-Admin-Dashboard/",
-      github: ""
+      github: "",
+      i18n: {
+        ar: {
+          category: "لوحة تحكم",
+          desc: "منصة عقارية متقدمة بـ HTML و CSS و JavaScript، توفر أدوات احترافية للوسطاء لعرض العقارات ومتابعة اهتمامات المستثمرين والعملاء.",
+          fullDescription: "تمثل منصة Prime Estate لوحة تحكم وإدارة عقارية قوية ومبتكرة. تمنح المنصة العقارات المميزة أقصى درجات الظهور الجذاب، مع تزويد الوكلاء العقاريين بأدوات ذكية لمتابعة طلبات العملاء وتحليل مؤشرات الأسعار والاهتمام بالعقارات المعروضة.",
+          features: [
+            "واجهة متطورة لإدارة قوائم العقارات مع إمكانية تحديث الحالة فوراً.",
+            "مظهر جمالي راقٍ يتناسب مع معايير التسويق العقاري الفاخر.",
+            "رسوم بيانية تفاعلية لتحليل اتجاهات أسعار وسوق العقارات.",
+            "تصميم إداري متجاوب يمكن الوكلاء العقاريين من العمل أثناء التنقل.",
+            "أدوات مدمجة لمتابعة العملاء المحتملين وتوثيق طلبات الشراء."
+          ],
+          tags: ["عقارات", "لوحة تحكم", "لوحة إدارة"]
+        },
+        de: {
+          category: "Dashboard",
+          desc: "Ein Administrations-Dashboard für ein Immobilienunternehmen mit HTML, CSS und JavaScript zur Präsentation von Objekten und Betreuung von Interessenten.",
+          fullDescription: "Prime Estate vereint ein repräsentatives Objekt-Listing mit Werkzeugen für Immobilienmakler. Die Plattform ermöglicht die Verwaltung von Exposés, das Monitoring von Objektanfragen und die Analyse aktueller Marktbewegungen in einem minimalistischen Design.",
+          features: [
+            "Verwaltung von Immobilienangeboten mit Status-Umschaltung.",
+            "Hochwertiges, modernes Design, passend für Premium-Immobilien.",
+            "Interaktive Visualisierungen für Markttrends und Objektstatistiken.",
+            "Responsives Layout für Makler auf Tablets und Smartphones.",
+            "Integrierte Erfassung von Interessenten und Kontaktanfragen."
+          ],
+          tags: ["Immobilien", "Dashboard", "Admin-Panel"]
+        }
+      }
     },
     {
       title: "Buying Your Own Car",
@@ -167,7 +472,35 @@ window.PROFILE = {
       tags: ["Team Project", "Web", "Git Collaboration"],
       category: "Site",
       live: "",
-      github: "https://github.com/MostafaAlshennawy1/Web_Project"
+      github: "https://github.com/MostafaAlshennawy1/Web_Project",
+      i18n: {
+        ar: {
+          category: "موقع ويب",
+          desc: "(مشروع جماعي) – مطور باستخدام HTML و CSS و JavaScript.",
+          fullDescription: "مشروع جماعي تم تنفيذه بالتعاون لبناء بوابة متكاملة لشراء السيارات باستخدام تقنيات الويب الأساسية. ركز المشروع على الالتزام بأفضل ممارسات البرمجة النظيفة، والتنسيق عبر Git، وبناء تجربة مستخدم متجاوبة تسمح بمقارنة الموديلات وإرسال طلبات الشراء بسهولة.",
+          features: [
+            "بيئة تطوير تعاونية مشتركة لفريق العمل باستخدام Git و GitHub.",
+            "تكامل متقن بين تقنيات HTML و CSS و JavaScript بين أعضاء الفريق.",
+            "تصميم ويب متجاوب يضمن عمل المنصة بكفاءة على مختلف الأجهزة.",
+            "بنية كود نظيفة وقابلة للصيانة تتوافق مع معايير الفريق البرمجية.",
+            "تحقق ديناميكي من صحة المدخلات في نموذج استفسارات الشراء."
+          ],
+          tags: ["مشروع جماعي", "ويب", "تعاون عبر Git"]
+        },
+        de: {
+          category: "Webseite",
+          desc: "(Teamprojekt) – Entwickelt mit HTML, CSS und JavaScript.",
+          fullDescription: "Dieses kollaborative Teamprojekt ist ein Portal für den Autokauf auf Basis grundlegender Webtechnologien. Der Schwerpunkt lag auf sauberer Code-Struktur, Versionsverwaltung über Git und der Umsetzung eines responsiven Interfaces für Fahrzeugvergleiche und Kaufanfragen.",
+          features: [
+            "Kollaborative Teamentwicklung mit Git und GitHub.",
+            "Nahtloses Zusammenspiel von HTML, CSS und JavaScript.",
+            "Responsives Webdesign für zuverlässige Funktion auf Mobilgeräten.",
+            "Saubere, wartbare Code-Struktur nach Team-Standards.",
+            "Dynamische Formularvalidierung im Kaufanfrage-Prozess."
+          ],
+          tags: ["Teamprojekt", "Web", "Git-Kollaboration"]
+        }
+      }
     },
     {
       title: "IPC Chat System – C++",
@@ -184,7 +517,35 @@ window.PROFILE = {
       tags: ["C++", "Networking", "Multithreading", "IPC"],
       category: "chat system",
       live: "",
-      github: "https://nancyahmedzzz.github.io/IPC-Chat-System-/"
+      github: "https://nancyahmedzzz.github.io/IPC-Chat-System-/",
+      i18n: {
+        ar: {
+          category: "نظام محادثة",
+          desc: "(مشروع جماعي) نظام محادثة مطور بلغة C++ باستخدام المقابس والذاكرة المشتركة وتعدد المسارات وتقنيات التزامن.",
+          fullDescription: "نظام محادثة واتصال بين العمليات (IPC) تم تطويره بلغة C++. يوضح المشروع مفاهيم متقدمة في أنظمة التشغيل تشمل مقابس الشبكة والذاكرة المشتركة وتعدد خيوط التنفيذ والتزامن لمنع تصادم البيانات وضمان محادثة لحظية مستقرة بين عدة أجهزة.",
+          features: [
+            "برمجة مقابس C++ لنقل البيانات عبر الشبكة بموثوقية عالية.",
+            "استخدام الذاكرة المشتركة للوصول السريع إلى البيانات محلياً.",
+            "إدارة المسارات المتعددة والتزامن باستخدام Mutexes و Semaphores.",
+            "محادثة فورية آنية تدعم عدة مستخدمين متصلين في نفس الوقت.",
+            "معالجة دقيقة للأخطاء والوقاية من تسريبات الذاكرة والجمود."
+          ],
+          tags: ["C++", "شبكات", "تعدد المسارات", "IPC"]
+        },
+        de: {
+          category: "Chat-System",
+          desc: "(Teamprojekt) Chat-System in C++ unter Verwendung von Sockets, Shared Memory, Multithreading und Synchronisationstechniken.",
+          fullDescription: "Ein systemnahes Inter-Process-Communication (IPC) Chat-System in C++. Das Projekt demonstriert fortgeschrittene Betriebssystemkonzepte wie Netzwerk-Sockets, Shared Memory und Thread-Synchronisation für stabile Echtzeitkommunikation ohne Race Conditions.",
+          features: [
+            "C++-Socket-Programmierung für zuverlässigen Netzwerkdatentransfer.",
+            "Shared-Memory-Implementierung für schnellen lokalen Datenzugriff.",
+            "Multithreading und Synchronisation mittels Mutexen und Semaphoren.",
+            "Echtzeit-Chat-Funktionalität für mehrere gleichzeitige Clients.",
+            "Robuste Fehlerbehandlung und Vermeidung von Speicherlecks."
+          ],
+          tags: ["C++", "Netzwerk", "Multithreading", "IPC"]
+        }
+      }
     },
     {
       title: "Maze Solver",
@@ -201,7 +562,35 @@ window.PROFILE = {
       tags: ["Python", "Algorithms", "Problem Solving"],
       category: "Maze Solver",
       live: "",
-      github: "https://nancyahmedzzz.github.io/Maze-Solver-/"
+      github: "https://nancyahmedzzz.github.io/Maze-Solver-/",
+      i18n: {
+        ar: {
+          category: "حل المتاهات",
+          desc: "برنامج لحل المتاهات وتطبيق التفكير الخوارزمي للعثور على المسار الأمثل بأعلى كفاءة.",
+          fullDescription: "مشروع حل المتاهات يطبق مبادئ علوم الحاسب والخوارزميات للعثور على المسار الأقصر والأمثل عبر متاهات معقدة. طُوّر المشروع بلغة Python ويعتمد على خوارزميات مثل BFS و DFS و A* مع معالجة بصرية واضحة للحل النهائي.",
+          features: [
+            "تطبيق خوارزمي بلغة Python للتعامل مع المنطق البرمجي المعقد.",
+            "تحديد المسارات المثلى باستخدام خوارزميات البحث القياسية (BFS و DFS و A*).",
+            "هياكل بيانات فعالة لتمثيل الشبكات والعقد البرمجية بدقة.",
+            "تطبيق عملي للتفكير الخوارزمي في حل المشكلات المكانية والهندسية.",
+            "عرض بصري توضيحي للمسار الذي تم الوصول إليه لحل المتاهة."
+          ],
+          tags: ["Python", "خوارزميات", "حل المشكلات"]
+        },
+        de: {
+          category: "Labyrinth-Löser",
+          desc: "Labyrinth-Löser mit algorithmischem Denken zur effizienten Ermittlung optimaler Pfade.",
+          fullDescription: "Das Projekt Maze Solver nutzt Kernkonzepte der Informatik zur Bestimmung kürzester Pfade in komplexen Labyrinthen. Umgesetzt in Python, demonstriert es Pfadfindungsalgorithmen wie BFS, DFS und A* mit klarer Visualisierung des Lösungswegs.",
+          features: [
+            "Algorithmische Python-Implementierung komplexer Logik.",
+            "Optimale Pfadfindung mit Standardsuchalgorithmen wie BFS, DFS oder A*.",
+            "Effiziente Datenstrukturen zur Repräsentation von Rastern und Knoten.",
+            "Demonstration algorithmischen Denkens zur Lösung räumlicher Aufgaben.",
+            "Visuelle Darstellung des berechneten Lösungswegs."
+          ],
+          tags: ["Python", "Algorithmen", "Problemlösung"]
+        }
+      }
     }
   ]
 };

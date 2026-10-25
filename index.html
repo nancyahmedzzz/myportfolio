@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
   <meta charset="utf-8" />
@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Geist:wght@300;400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Readex+Pro:wght@300..700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -17,18 +17,24 @@
   <link rel="icon" type="image/png" sizes="48x48" href="./data/favicon-48.png">
   <link rel="apple-touch-icon" href="./data/favicon-180.png">
 
-  <link rel="stylesheet" href="./styles.css?v=11" />
-  <script src="./data.js?v=4"></script>
-  <script src="./app.js?v=10" defer></script>
+  <link rel="stylesheet" href="./styles.css?v=19" />
+  <script src="./data.js?v=6"></script>
+  <script src="./languages.js?v=1"></script>
+  <script src="./app.js?v=14" defer></script>
 </head>
 
 <body data-theme="dark">
 
+  <!-- Space Background -->
+  <div class="space-bg">
+    <div class="space-canvas">
+      <div class="space-nebula"></div>
+    </div>
+  </div>
 
-
-  <!-- Top Left Spinning Decoration (Doubled Radius, Center at Top Edge, Vivid Cyan & Glow) -->
-  <div
-    style="position: fixed; top: -140px; left: -140px; width: 280px; height: 280px; pointer-events: none; z-index: 90; filter: drop-shadow(0 0 18px rgba(0, 240, 255, 0.65)); opacity: 0.85;">
+  <!-- Top Left Spinning Decoration (Fixed Background Astrolabe, z-index: 1) -->
+  <div class="astrolabe-deco astrolabe-top-left"
+    style="position: fixed; top: -140px; left: -140px; width: 280px; height: 280px; pointer-events: none; z-index: 1; filter: drop-shadow(0 0 18px rgba(0, 240, 255, 0.65)); opacity: 0.85;">
     <svg viewBox="0 0 200 200"
       style="width: 100%; height: 100%; animation: ls-spin 10s linear infinite; transform-origin: center;">
       <circle cx="100" cy="100" r="95" fill="none" stroke="#00f0ff" stroke-width="2" stroke-dasharray="14 10" />
@@ -42,26 +48,61 @@
     </svg>
   </div>
 
-  <!-- Space Background -->
-  <div class="space-bg">
-    <div class="space-canvas">
-      <div class="space-nebula"></div>
+  <!-- Bottom Right Spinning Decoration (Fixed Background Astrolabe, 600px Diameter, z-index: 1) -->
+  <div class="astrolabe-deco astrolabe-bottom-right"
+    style="position: fixed; bottom: -300px; right: -300px; width: 600px; height: 600px; pointer-events: none; z-index: 1; filter: drop-shadow(0 0 28px rgba(0, 240, 255, 0.65)); opacity: 0.85;">
+    <svg viewBox="0 0 200 200"
+      style="width: 100%; height: 100%; animation: ls-spin 18s linear infinite reverse; transform-origin: center;">
+      <circle cx="100" cy="100" r="95" fill="none" stroke="#00f0ff" stroke-width="2" stroke-dasharray="14 10" />
+      <circle cx="100" cy="100" r="82" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="6 8" />
+      <path d="M 100 0 L 100 200 M 0 100 L 200 100" stroke="#00f0ff" stroke-width="1.8" stroke-dasharray="6 12" />
+      <path d="M 29.3 29.3 L 170.7 170.7 M 29.3 170.7 L 170.7 29.3" stroke="rgba(96, 165, 250, 0.6)" stroke-width="1.2"
+        stroke-dasharray="4 14" />
+      <circle cx="100" cy="100" r="56" fill="none" stroke="#00f0ff" stroke-width="2" stroke-dasharray="8 6" />
+      <circle cx="100" cy="100" r="30" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="4 4" />
+      <circle cx="100" cy="100" r="8" fill="#00f0ff" />
+    </svg>
+  </div>
+
+  <!-- Standalone Top-Right Controls (Language Switcher & Theme Toggle) -->
+  <div class="top-controls" id="topControls" dir="ltr">
+    <div class="lang-ctrl-wrap">
+      <button type="button" class="ctrl-icon-btn" id="langCtrlBtn" aria-label="Select Language" aria-haspopup="true" aria-expanded="false" title="Language">
+        <i class="fa-solid fa-globe" aria-hidden="true"></i>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu" aria-label="Language selection">
+        <button type="button" class="lang-menu-item" data-lang="ar" role="menuitem">
+          <span class="lang-name">العربية</span>
+          <i class="fa-solid fa-check lang-check" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="lang-menu-item active" data-lang="en" role="menuitem">
+          <span class="lang-name">English</span>
+          <i class="fa-solid fa-check lang-check" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="lang-menu-item" data-lang="de" role="menuitem">
+          <span class="lang-name">Deutsch</span>
+          <i class="fa-solid fa-check lang-check" aria-hidden="true"></i>
+        </button>
+      </div>
     </div>
+    <button type="button" class="ctrl-icon-btn" id="themeCtrlBtn" aria-label="Toggle dark/light theme" title="Toggle dark/light theme">
+      <i class="fa-solid fa-sun" id="themeCtrlIcon" aria-hidden="true"></i>
+    </button>
   </div>
 
   <!-- Restored Original Floating Centered Pill Navbar -->
   <nav class="nav" id="mainNav">
     <div class="nav-links">
-      <a href="#home" class="nav-link active">Home</a>
-      <a href="#about" class="nav-link">About</a>
-      <a href="#experience" class="nav-link">Experience</a>
-      <a href="#work" class="nav-link">Work</a>
-      <a href="#services" class="nav-link">Services</a>
-      <a href="#contact" class="nav-link">Contact</a>
+      <a href="#home" class="nav-link active" data-i18n="nav_home">Home</a>
+      <a href="#about" class="nav-link" data-i18n="nav_about">About</a>
+      <a href="#experience" class="nav-link" data-i18n="nav_experience">Experience</a>
+      <a href="#work" class="nav-link" data-i18n="nav_work">Work</a>
+      <a href="#services" class="nav-link" data-i18n="nav_services">Services</a>
+      <a href="#contact" class="nav-link" data-i18n="nav_contact">Contact</a>
     </div>
   </nav>
 
-  <main class="app ready" id="appMain" style="opacity: 1;">
+  <main class="app ready" id="appMain" style="opacity: 1; position: relative; z-index: 2;">
 
     <!-- ==================== CINEMATIC HERO (FIRST SCREEN) ==================== -->
     <section class="hero-cinematic" id="home">
@@ -105,11 +146,11 @@
         <div class="hero-bottom-info">
           <div class="hero-motto-card tagline-pill">
             <span class="hero-motto-deco">✦</span>
-            <span class="hero-motto-text">DREAMS ARE NOT NEGOTIABLE</span>
+            <span class="hero-motto-text" data-i18n="hero_motto">DREAMS ARE NOT NEGOTIABLE</span>
             <span class="hero-motto-deco">✦</span>
           </div>
-          <a href="#about" class="hero-scroll-cue" aria-label="Scroll down to About">
-            <span>EXPLORE</span>
+          <a href="#about" class="hero-scroll-cue" aria-label="Scroll down to About" data-i18n-aria="hero_explore_aria">
+            <span data-i18n="hero_explore">EXPLORE</span>
             <i class="fa-solid fa-chevron-down"></i>
           </a>
         </div>
@@ -124,28 +165,28 @@
             <div
               style="width: 8px; height: 8px; border-radius: 50%; background: #1cce79; box-shadow: 0 0 10px #1cce79cc;">
             </div>
-            BASED IN EGYPT • OPEN FOR WORK
+            <span data-i18n="about_status">BASED IN EGYPT • OPEN FOR WORK</span>
           </div>
           <h2 class="about-title" style="margin-bottom: 8px;">
-            <span class="about-title-stack">Hi, I'm <span class="about-hello" style="display: inline-block;">Nancy
+            <span class="about-title-stack"><span data-i18n="about_hi">Hi, I'm</span> <span class="about-hello" style="display: inline-block;" data-i18n="about_name">Nancy
                 Ahmed</span></span>
           </h2>
           <div class="about-quote">
             <div class="about-quote-mark">"</div>
-            <blockquote>A passionate .NET Backend Developer from Egypt, specializing in building clean, scalable APIs
+            <blockquote data-i18n="about_quote">A passionate .NET Backend Developer from Egypt, specializing in building clean, scalable APIs
               and high-performance database solutions. I thrive on turning complex problems into elegant, maintainable
               code.</blockquote>
           </div>
-          <div class="about-body" style="font-size: 1.15rem; max-width: 600px; margin-bottom: 20px; margin-top: 16px;">
+          <div class="about-body" data-i18n-html="about_body" style="font-size: 1.15rem; max-width: 600px; margin-bottom: 20px; margin-top: 16px;">
             I build clean, scalable <strong>.NET</strong> backend APIs with performance-focused <strong>SQL
               Server</strong>, and modern tooling like <strong>Docker</strong> and <strong>GitHub</strong>.
           </div>
           <div class="hero-actions" style="margin-bottom: 24px; justify-content: flex-start;">
             <a href="#work" class="btn primary magnetic">
-              Projects <i class="fa-solid fa-arrow-right btn-arrow"></i>
+              <span data-i18n="btn_projects">Projects</span> <i class="fa-solid fa-arrow-right btn-arrow"></i>
             </a>
             <a href="#contact" class="btn ghost magnetic">
-              Contact <i class="fa-solid fa-paper-plane"></i>
+              <span data-i18n="btn_contact">Contact</span> <i class="fa-solid fa-paper-plane"></i>
             </a>
             <div class="hero-socials" style="margin-top: 0;">
               <a href="https://github.com/nancyahmedzzz" class="hero-social" target="_blank" title="GitHub"><i
@@ -158,16 +199,16 @@
           </div>
           <div class="about-stats" style="margin-top: 0; padding-top: 24px; border-top: 1px solid var(--line);">
             <div class="about-stat" style="border: none; padding: 0;">
-              <div class="about-stat-num">Fresh<sup>+</sup></div>
-              <div class="about-stat-label">Years Exp</div>
+              <div class="about-stat-num"><span data-i18n="stat_fresh_val">Fresh</span><sup>+</sup></div>
+              <div class="about-stat-label" data-i18n="stat_exp">Years Exp</div>
             </div>
             <div class="about-stat" style="border: none; padding: 0;">
               <div class="about-stat-num">11<sup>+</sup></div>
-              <div class="about-stat-label">Projects</div>
+              <div class="about-stat-label" data-i18n="stat_projects">Projects</div>
             </div>
             <div class="about-stat" style="border: none; padding: 0;">
               <div class="about-stat-num">5<sup>+</sup></div>
-              <div class="about-stat-label">Clients</div>
+              <div class="about-stat-label" data-i18n="stat_clients">Clients</div>
             </div>
           </div>
         </div>
@@ -304,37 +345,38 @@
       </div>
     </section>
 
-    <div class="marquee">
-      <div class="marquee-track" aria-hidden="true" style="animation-duration: 12s;">
-        <!-- Set 1 -->
-        <span class="marquee-item">ASP.NET CORE</span><span class="marquee-dot"></span>
-        <span class="marquee-item outline">SQL SERVER</span><span class="marquee-dot"></span>
-        <span class="marquee-item">DOCKER</span><span class="marquee-dot"></span>
-        <span class="marquee-item outline">CLEAN ARCHITECTURE</span><span class="marquee-dot"></span>
-        <span class="marquee-item">ENTITY FRAMEWORK</span><span class="marquee-dot"></span>
-        <span class="marquee-item outline">REST APIs</span><span class="marquee-dot"></span>
-        <span class="marquee-item">C#</span><span class="marquee-dot"></span>
-        <span class="marquee-item outline">GITHUB</span><span class="marquee-dot"></span>
-
-        <!-- Set 2 -->
-        <span class="marquee-item">ASP.NET CORE</span><span class="marquee-dot"></span>
-        <span class="marquee-item outline">SQL SERVER</span><span class="marquee-dot"></span>
-        <span class="marquee-item">DOCKER</span><span class="marquee-dot"></span>
-        <span class="marquee-item outline">CLEAN ARCHITECTURE</span><span class="marquee-dot"></span>
-        <span class="marquee-item">ENTITY FRAMEWORK</span><span class="marquee-dot"></span>
-        <span class="marquee-item outline">REST APIs</span><span class="marquee-dot"></span>
-        <span class="marquee-item">C#</span><span class="marquee-dot"></span>
-        <span class="marquee-item outline">GITHUB</span><span class="marquee-dot"></span>
-
-        <!-- Set 3 -->
-        <span class="marquee-item">ASP.NET CORE</span><span class="marquee-dot"></span>
-        <span class="marquee-item outline">SQL SERVER</span><span class="marquee-dot"></span>
-        <span class="marquee-item">DOCKER</span><span class="marquee-dot"></span>
-        <span class="marquee-item outline">CLEAN ARCHITECTURE</span><span class="marquee-dot"></span>
-        <span class="marquee-item">ENTITY FRAMEWORK</span><span class="marquee-dot"></span>
-        <span class="marquee-item outline">REST APIs</span><span class="marquee-dot"></span>
-        <span class="marquee-item">C#</span><span class="marquee-dot"></span>
-        <span class="marquee-item outline">GITHUB</span><span class="marquee-dot"></span>
+    <div class="marquee" dir="ltr">
+      <div class="marquee-track" aria-hidden="true">
+        <!-- Set A -->
+        <div class="marquee-group">
+          <span class="marquee-item">ASP.NET CORE</span><span class="marquee-dot"></span>
+          <span class="marquee-item outline">SQL SERVER</span><span class="marquee-dot"></span>
+          <span class="marquee-item">DOCKER</span><span class="marquee-dot"></span>
+          <span class="marquee-item outline">CLEAN ARCHITECTURE</span><span class="marquee-dot"></span>
+          <span class="marquee-item">ENTITY FRAMEWORK</span><span class="marquee-dot"></span>
+          <span class="marquee-item outline">REST APIs</span><span class="marquee-dot"></span>
+          <span class="marquee-item">C#</span><span class="marquee-dot"></span>
+          <span class="marquee-item outline">GITHUB</span><span class="marquee-dot"></span>
+          <span class="marquee-item">MICROSERVICES</span><span class="marquee-dot"></span>
+          <span class="marquee-item outline">REDIS</span><span class="marquee-dot"></span>
+          <span class="marquee-item">POSTGRESQL</span><span class="marquee-dot"></span>
+          <span class="marquee-item outline">WEB APIs</span><span class="marquee-dot"></span>
+        </div>
+        <!-- Set B (Duplicate for continuous seamless loop) -->
+        <div class="marquee-group" aria-hidden="true">
+          <span class="marquee-item">ASP.NET CORE</span><span class="marquee-dot"></span>
+          <span class="marquee-item outline">SQL SERVER</span><span class="marquee-dot"></span>
+          <span class="marquee-item">DOCKER</span><span class="marquee-dot"></span>
+          <span class="marquee-item outline">CLEAN ARCHITECTURE</span><span class="marquee-dot"></span>
+          <span class="marquee-item">ENTITY FRAMEWORK</span><span class="marquee-dot"></span>
+          <span class="marquee-item outline">REST APIs</span><span class="marquee-dot"></span>
+          <span class="marquee-item">C#</span><span class="marquee-dot"></span>
+          <span class="marquee-item outline">GITHUB</span><span class="marquee-dot"></span>
+          <span class="marquee-item">MICROSERVICES</span><span class="marquee-dot"></span>
+          <span class="marquee-item outline">REDIS</span><span class="marquee-dot"></span>
+          <span class="marquee-item">POSTGRESQL</span><span class="marquee-dot"></span>
+          <span class="marquee-item outline">WEB APIs</span><span class="marquee-dot"></span>
+        </div>
       </div>
     </div>
 
@@ -342,14 +384,13 @@
     <section class="section" id="experience">
       <div class="work-head reveal" style="margin-bottom: 40px;">
         <div>
-
-          <h2 class="work-title">Professional <span class="italic-accent">experience.</span></h2>
+          <h2 class="work-title" data-i18n-html="exp_title">Professional <span class="italic-accent">experience.</span></h2>
         </div>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 24px;">
         <!-- Card 1 -->
-        <div class="service-card reveal-left"
+        <div class="service-card exp-card reveal-left"
           style="width: 100%; display: flex; flex-direction: column; align-items: flex-start; text-align: left; padding: 32px; gap: 16px;">
           <div class="service-card-spot"></div>
           <div class="service-card-ghost" style="font-size: 80px; top: -10px; right: 20px;">01</div>
@@ -357,26 +398,25 @@
           <div
             style="display: flex; justify-content: space-between; width: 100%; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 16px;">
             <div>
-              <h3
-                style="font-family: var(--display); font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 4px;">
+              <h3 class="exp-card-heading"
+                style="font-family: var(--display); font-size: 24px; font-weight: 700; margin-bottom: 4px;" data-i18n="exp_c1_title">
                 DEPI - Digital Egypt Pioneers Initiative</h3>
               <div
-                style="color: var(--accent); font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">
+                style="color: var(--accent); font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 1px;" data-i18n="exp_c1_sub">
                 NXT Training Program</div>
             </div>
-            <div
-              style="border: 1px solid var(--line); border-radius: 99px; padding: 6px 16px; font-size: 12px; font-weight: 600; color: #a1a1aa; background: rgba(0,0,0,0.3); backdrop-filter: blur(5px);">
+            <div class="exp-card-pill" data-i18n="exp_c1_tag">
               Training</div>
           </div>
 
-          <p style="color: #a1a1aa; font-size: 15px; line-height: 1.6; margin: 0; padding-top: 8px;">
+          <p class="exp-card-desc" style="font-size: 15px; line-height: 1.6; margin: 0; padding-top: 8px;" data-i18n="exp_c1_desc">
             Focused on practical backend projects, team workflows, and production-readiness practices within a
             structured professional environment.
           </p>
         </div>
 
         <!-- Card 2 -->
-        <div class="service-card reveal-right"
+        <div class="service-card exp-card reveal-right"
           style="width: 100%; display: flex; flex-direction: column; align-items: flex-start; text-align: left; padding: 32px; gap: 16px;">
           <div class="service-card-spot" style="--spot-c: var(--accent-2)"></div>
           <div class="service-card-ghost" style="font-size: 80px; top: -10px; right: 20px;">02</div>
@@ -384,26 +424,25 @@
           <div
             style="display: flex; justify-content: space-between; width: 100%; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 16px; flex-wrap: wrap; gap: 16px;">
             <div>
-              <h3
-                style="font-family: var(--display); font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 4px;">
+              <h3 class="exp-card-heading"
+                style="font-family: var(--display); font-size: 24px; font-weight: 700; margin-bottom: 4px;" data-i18n="exp_c2_title">
                 Freelancer Backend Developer</h3>
               <div
-                style="color: var(--accent); font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">
+                style="color: var(--accent); font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 1px;" data-i18n="exp_c2_sub">
                 .NET Core & Reverse Engineering</div>
             </div>
-            <div
-              style="border: 1px solid var(--line); border-radius: 99px; padding: 6px 16px; font-size: 12px; font-weight: 600; color: #a1a1aa; background: rgba(0,0,0,0.3); backdrop-filter: blur(5px);">
+            <div class="exp-card-pill" data-i18n="exp_c2_tag">
               2026 - Present</div>
           </div>
 
-          <ul
-            style="color: #a1a1aa; font-size: 15px; line-height: 1.8; margin: 0; padding-left: 20px; list-style-type: disc; padding-top: 8px; display: grid; gap: 8px;">
-            <li>Built and maintained robust REST APIs with ASP.NET Core for multiple freelance clients.</li>
-            <li>Designed and optimized SQL Server queries, schemas, and procedures for reliable production use.</li>
-            <li>Delivered modular backend code with clean architecture patterns and versioned releases.</li>
-            <li>Implemented complex business logic, strict data validation, and unified error handling.</li>
-            <li>Integrated backend APIs with dynamic front-end interfaces using HTML, CSS, and JavaScript.</li>
-            <li>Applied Docker concepts for containerized application environments and reliable deployment.</li>
+          <ul id="expFreelanceList" class="exp-card-list"
+            style="font-size: 15px; line-height: 1.8; margin: 0; padding-left: 20px; list-style-type: disc; padding-top: 8px; display: grid; gap: 8px;">
+            <li data-i18n="exp_b1">Built and maintained robust REST APIs with ASP.NET Core for multiple freelance clients.</li>
+            <li data-i18n="exp_b2">Designed and optimized SQL Server queries, schemas, and procedures for reliable production use.</li>
+            <li data-i18n="exp_b3">Delivered modular backend code with clean architecture patterns and versioned releases.</li>
+            <li data-i18n="exp_b4">Implemented complex business logic, strict data validation, and unified error handling.</li>
+            <li data-i18n="exp_b5">Integrated backend APIs with dynamic front-end interfaces using HTML, CSS, and JavaScript.</li>
+            <li data-i18n="exp_b6">Applied Docker concepts for containerized application environments and reliable deployment.</li>
           </ul>
         </div>
       </div>
@@ -412,23 +451,23 @@
     <section class="section work-section" id="work">
       <div class="work-head-row reveal-left">
         <div>
-          <h2 class="work-title">Selected <span class="italic-accent">projects</span></h2>
+          <h2 class="work-title" data-i18n-html="work_title">Selected <span class="italic-accent">projects</span></h2>
         </div>
         <div class="carousel-counter-controls">
-          <button class="carousel-top-btn" id="projTopPrev" aria-label="Previous project"><i
+          <button class="carousel-top-btn" id="projTopPrev" aria-label="Previous project" data-i18n-aria="proj_prev_aria"><i
               class="fa-solid fa-chevron-left"></i></button>
           <div class="carousel-counter-display">
             <span id="projCounterCurrent">01</span> <span class="carousel-counter-sep">/</span> <span
               id="projCounterTotal">11</span>
           </div>
-          <button class="carousel-top-btn" id="projTopNext" aria-label="Next project"><i
+          <button class="carousel-top-btn" id="projTopNext" aria-label="Next project" data-i18n-aria="proj_next_aria"><i
               class="fa-solid fa-chevron-right"></i></button>
         </div>
       </div>
 
       <!-- 3D Carousel Showcase -->
       <div class="projects-showcase" id="projectsShowcase">
-        <button class="proj-nav-arrow proj-nav-prev" id="projSidePrev" aria-label="Previous project">
+        <button class="proj-nav-arrow proj-nav-prev" id="projSidePrev" aria-label="Previous project" data-i18n-aria="proj_prev_aria">
           <i class="fa-solid fa-chevron-left"></i>
         </button>
 
@@ -436,7 +475,7 @@
           <!-- Rendered by JS -->
         </div>
 
-        <button class="proj-nav-arrow proj-nav-next" id="projSideNext" aria-label="Next project">
+        <button class="proj-nav-arrow proj-nav-next" id="projSideNext" aria-label="Next project" data-i18n-aria="proj_next_aria">
           <i class="fa-solid fa-chevron-right"></i>
         </button>
       </div>
@@ -449,7 +488,7 @@
       <a href="https://github.com/nancyahmedzzz" target="_blank" class="work-banner reveal" style="margin-top: 48px;">
         <div class="work-banner-text">
           <div class="work-banner-label">GITHUB</div>
-          <div class="work-banner-big">Explore more builds on <strong>GitHub</strong></div>
+          <div class="work-banner-big" data-i18n-html="work_banner">Explore more builds on <strong>GitHub</strong></div>
         </div>
         <div class="work-banner-arrow"><i class="fa-solid fa-arrow-right"></i></div>
       </a>
@@ -457,8 +496,7 @@
 
     <section class="section services-section" id="services">
       <div class="services-head reveal-right">
-
-        <h2 class="services-title">Services & <span class="italic-accent">capabilities.</span></h2>
+        <h2 class="services-title" data-i18n-html="services_title">Services & <span class="italic-accent">capabilities.</span></h2>
       </div>
       <div class="services-grid reveal-left">
         <div class="service-card">
@@ -468,9 +506,8 @@
           <div class="service-card-icon"><i class="fa-solid fa-server service-icon-emoji"></i>
             <div class="service-icon-ring"></div>
           </div>
-          <div class="service-card-name">Backend Dev</div>
-          <div class="service-card-desc">Building robust, scalable REST APIs using ASP.NET Core with clean architecture.
-          </div>
+          <div class="service-card-name" data-i18n="srv1_name">Backend Dev</div>
+          <div class="service-card-desc" data-i18n="srv1_desc">Building robust, scalable REST APIs using ASP.NET Core with clean architecture.</div>
           <div class="service-card-tags">
             <div class="service-tag">.NET</div>
             <div class="service-tag">C#</div>
@@ -483,9 +520,8 @@
           <div class="service-card-icon"><i class="fa-solid fa-database service-icon-emoji"></i>
             <div class="service-icon-ring"></div>
           </div>
-          <div class="service-card-name">Database</div>
-          <div class="service-card-desc">Designing optimized SQL Server schemas, stored procedures for high-performance.
-          </div>
+          <div class="service-card-name" data-i18n="srv2_name">Database</div>
+          <div class="service-card-desc" data-i18n="srv2_desc">Designing optimized SQL Server schemas, stored procedures for high-performance.</div>
           <div class="service-card-tags">
             <div class="service-tag">SQL Server</div>
             <div class="service-tag">T-SQL</div>
@@ -498,9 +534,8 @@
           <div class="service-card-icon"><i class="fa-brands fa-docker service-icon-emoji"></i>
             <div class="service-icon-ring"></div>
           </div>
-          <div class="service-card-name">DevOps</div>
-          <div class="service-card-desc">Containerizing applications with Docker and managing releases via GitHub
-            workflows.</div>
+          <div class="service-card-name" data-i18n="srv3_name">DevOps</div>
+          <div class="service-card-desc" data-i18n="srv3_desc">Containerizing applications with Docker and managing releases via GitHub workflows.</div>
           <div class="service-card-tags">
             <div class="service-tag">Docker</div>
             <div class="service-tag">Git</div>
@@ -513,9 +548,8 @@
           <div class="service-card-icon"><i class="fa-solid fa-puzzle-piece service-icon-emoji"></i>
             <div class="service-icon-ring"></div>
           </div>
-          <div class="service-card-name">Integration</div>
-          <div class="service-card-desc">Integrating backend APIs with front-end interfaces using EF Core and modern
-            patterns.</div>
+          <div class="service-card-name" data-i18n="srv4_name">Integration</div>
+          <div class="service-card-desc" data-i18n="srv4_desc">Integrating backend APIs with front-end interfaces using EF Core and modern patterns.</div>
           <div class="service-card-tags">
             <div class="service-tag">EF Core</div>
             <div class="service-tag">REST</div>
@@ -527,13 +561,12 @@
     <section class="contact reveal-left" id="contact">
       <div class="contact-grid">
         <div class="contact-left">
-
-          <h2 class="contact-title">Have a project? <br /><span class="italic-accent">Let's talk.</span></h2>
+          <h2 class="contact-title" data-i18n-html="contact_title">Have a project? <br /><span class="italic-accent">Let's talk.</span></h2>
           <div class="contact-socials">
             <a href="https://www.linkedin.com/in/nancy-ahmed-/" class="contact-social" target="_blank">
               <div class="contact-social-icon"><i class="fa-brands fa-linkedin-in"></i></div>
               <div class="contact-social-text">
-                <div class="contact-social-label">Professional Network</div>
+                <div class="contact-social-label" data-i18n="contact_linkedin_lbl">Professional Network</div>
                 <div class="contact-social-val">LinkedIn</div>
               </div>
               <div class="contact-social-arrow"><i class="fa-solid fa-arrow-right"></i></div>
@@ -541,7 +574,7 @@
             <a href="https://github.com/nancyahmedzzz" class="contact-social" target="_blank">
               <div class="contact-social-icon"><i class="fa-brands fa-github"></i></div>
               <div class="contact-social-text">
-                <div class="contact-social-label">Code Repository</div>
+                <div class="contact-social-label" data-i18n="contact_github_lbl">Code Repository</div>
                 <div class="contact-social-val">GitHub</div>
               </div>
               <div class="contact-social-arrow"><i class="fa-solid fa-arrow-right"></i></div>
@@ -550,7 +583,7 @@
         </div>
         <div class="connect-card">
           <div class="connect-card-title">
-            <div class="connect-card-bar" style="width: 24px; background:#3b82f6;"></div> Connect With Me
+            <div class="connect-card-bar" style="width: 24px; background:#3b82f6;"></div> <span data-i18n="contact_connect">Connect With Me</span>
           </div>
 
           <a href="https://www.linkedin.com/in/nancy-ahmed-/" target="_blank" class="connect-row connect-row-wide"
@@ -561,8 +594,8 @@
               <div class="connect-row-icon-wrap" style="--brand: #0a66c2;"><i
                   class="fa-brands fa-linkedin-in connect-row-icon"></i></div>
               <div class="connect-row-text">
-                <div class="connect-row-label">Let's Connect</div>
-                <div class="connect-row-val">on LinkedIn</div>
+                <div class="connect-row-label" data-i18n="connect_linkedin">Let's Connect</div>
+                <div class="connect-row-val" data-i18n="connect_on_linkedin">on LinkedIn</div>
               </div>
             </div>
           </a>
@@ -575,7 +608,7 @@
                 <div class="connect-row-icon-wrap connect-row-icon-wrap-sm" style="--brand: #ea4335;"><i
                     class="fa-regular fa-envelope connect-row-icon connect-row-icon-sm"></i></div>
                 <div class="connect-row-text">
-                  <div class="connect-row-label connect-row-label-sm">Email</div>
+                  <div class="connect-row-label connect-row-label-sm" data-i18n="connect_email">Email</div>
                   <div class="connect-row-val connect-row-val-sm">nancy.ahmed...</div>
                 </div>
               </div>
@@ -588,8 +621,8 @@
                 <div class="connect-row-icon-wrap connect-row-icon-wrap-sm" style="--brand: #25d366;"><i
                     class="fa-regular fa-file-pdf connect-row-icon connect-row-icon-sm"></i></div>
                 <div class="connect-row-text">
-                  <div class="connect-row-label connect-row-label-sm">Resume</div>
-                  <div class="connect-row-val connect-row-val-sm">Download CV</div>
+                  <div class="connect-row-label connect-row-label-sm" data-i18n="connect_resume">Resume</div>
+                  <div class="connect-row-val connect-row-val-sm" data-i18n="connect_cv_dl">Download CV</div>
                 </div>
               </div>
             </a>
@@ -601,8 +634,8 @@
                 <div class="connect-row-icon-wrap connect-row-icon-wrap-sm" style="--brand: #14b8a6;"><i
                     class="fa-solid fa-copy connect-row-icon connect-row-icon-sm"></i></div>
                 <div class="connect-row-text">
-                  <div class="connect-row-label connect-row-label-sm">Copy Email</div>
-                  <div class="connect-row-val connect-row-val-sm">Click to copy</div>
+                  <div class="connect-row-label connect-row-label-sm" data-i18n="connect_copy_lbl">Copy Email</div>
+                  <div class="connect-row-val connect-row-val-sm" id="copyBtnVal" data-i18n="connect_copy_val">Click to copy</div>
                 </div>
               </div>
             </div>
@@ -625,9 +658,9 @@
     </section>
 
     <footer class="footer">
-      <div class="footer-kicker">HAVE AN IDEA FOR A PROJECT?</div>
+      <div class="footer-kicker" data-i18n="footer_kicker">HAVE AN IDEA FOR A PROJECT?</div>
       <a href="mailto:nancy.ahmed.abdelgawad@gmail.com" class="footer-big">
-        Let's <span class="italic-accent">build.</span>
+        <span data-i18n-html="footer_build">Let's <span class="italic-accent">build.</span></span>
         <div class="footer-big-arrow"><i class="fa-solid fa-arrow-right"></i></div>
       </a>
       <div class="hero-socials" style="justify-content: center; margin: 40px 0 20px;">
@@ -638,16 +671,16 @@
         <a href="./data/CV.pdf" class="hero-social" target="_blank" title="Resume"><i
             class="fa-regular fa-file-pdf"></i></a>
       </div>
-      <div class="footer-row" style="grid-template-columns: 1fr 1fr;">
-        <div>© 2026 NANCY AHMED. ALL RIGHTS RESERVED.</div>
-        <div style="justify-self: end;">EGYPT, CAIRO </div>
+      <div class="footer-row footer-flex-row">
+        <div class="footer-rights" data-i18n="footer_rights">© 2026 NANCY AHMED. ALL RIGHTS RESERVED.</div>
+        <div class="footer-location" data-i18n="footer_location">EGYPT, CAIRO</div>
       </div>
     </footer>
   </main>
 
   <div class="modal-backdrop" id="modalBg">
     <div class="modal" id="modalWindow">
-      <button class="modal-close" id="modalClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      <button class="modal-close" id="modalClose" aria-label="Close" data-i18n-aria="modal_close_aria"><i class="fa-solid fa-xmark"></i></button>
       <div class="modal-art">
         <img src="" class="modal-art-cover-bg" id="modalImgBg" alt="">
         <img src="" class="modal-art-cover" id="modalImg" alt="">
@@ -659,16 +692,16 @@
         </div>
         <p class="modal-desc" id="modalDesc">Project Description</p>
         <div class="modal-features-wrap" id="modalFeaturesWrap" style="display: none;">
-          <div class="modal-features-title">
+          <div class="modal-features-title" data-i18n-html="modal_features_title">
             <i class="fa-solid fa-circle-check"></i> Key Highlights & Features
           </div>
           <ul class="modal-features-list" id="modalFeaturesList"></ul>
         </div>
         <div class="modal-tags" id="modalTags"></div>
         <div class="modal-actions">
-          <a href="#" target="_blank" class="btn primary magnetic" id="modalLive">Live Demo <span
+          <a href="#" target="_blank" class="btn primary magnetic" id="modalLive" data-i18n-html="modal_live">Live Demo <span
               class="btn-arrow">→</span></a>
-          <a href="#" target="_blank" class="btn ghost magnetic" id="modalGit">Source Code</a>
+          <a href="#" target="_blank" class="btn ghost magnetic" id="modalGit" data-i18n="modal_git">Source Code</a>
         </div>
       </div>
     </div>
@@ -676,7 +709,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
+  <button class="scroll-top" id="scrollTop" aria-label="Scroll to top" data-i18n-aria="scroll_top_aria">
     <i class="fa-solid fa-arrow-up"></i>
   </button>
 
